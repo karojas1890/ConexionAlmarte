@@ -13,3 +13,4 @@ class RecomendacionesTerapeuticas(db.Model):
     duracionminutos=Column(Integer)
     
     categoria_r = relationship("CategoriasRecomendaciones", backref="recomendaciones")
+    

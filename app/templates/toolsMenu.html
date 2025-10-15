@@ -5,30 +5,49 @@
 {% block content %}
     
     
+<div class="main-contentTools">
+    <div class="tool-card" id="tool-card">
+        <!-- El contenido se rellenará dinámicamente -->
+    </div>
+</div>
 
-        <div class="main-contentTools">
-            <div class="section-titleTools">Mis herramientas</div>
-            <div class="section-subtitleTools">Recomendaciones de salud mental sugeridas por tu terapeuta</div>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+    // Obtener id de asignación desde localStorage
+    const idAsignacion = localStorage.getItem("idasignacionSeleccionada");
+    if (!idAsignacion) {
+        console.warn("No hay id de asignación en localStorage");
+        return;
+    }
 
-            <div class="tool-card" onclick="openToolDetail()">
-                <div class="tool-image"></div>
-                <div class="tool-title">Preguntas curiosas en vez de indicaciones</div>
-                <div class="tool-category">Categoría: Disciplina positiva en la familia</div>
-                <div class="tool-description">
-                    Como padres, solemos dar órdenes directas a los niños, transformando las órdenes directas en preguntas que los inviten a pensar. El objetivo es reducir las luchas de poder generadas para que recuerden y asuman sus responsabilidades por iniciativa propia, fortaleciendo así su autonomía y responsabilidad.
-                </div>
-                <div class="tool-actions">
-                    <a style="text-decoration: none;" href="{{ url_for('routes.tools_details') }}" class="btn-primary">Entendido</a>
-                    <button class="btn-primary" style="background: #4CAF50;">Obtener ayuda de IA</button>
-                </div>
+    try {
+        // Llamar al endpoint Flask
+        const res = await fetch(`/tools/Recomendacion/${idAsignacion}`);
+        if (!res.ok) throw new Error("No se pudo cargar la recomendación");
+
+        const data = await res.json();
+
+        // Seleccionar la card y rellenarla con innerHTML
+        const card = document.getElementById("tool-card");
+        card.innerHTML = `
+            <div class="section-titleTools" id="tool-title">${data.nombreRecomendacion}</div>
+            <div class="section-subtitleTools" id="tool-category">Categoría: ${data.categoria}</div>
+            <div class="tool-image" id="tool-image" style="background-image: ${data.urlimagen ? `url(/static/images/${data.urlimagen})` : ''};"></div>
+            <div class="tool-description" id="tool-description">${data.descripcion}</div>
+            <div class="tool-actions">
+                <a style="text-decoration: none;" href="{{ url_for('routes.tools_details') }}" class="btn-primary">Entendido</a>
+                <button class="btn-primary" style="background: #4CAF50;">Obtener ayuda de IA</button>
             </div>
-        </div>
+        `;
 
-       <script>
-          function openToolDetail() {
-           window.location.href = "{{ url_for('routes.tools_details') }}";
-        }
-       </script>
+    } catch (error) {
+        console.error("Error cargando recomendación:", error);
+        const card = document.getElementById("tool-card");
+        card.innerHTML = `<div class="tool-description">Error al cargar la recomendación.</div>`;
+    }
+});
+</script>
+
 
     <!-- <script src="{{ url_for('static', filename='js/tools-menu.js') }}"></script> -->
     <script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>

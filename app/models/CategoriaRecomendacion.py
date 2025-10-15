@@ -8,3 +8,5 @@ class CategoriasRecomendaciones(db.Model):
     intcategoria = Column(Integer, primary_key=True, autoincrement=True)
     nombrecategoria = Column(String, nullable=False)
     descripcioncategoria = Column(String)
+    
+    

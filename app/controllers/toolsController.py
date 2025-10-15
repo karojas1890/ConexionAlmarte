@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, session,request,url_for
 from app.extensions import db  
 from sqlalchemy import text
-from app.models import RecomendacionesTerapeuticas,RecomendacionPaciente,RegistroAplicacionRecomendacion
+from app.models import RecomendacionesTerapeuticas,RecomendacionPaciente,RegistroAplicacionRecomendacion,CategoriasRecomendaciones
 tools_bp = Blueprint('tools', __name__, url_prefix='/tools')
 
 @tools_bp.route("/recomendaciones_tools", methods=['GET'])
@@ -107,7 +107,39 @@ def GuardarUso():
         db.session.rollback()
         print("Error al guardar uso de estrategia:", e)
         return jsonify({"success": False, "error": str(e)})
-    
+@tools_bp.route("/Recomendacion/<int:id_asignacion>", methods=['GET'])
+def ObtenerRecomendacion(id_asignacion):
+    try:
+        # Ejecutar la función de PostgreSQL y obtener un diccionario
+        sql = text("""
+            SELECT * 
+            FROM ObtenerRecomendacionPorAsignacion(:idasignacion)
+        """)
+        result = db.session.execute(sql, {"idasignacion": id_asignacion}).mappings().first()
+
+        if not result:
+            return jsonify({"error": "Recomendación no encontrada"}), 404
+
+        # Mapear el resultado
+        resultado = {
+            "idAsignacion": result["idasignacion"],
+            "duracionDias": result["duraciondias"],
+            "momento": result["momento"],
+            "nombreRecomendacion": result["nombrerecomendacion"],
+            "descripcion": result["descripcion"],
+            "urlimagen": result["urlimagen"] or '',   # solo el nombre de la imagen
+            "duracionMinutos": result["duracionminutos"],
+            "categoria": result["nombrecategoria"],
+            "descripcionCategoria": result["descripcioncategoria"]
+        }
+
+        return jsonify(resultado)
+
+    except Exception as e:
+        db.session.rollback()
+        print("Error al obtener recomendación:", e)
+        return jsonify({"error": str(e)}), 500
+
 
 @tools_bp.route("/HistorialHerramientas", methods=['GET'])
 def ObtenerHistorialHerramientas():
@@ -142,3 +174,4 @@ def ObtenerHistorialHerramientas():
     except Exception as e:
         print("Error al obtener historial de herramientas:", e)
         return jsonify({"error": str(e)}), 500
+    

@@ -76,33 +76,52 @@
 </main>
 
     <script>
-    const appointmentsContainer = document.getElementById("appointments-container");
-    let todasLasCitas = [];
-    let mostrandoTodas = false;
- document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remover clase activa de todas las pestañas
-                document.querySelectorAll('.nav-tab').forEach(t => {
-                    t.classList.remove('active');
-                });
-                
-                // Añadir clase activa a la pestaña clickeada
-                tab.classList.add('active');
-                
-                // Ocultar todas las páginas
-                document.querySelectorAll('.page').forEach(page => {
-                    page.classList.remove('active');
-                });
-                
-                // Mostrar la página correspondiente
-                const pageId = tab.getAttribute('data-page');
-                document.getElementById(pageId).classList.add('active');
-            });
-        });
 
-    document.addEventListener("DOMContentLoaded", () => {
-    
 
+const appointmentsContainer = document.getElementById("appointments-container");
+let todasLasCitas = [];
+let mostrandoTodas = false;
+
+function mostrarCita(cita) {
+    const fechaTexto = cita.fecha 
+        ? new Date(cita.fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) 
+        : "Fecha N/A";
+    const horaTexto = cita.horainicio || "Hora N/A";
+
+    const div = document.createElement("div");
+    div.className = "appointment-item";
+
+    div.innerHTML = `
+        <div class="appointment-info">
+            <div class="appointment-type">${cita.nombreservicio || "Servicio N/A"}</div>
+            <div class="appointment-therapist">Lic. ${cita.nombre_terapeuta || ""} ${cita.apellido1_terapeuta || ""} ${cita.apellido2_terapeuta || ""}</div>
+            <div style="display: flex; align-items: center;">
+                <div class="appointment-date">
+                    <div class="date-icon">📅</div>
+                    ${fechaTexto}
+                </div>
+                <div class="appointment-time">
+                    <div class="time-icon">🕐</div>
+                    ${horaTexto}
+                </div>
+            </div>
+        </div>
+        
+        <div class="appointment-status ${cita.estado === 0 ? 'status-pending' : (cita.estado === 1 ? 'status-completed' : 'status-other')}">
+           ${cita.estado === 0 ? 'Pendiente' : (cita.estado === 1 ? 'Finalizada' : 'Otro')}
+        </div>
+    `;
+
+    appointmentsContainer.appendChild(div);
+}
+
+function mostrarTodasCita() {
+    appointmentsContainer.innerHTML = "";
+    todasLasCitas.slice().reverse().forEach(mostrarCita);
+    mostrandoTodas = true;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
     fetch("{{ url_for('Citas.CitasPendientes') }}")
         .then(res => res.json())
         .then(citas => {
@@ -122,86 +141,6 @@
             return;
         }
         citasAMostrar.forEach(mostrarCita);
-    }
-
-    function mostrarCita(cita) {
-        const fechaTexto = cita.fecha 
-            ? new Date(cita.fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) 
-            : "Fecha N/A";
-        const horaTexto = cita.horainicio || "Hora N/A";
-
-        const div = document.createElement("div");
-        div.className = "appointment-item";
-
-        div.innerHTML = `
-            <div class="appointment-info">
-                <div class="appointment-type">${cita.nombreservicio || "Servicio N/A"}</div>
-                <div class="appointment-therapist">Lic. ${cita.nombre_terapeuta || ""} ${cita.apellido1_terapeuta || ""} ${cita.apellido2_terapeuta || ""}</div>
-                <div style="display: flex; align-items: center;">
-                    <div class="appointment-date">
-                        <div class="date-icon">📅</div>
-                        ${fechaTexto}
-                    </div>
-                    <div class="appointment-time">
-                        <div class="time-icon">🕐</div>
-                        ${horaTexto}
-                    </div>
-                </div>
-            </div>
-            <div class="appointment-status ${cita.estado === 0 ? 'status-pending' : 'status-completed'}">
-                ${cita.estado === 0 ? 'Pendiente' : 'Finalizada'}
-            </div>
-        `;
-
-        appointmentsContainer.appendChild(div);
-    }
-
-   
-    function mostrarTodasCita() {
-    appointmentsContainer.innerHTML = "";
-    todasLasCitas.slice().reverse().forEach(mostrarCita);
-    mostrandoTodas = true;
-}
-});
-
-//herrramientas
-document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        const response = await fetch("{{ url_for('tools.ObtenerRecomendacionesTools') }}");
-        const data = await response.json();
-
-        const list = document.getElementById("activityList");
-        list.innerHTML = ""; // Limpiar lista
-
-        if (data.error) {
-            list.innerHTML = `<li>Error: ${data.error}</li>`;
-            return;
-        }
-
-        if (data.length === 0) {
-            list.innerHTML = `<li>No tienes recomendaciones asignadas.</li>`;
-            return;
-        }
-
-        data.forEach(rec => {
-            const li = document.createElement("li");
-            li.className = "activity-item";
-
-            li.innerHTML = `
-                <div class="activity-content">
-                    <h3 class="activity-title">${rec.nombrerecomendacion}</h3>
-                    <p class="activity-category">Categoría: ${rec.nombrecategoria}</p>
-                </div>
-                <span class="activity-status status-not-started">${rec.momento || "Pendiente"}</span>
-            `;
-
-            list.appendChild(li);
-        });
-
-    } catch (error) {
-        console.error("Error al cargar recomendaciones:", error);
-        document.getElementById("activityList").innerHTML = 
-            `<li>Error al conectar con el servidor</li>`;
     }
 });
 

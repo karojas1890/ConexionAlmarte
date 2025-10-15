@@ -124,7 +124,7 @@ def CitasPendientes():
                 "nombre_terapeuta": row._mapping["nombre_terapeuta"],
                 "apellido1_terapeuta": row._mapping["apellido1_terapeuta"],
                 "apellido2_terapeuta": row._mapping["apellido2_terapeuta"],
-                "estado": row._mapping.get("estado", 0)
+                "estado": row._mapping.get("estado")
             }
             for row in result
         ]

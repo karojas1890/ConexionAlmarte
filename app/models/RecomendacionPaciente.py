@@ -10,6 +10,9 @@ class RecomendacionPaciente(db.Model):
     idrecomendacion = Column(Integer, ForeignKey("recomendacionesterapeuticas.idrecomendacion", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
     duraciondias = Column(Integer)
     momento = Column(String)
-
+    consultante=Column(String,ForeignKey("consultante.identificacion", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
     recomendacion_rel = relationship("RecomendacionesTerapeuticas", backref="pacientes")
-   
+    
+    colsultante_rel=relationship("Consultante",backref="consultante")
+    
+    
