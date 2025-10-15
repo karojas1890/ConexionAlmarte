@@ -5,17 +5,17 @@
 {% block content %}
     
 <div class="container">
+  <!-- Encabezado de página -->
   <div class="page-header">
       <h1 class="page-title">Disponibilidad de Horarios</h1>
-      <p class="page-subtitle">Selecciona las fechas y horas en las que estarás disponible para atender pacientes</p>
+      <p class="page-subtitle">Selecciona tus fechas y horas disponibles</p>
   </div>
 
   <div class="content-grid">
-
       <!-- Calendario -->
       <div class="calendar-card">
           <div class="calendar-header">
-              <h2 class="calendar-title" id="calendar-month">Noviembre 2025</h2>
+              <h2 class="calendar-title" id="calendar-month">Enero 2025</h2>
               <div class="calendar-nav">
                   <button id="prev-month" class="nav-btn">&lt;</button>
                   <button id="next-month" class="nav-btn">&gt;</button>
@@ -32,8 +32,22 @@
                   <div class="weekday">Vie</div>
                   <div class="weekday">Sáb</div>
               </div>
-              <div class="calendar-days" id="calendar-days">
-                  <!-- Los días se generarán dinámicamente por JS -->
+              <div class="calendar-days" id="calendar-days"></div>
+          </div>
+
+          <!-- Leyenda -->
+          <div class="legend">
+              <div class="legend-item">
+                  <div class="legend-color" style="background: #c6f6d5; border: 2px solid #38a169;"></div>
+                  <span>Disponible</span>
+              </div>
+              <div class="legend-item">
+                  <div class="legend-color" style="background: #feebc8; border: 2px solid #dd6b20;"></div>
+                  <span>Parcialmente disponible</span>
+              </div>
+              <div class="legend-item">
+                  <div class="legend-color" style="background: #fed7d7; border: 2px solid #e53e3e;"></div>
+                  <span>No disponible</span>
               </div>
           </div>
       </div>
@@ -45,128 +59,163 @@
               <p class="selected-date" id="selected-date">Seleccione un día</p>
           </div>
 
-          <div class="time-slots-list" id="time-slots-list">
-              <!-- Slots se cargarán dinámicamente -->
-          </div>
+          <div class="time-slots-list" id="time-slots-list"></div>
 
           <button class="save-btn" id="save-slots-btn">Guardar Cambios</button>
       </div>
   </div>
 </div>
 
+
 <script>
 let disponibilidadGlobal = {}; 
 let nuevosSlots = [];
 let fechaSeleccionada = null;
 
-// Función para generar el calendario dinámico
+const monthNames = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+//  Genera el calendario
 function generarCalendario(year, month) {
-    const calendarDays = document.getElementById("calendar-days");
-    calendarDays.innerHTML = "";
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const calendarDays = document.getElementById("calendar-days");
+  calendarDays.innerHTML = "";
+  document.getElementById("calendar-month").textContent = `${monthNames[month]} ${year}`;
 
-    // Rellenar días vacíos
-    for(let i=0;i<firstDay;i++){
-        const div = document.createElement("div");
-        div.classList.add("day");
-        calendarDays.appendChild(div);
-    }
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    // Rellenar días del mes
-    for(let d=1; d<=daysInMonth; d++){
-        const div = document.createElement("div");
-        div.classList.add("day");
-        div.innerHTML = `<span class="day-number">${d}</span>`;
-        div.addEventListener("click", () => seleccionarDia(d, month, year, div));
-        calendarDays.appendChild(div);
-    }
+  for (let i = 0; i < firstDay; i++) {
+      const div = document.createElement("div");
+      div.classList.add("day");
+      calendarDays.appendChild(div);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+      const div = document.createElement("div");
+      div.classList.add("day");
+      div.innerHTML = `<span class="day-number">${d}</span>`;
+
+      const fecha = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const estadoDia = obtenerEstadoDia(fecha);
+
+      if (estadoDia === "available") div.classList.add("available");
+      else if (estadoDia === "partially-available") div.classList.add("partially-available");
+      else if (estadoDia === "unavailable") div.classList.add("unavailable");
+
+      div.addEventListener("click", () => seleccionarDia(fecha, div));
+      calendarDays.appendChild(div);
+  }
 }
 
-// Selección de día
-function seleccionarDia(d, month, year, divDia){
-    document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
-    divDia.classList.add("selected");
-    fechaSeleccionada = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    document.getElementById("selected-date").textContent = fechaSeleccionada;
-    cargarSlots(fechaSeleccionada);
+// Determina el color de cada día según los slots disponibles
+function obtenerEstadoDia(fecha) {
+  const slots = disponibilidadGlobal[fecha] || [];
+  if (slots.length === 0) return null;
+  const activos = slots.filter(s => s.estado === 1).length;
+  if (activos === 0) return "unavailable";
+  if (activos < 8) return "partially-available";
+  return "available";
 }
 
-// Cargar slots para un día
-async function cargarSlots(fecha){
-    const slotsList = document.getElementById("time-slots-list");
-    slotsList.innerHTML = "";
-    nuevosSlots = [];
-
-    // Si no tenemos datos, traer del backend
-    if(!disponibilidadGlobal[fecha]){
-        try{
-            const res = await fetch("{{ url_for('Citas.ObtenerDisponibilidad') }}");
-            const data = await res.json();
-            disponibilidadGlobal = data.reduce((acc, slot) => {
-                if(!acc[slot.fecha]) acc[slot.fecha] = [];
-                acc[slot.fecha].push(slot);
-                return acc;
-            }, {});
-        }catch(err){
-            console.error(err);
-        }
-    }
-
-    // Generar slots
-    const slotsBase = [
-        "08:00 - 09:00","09:00 - 10:00","10:00 - 11:00","11:00 - 12:00",
-        "14:00 - 15:00","15:00 - 16:00","16:00 - 17:00","17:00 - 18:00"
-    ];
-
-    slotsBase.forEach(time => {
-        const div = document.createElement("div");
-        div.classList.add("time-slot");
-        div.innerHTML = `
-            <span class="slot-time">${time}</span>
-            <div class="slot-toggle"></div>
-        `;
-
-        // Marcar si ya está ocupado
-        const encontrado = (disponibilidadGlobal[fecha] || []).find(s => s.hora_inicio + " - " + s.hora_fin === time);
-        if(encontrado){
-            div.querySelector(".slot-toggle").classList.add("active");
-            div.classList.add("occupied");
-        }
-
-        div.querySelector(".slot-toggle").addEventListener("click", function(){
-            if(div.classList.contains("occupied")) return;
-            this.classList.toggle("active");
-            const [inicio, fin] = time.split(" - ");
-            if(this.classList.contains("active")){
-                nuevosSlots.push({hora_inicio: inicio, hora_fin: fin});
-            }else{
-                nuevosSlots = nuevosSlots.filter(s => !(s.hora_inicio===inicio && s.hora_fin===fin));
-            }
-        });
-
-        slotsList.appendChild(div);
-    });
+//  Mostrar slots del día seleccionado
+async function seleccionarDia(fecha, elemento) {
+  document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+  elemento.classList.add("selected");
+  fechaSeleccionada = fecha;
+  document.getElementById("selected-date").textContent = fecha;
+  await cargarSlots(fecha);
 }
 
-// Guardar nuevos slots
-document.getElementById("save-slots-btn").addEventListener("click", async ()=>{
-    if(!fechaSeleccionada || nuevosSlots.length===0) return;
-    try{
-        await fetch("{{ url_for('availability.AgregarDisponibilidad') }}", {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({slots: nuevosSlots})
-        });
-        alert("Disponibilidad guardada!");
-        cargarSlots(fechaSeleccionada); // recargar para reflejar los ocupados
-    }catch(err){console.error(err);}
+// 📡 Cargar disponibilidades y mostrar slots
+async function cargarSlots(fecha) {
+  const slotsList = document.getElementById("time-slots-list");
+  slotsList.innerHTML = "";
+  nuevosSlots = [];
+
+  if (Object.keys(disponibilidadGlobal).length === 0) {
+      const res = await fetch("{{ url_for('Citas.ObtenerDisponibilidad') }}");
+      const data = await res.json();
+      disponibilidadGlobal = data.reduce((acc, slot) => {
+          if (!acc[slot.fecha]) acc[slot.fecha] = [];
+          acc[slot.fecha].push(slot);
+          return acc;
+      }, {});
+  }
+
+  const slotsBase = [
+      "08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00",
+      "14:00 - 15:00", "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00"
+  ];
+
+  slotsBase.forEach(time => {
+      const div = document.createElement("div");
+      div.classList.add("time-slot");
+      div.innerHTML = `<span class="slot-time">${time}</span><div class="slot-toggle"></div>`;
+
+      const encontrado = (disponibilidadGlobal[fecha] || []).find(s => `${s.hora_inicio} - ${s.hora_fin}` === time);
+      if (encontrado) {
+          div.querySelector(".slot-toggle").classList.add("active");
+          div.classList.add("occupied");
+      }
+
+      div.querySelector(".slot-toggle").addEventListener("click", function() {
+          if (div.classList.contains("occupied")) return;
+          this.classList.toggle("active");
+          const [inicio, fin] = time.split(" - ");
+          if (this.classList.contains("active")) {
+              nuevosSlots.push({ hora_inicio: inicio, hora_fin: fin });
+          } else {
+              nuevosSlots = nuevosSlots.filter(s => !(s.hora_inicio === inicio && s.hora_fin === fin));
+          }
+      });
+
+      slotsList.appendChild(div);
+  });
+}
+
+// 💾 Guardar slots nuevos
+document.getElementById("save-slots-btn").addEventListener("click", async () => {
+  if (!fechaSeleccionada || nuevosSlots.length === 0) return alert("Seleccione al menos un horario");
+  await fetch("{{ url_for('availability.AgregarDisponibilidad') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slots: nuevosSlots.map(s => ({
+            fecha: fechaSeleccionada,  
+            hora_inicio: s.hora_inicio,
+            hora_fin: s.hora_fin
+        }))
+    })
+  });
+  alert("Disponibilidad guardada correctamente");
+  await cargarSlots(fechaSeleccionada);
+  generarCalendario(currentYear, currentMonth);
+  window.location.reload();
 });
 
-// Inicializar calendario con mes actual
-const hoy = new Date();
-generarCalendario(hoy.getFullYear(), hoy.getMonth());
+// 🔄 Navegación entre meses
+let today = new Date();
+let currentMonth = today.getMonth();
+let currentYear = today.getFullYear();
+
+document.getElementById("prev-month").addEventListener("click", () => {
+  currentMonth--;
+  if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+  generarCalendario(currentYear, currentMonth);
+});
+
+document.getElementById("next-month").addEventListener("click", () => {
+  currentMonth++;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  generarCalendario(currentYear, currentMonth);
+});
+
+// Inicializar
+generarCalendario(currentYear, currentMonth);
 </script>
+
+
 
    
    {% endblock %}

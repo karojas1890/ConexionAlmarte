@@ -136,7 +136,7 @@ def ObtenerHistorialHerramientas():
                 "nombrecategoria": row._mapping["nombrecategoria"]
             })
 
-        print("Registros", registros)
+        
         return jsonify(registros), 200
 
     except Exception as e:
