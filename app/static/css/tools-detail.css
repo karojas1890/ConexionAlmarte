@@ -67,7 +67,7 @@
             line-height: 1.5;
             margin-bottom: 20px;
         }
-
+        
         .tool-meta {
             display: flex;
             align-items: center;
@@ -207,13 +207,5 @@
             background: #e0e0e0;
         }
 
-        .bottom-nav {
-            background: white;
-            padding: 15px 0;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
+    
         

@@ -109,3 +109,36 @@ def GuardarUso():
         return jsonify({"success": False, "error": str(e)})
     
 
+@tools_bp.route("/HistorialHerramientas", methods=['GET'])
+def ObtenerHistorialHerramientas():
+    try:
+        id_usuario = session.get("idusuario")
+        if not id_usuario:
+            return jsonify({"error": "Usuario no logueado"}), 401
+
+        # Llamamos a la función SQL ajustando el nombre de la columna de categoría
+        sql = text("SELECT * FROM obtenerRegistrosAplicacion(:p_idusuario)")
+        result = db.session.execute(sql, {"p_idusuario": id_usuario})
+
+        registros = []
+        for row in result:
+            registros.append({
+                "idregistro": row._mapping["idregistro"],
+                "recomendacionaplicada": row._mapping["recomendacionaplicada"],
+                "efectividad": row._mapping["efectividad"],
+                "animoantes": row._mapping["animoantes"],
+                "animodespues": row._mapping["animodespues"],
+                "bienestarantes": row._mapping["bienestarantes"],
+                "bienestardespues": row._mapping["bienestardespues"],
+                "comentario": row._mapping["comentario"],
+                "fechahoraregistro": row._mapping["fechahoraregistro"].strftime("%Y-%m-%d %H:%M:%S"),
+                "nombrerecomendacion": row._mapping["nombrerecomendacion"],
+                "nombrecategoria": row._mapping["nombrecategoria"]
+            })
+
+        print("Registros", registros)
+        return jsonify(registros), 200
+
+    except Exception as e:
+        print("Error al obtener historial de herramientas:", e)
+        return jsonify({"error": str(e)}), 500

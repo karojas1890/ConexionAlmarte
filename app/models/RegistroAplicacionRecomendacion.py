@@ -14,5 +14,8 @@ class RegistroAplicacionRecomendacion(db.Model):
     bienestardespues = Column(Integer)
     fechahoraregistro = Column(TIMESTAMP)
     comentario= Column(String(500))
-
+    identificacion = Column(Integer, ForeignKey("consultante.identificacion", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
+    
+    
     recomendacion_paciente_rel = relationship("RecomendacionPaciente", backref="registro_aplicacion")
+    colsultante_rel=relationship("Consultante")
