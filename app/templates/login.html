@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2c3e50">
+    <meta property="og:title" content="Conexion by Almarte">
+    <meta property="og:description" content="La mejor app para tu conexión con AlmarteCR">
+    <meta property="og:image" content="{{ url_for('static', filename='images/conexion1.png') }}">
+    <meta property="og:type" content="website">
+    <title>Conexión - Iniciar Sesión</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loginStyle.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <header class="header">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Almarte Logo" class="logo">
+    </header>
+
+    <main class="main-content">
+        <div class="login-container">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">
+                        Usuario
+                        <div class="user-icon">👤</div>
+                    </label>
+                    <input type="text" class="form-input" id="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Contraseña
+                        <div class="password-icon">🔒</div>
+                    </label>
+                    <input type="password" class="form-input" id="password" required>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <a href="{{ url_for('routes.verificar_Codigo') }}" class="login-btn">
+                    Iniciar sesión
+                    <span class="arrow">↪</span>
+                </a>
+
+                <button type="button" class="create-account-btn">
+                    Crear cuenta
+                    <span class="plus-icon">👤+</span>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <a href="#" class="footer-item">
+            <div class="footer-icon">AM</div>
+            <span>Más sobre AlmarteCR</span>
+        </a>
+        <a href="#" class="footer-item">
+            <div class="footer-icon">↪</div>
+            <span>Ingreso</span>
+        </a>
+        <a href="#" class="footer-item">
+            <div class="footer-icon">$</div>
+            <span>Tipo de cambio del</span>
+        </a>
+    </footer>
+
+   
+
+  <script>
+let deferredPrompt;
+
+// Registrar el Service Worker primero
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js", { scope: '/' })
+    .then(() => console.log("Service Worker registrado"))
+    .catch(err => console.log("Error SW:", err));
+}
+
+// Escuchar beforeinstallprompt
+window.addEventListener('beforeinstallprompt', (e) => {
+    console.log("Evento beforeinstallprompt detectado:", e);
+    e.preventDefault(); // Evita el prompt automático
+    deferredPrompt = e;
+    createInstallButton();
+});
+
+// Función para crear el botón de instalación
+function createInstallButton() {
+    if (!document.getElementById('install-btn')) {
+        const installBtn = document.createElement('button');
+        installBtn.id = 'install-btn';
+        installBtn.textContent = "Instalar App";
+        installBtn.style.position = "fixed";
+        installBtn.style.bottom = "20px";
+        installBtn.style.right = "20px";
+        installBtn.style.padding = "10px 20px";
+        installBtn.style.fontSize = "16px";
+        installBtn.style.backgroundColor = "#2c3e50";
+        installBtn.style.color = "#fff";
+        installBtn.style.border = "none";
+        installBtn.style.borderRadius = "5px";
+        installBtn.style.zIndex = "1000";
+        installBtn.style.cursor = "pointer";
+        document.body.appendChild(installBtn);
+installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+        try {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log('Resultado del prompt:', outcome);
+        } catch (err) {
+            console.error("Error mostrando el prompt de instalación:", err);
+            alert("Ocurrió un error al mostrar el prompt: " + err);
+        } finally {
+            deferredPrompt = null;
+        }
+    } else {
+        console.warn("El prompt de instalación no está disponible. Esto puede pasar si ya instalaste la app en este navegador.");
+        alert("El prompt no está disponible. Revisa la consola para detalles.");
+    }
+});
+    }
+}
+
+// fuerza el boton este seimrpe visible
+// window.addEventListener('load', () => {
+//     createInstallButton();
+// });
+
+// Debug: ver si el manifest carga correctamente
+fetch('{{ url_for("static", filename="manifest.json") }}')
+    .then(res => {
+        if(res.ok) console.log("Manifest cargado correctamente ✅");
+        else console.warn("No se pudo cargar el manifest ❌");
+    })
+    .catch(err => console.error("Error cargando manifest:", err));
+</script>
+
+</body>
+</html>

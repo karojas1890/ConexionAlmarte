@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Herramienta - Almarte</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tools-detail.css') }}"  >
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo"></div>
+                <div>
+                    <div class="app-title">Conexión by Almarte</div>
+                    <div class="app-subtitle">Herramientas</div>
+                </div>
+            </div>
+            <div class="user-section">
+                <div class="user-name">Mauricio Acuna</div>
+                <div class="user-avatar">👤</div>
+                <div style="color: #5f9ea0; font-size: 18px;">⋮</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="section-title">Mis herramientas</div>
+            <div class="section-subtitle">Recomendaciones de salud mental sugeridas por tu terapeuta</div>
+
+            <div class="tool-detail-card">
+                <div class="tool-image"></div>
+                <div class="tool-title">Preguntas curiosas en vez de indicaciones</div>
+                <div class="tool-category">Categoría: Disciplina positiva en la familia</div>
+                
+                <div class="tool-description">
+                    Como padres, solemos dar órdenes directas a los niños, transformando las órdenes directas en preguntas que los inviten a pensar. El objetivo es reducir las luchas de poder generadas para que recuerden y asuman sus responsabilidades por iniciativa propia, fortaleciendo así su autonomía y responsabilidad.
+                </div>
+
+                <div class="tool-meta">
+                    <div class="meta-item">
+                        <span>🕐</span>
+                        <span>Continúa</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>📋</span>
+                        <span>Cuándo se debe cumplir una tarea</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>📅</span>
+                        <span>15 días</span>
+                    </div>
+                </div>
+
+                <div class="progress-section">
+                    <div class="progress-title">Progreso</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">8/15</div>
+                </div>
+
+                <div class="support-section">
+                    <div class="support-title">Enlaces de apoyo</div>
+                    <div class="support-item">
+                        <div class="support-text">Recurso 1</div>
+                        <div class="support-arrow">›</div>
+                    </div>
+                    <div class="support-item">
+                        <div class="support-text">Recurso 2</div>
+                        <div class="support-arrow">›</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary">Completar</button>
+                    <button class="btn-secondary">Registrar uso</button>
+                    <button class="btn-tertiary">Progreso</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <a href="{{ url_for('routes.dashboard') }}" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>Inicio</span>
+            </a>
+            <a href="{{ url_for('routes.select_Service') }}" class="nav-item active">
+                <div class="nav-icon"></div>
+                <span>Citas</span>
+            </a>
+            <a href="{{url_for('routes.tools_Menu')}}" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>Herramientas</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>Diario</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>PME</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>Perfil</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Servicio - Almarte</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/select-servicestyle.css') }}"  >
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo"></div>
+                <div>
+                    <div class="app-title">Conexión by Almarte</div>
+                    <div class="app-subtitle">Agendar cita</div>
+                </div>
+            </div>
+            <div class="user-section">
+                <div class="user-name">Mauricio Acuna</div>
+                <div class="user-avatar">👤</div>
+                <div style="color: #5f9ea0; font-size: 18px;">⋮</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-title">Agendar cita</div>
+            <div class="progress-steps">
+                <div class="step active">1</div>
+                <div class="step-arrow">→</div>
+                <div class="step inactive">2</div>
+                <div class="step-arrow">→</div>
+                <div class="step inactive">3</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="section-title">Selecciona el servicio</div>
+            <div class="section-subtitle">Elige el tipo de servicio que necesitas</div>
+
+            <div class="services-container">
+                <div class="service-item" onclick="selectService('adultos')">
+                    <div class="service-info">
+                        <div class="service-icon">👤</div>
+                        <div class="service-details">
+                            <h3>Atención psicoterapéutica individual: Adultos</h3>
+                            <p>Duración: 60minutos</p>
+                            <p class="service-price">₡35000</p>
+                        </div>
+                    </div>
+                    <div class="service-arrow">›</div>
+                </div>
+
+                <div class="service-item" onclick="selectService('menor')">
+                    <div class="service-info">
+                        <div class="service-icon">👥</div>
+                        <div class="service-details">
+                            <h3>Atención psicoterapéutica individual: Menor de edad</h3>
+                            <p>Duración: 50minutos</p>
+                            <p class="service-price">₡35000</p>
+                        </div>
+                    </div>
+                    <div class="service-arrow">›</div>
+                </div>
+
+                <div class="service-item" onclick="selectService('tdah')">
+                    <div class="service-info">
+                        <div class="service-icon">📱</div>
+                        <div class="service-details">
+                            <h3>Evaluación TDAH con realidad virtual</h3>
+                            <p>Duración: 90minutos</p>
+                            <p class="service-price">₡60000</p>
+                        </div>
+                    </div>
+                    <div class="service-arrow">›</div>
+                </div>
+
+                <div class="service-item" onclick="selectService('pme')">
+                    <div class="service-info">
+                        <div class="service-icon">📋</div>
+                        <div class="service-details">
+                            <h3>Evaluación de idoneidad mental para laborar con PME</h3>
+                            <p>Duración: 240minutos</p>
+                            <p class="service-price">₡63500</p>
+                        </div>
+                    </div>
+                    <div class="service-arrow">›</div>
+                </div>
+
+                <div class="service-item" onclick="selectService('adopcion')">
+                    <div class="service-info">
+                        <div class="service-icon">👨‍👩‍👧‍👦</div>
+                        <div class="service-details">
+                            <h3>Evaluación de idoneidad mental para solicitantes de adopción</h3>
+                            <p>Duración: 240minutos</p>
+                            <p class="service-price">₡80000</p>
+                        </div>
+                    </div>
+                    <div class="service-arrow">›</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <a href="{{ url_for('routes.dashboard') }}" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>Inicio</span>
+            </a>
+            <a href="{{ url_for('routes.select_Service') }}" class="nav-item active">
+                <div class="nav-icon"></div>
+                <span>Citas</span>
+            </a>
+            <a href="{{url_for('routes.tools_Menu')}}" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>Herramientas</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>Diario</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>PME</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon"></div>
+                <span>Perfil</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function selectService(serviceType) {
+            // Store selected service in localStorage
+            localStorage.setItem('selectedService', serviceType);
+            // Navigate to date/time selection
+            
+            window.location.href = "{{ url_for('routes.select_datetime') }}";
+        }
+    </script>
+</body>
+</html>
