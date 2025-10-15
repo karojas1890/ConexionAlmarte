@@ -87,9 +87,14 @@
             </div>
         </div>
 
-        <div class="action-buttons">
-            
-            <a class="btn btn-register" style="text-decoration: none;" href="{{ url_for('routes.tools_usage') }}">
+        <div class="button-group">
+                     <a class="btn btn-add" style="text-decoration: none;" href="{{ url_for('routes.tools_Menu') }}" >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+               Descripcion
+            </a>
+            <a class="btn btn-register" style="text-decoration: none;" href="{{ url_for('routes.tools_usage') }}" >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M16 5L7.5 13.5L4 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
@@ -102,7 +107,7 @@
                 </svg>
                 Progreso
             </button>
-        </div>
+                </div>
     </div>
 
 {% endblock %}

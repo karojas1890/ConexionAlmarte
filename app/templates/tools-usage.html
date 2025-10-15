@@ -3,9 +3,7 @@
 {% block title %}Estrategias de Salud{% endblock %}
 
 {% block content %} 
-    <!--estilos y js para el choices de los select -->
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-         <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  
 
     <button class="back-button" onclick="window.history.back()">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -131,33 +129,31 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="strategySelect">Selecciona la estrategia terapéutica</label>
-                    <select id="strategySelect" class="custom-select">
-                        <option value="">Seleccionar...</option>
-                    </select>
-                </div>
                 <div class="form-group">
                     <label for="observations">Observaciones/Comentarios:</label>
                     <textarea id="observations" placeholder="Escribe tus observaciones aquí..."></textarea>
                 </div>
 
-                <div class="button-group">
-                    <button type="button" id="guardarUsoBtn" class="btn btn-save">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M16 5L7.5 13.5L4 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        Guardar uso
-                    </button>
-                    
-                    <a type="button" class="btn btn-progress" style="text-decoration: none;" href="{{ url_for('routes.tools_progress') }}">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M3 10H17M10 3V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                        Progreso
-                    </a>
+                <div class="button-group" >
+                     <a class="btn btn-add" style="text-decoration: none;" href="{{ url_for('routes.tools_Menu') }}" >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+               Descripcion
+            </a>
+            <button type="button" class="btn btn-register" id="guardarUsoBtn"  >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16 5L7.5 13.5L4 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Registrar uso
+            </button>
+            <a class="btn btn-progress" style="text-decoration: none;" href="{{ url_for('routes.tools_progress') }}">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 10H17M10 3V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                Progreso
+            </a>
                 </div>
             </form>
         </div>
@@ -168,22 +164,7 @@
     <script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
 
     <script>
-    const strategySelect = new Choices('#strategySelect', { searchEnabled: true, itemSelectText: '', shouldSort: false });
-
-    // funcion auxiliar para cargar datos en Choices
-    const loadChoices = (selectInstance, data, valueKey, labelKey) => {
-        const choices = data.map(item => ({ value: item[valueKey], label: item[labelKey] }));
-        selectInstance.clearStore();
-        selectInstance.setChoices(choices, 'value', 'label', true);
-    };
-
-    // Cargar recomendaciones desde backend
-    fetch("{{ url_for('diary.ObtenerRecomendaciones') }}")
-        .then(res => res.json())
-        .then(recomendaciones => loadChoices(strategySelect, recomendaciones, 'idasignacion', 'nombre'))
-        .catch(err => console.error("Error cargando recomendaciones:", err
-
-        ));
+    
 
     document.addEventListener("DOMContentLoaded", () => {
     const guardarBtn = document.getElementById("guardarUsoBtn");
@@ -192,7 +173,8 @@
     const wellnessBeforeOptions = document.querySelectorAll("#wellnessBefore .mood-option");
     const wellnessAfterOptions = document.querySelectorAll("#wellnessAfter .mood-option");
     const effectivenessSlider = document.getElementById("effectiveness");
-    const strategySelectElem = document.getElementById("strategySelect");
+    const strategy = parseInt(localStorage.getItem("idasignacionSeleccionada"), 10);
+
     const observations = document.getElementById("observations");
 
     const moodMap = { "muy-mal": 1, "regular": 2, "bien": 3, "muy-bien": 4 };
@@ -221,7 +203,7 @@
 
     guardarBtn.addEventListener("click", async () => {
         const data = {
-            recomendacionAplicada: strategySelectElem.value,
+            recomendacionAplicada: strategy,
             efectividad: parseInt(effectivenessSlider.value),
             animoAntes: getMoodValue(moodBeforeOptions, moodMap),
             animoDespues: getMoodValue(moodAfterOptions, moodMap),

@@ -9,7 +9,7 @@ class RecomendacionesTerapeuticas(db.Model):
     idcategoria = Column(Integer, ForeignKey("categoriasrecomendaciones.intcategoria", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
     nombrerecomendacion = Column(String, nullable=False)
     descripcion = Column(String)
-    urlmagen = Column(String)
+    urlimagen = Column(String)
     duracionminutos=Column(Integer)
     
     categoria_r = relationship("CategoriasRecomendaciones", backref="recomendaciones")
