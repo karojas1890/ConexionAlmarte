@@ -1,10 +1,55 @@
-from flask import Flask
 
+from flask import Flask
+from app.extensions import db
+import os
+from app.models import (
+    Usuario, Consultante, PME, Terapeuta, Servicio, Disponibilidad, 
+    Cita, MetodoPago, PagoCita, CategoriaRecomendacion, 
+    RecomendacionTerapeutica, RecomendacionPaciente, 
+    RegistroAplicacionRecomendacion, RecursoApoyo, Emocion, 
+    ConductaAfrontamiento, Diario
+)
 def create_app():
     app = Flask(__name__)
 
-    
-    from .controllers.routes import routes_bp
-    app.register_blueprint(routes_bp)
 
+     # string de conexion
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+        "DATABASE_URL",
+        "postgresql://almarte:rfBfAn8FgBijU1U9k6GJVzgNepBxmrUt@dpg-d3m2mt8gjchc73cr1m1g-a.oregon-postgres.render.com/conexion_almarte"
+    )
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+  
+
+#esta clave es para cifrar las cookies es inventada 
+    app.secret_key = os.getenv("SECRET_KEY", "9a8c7e4f1d2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d")
+
+    # Inicializa la DB
+    db.init_app(app)
+    # PARA EL PROTOCOLO HTTPS
+    app.config['SESSION_COOKIE_SECURE'] = True  
+
+    # Permite que la cookie funcione en navegadores mOviles
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  
+
+    # Evita que JS externo manipule la cookie
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    # Importa los modelos 
+   
+  
+
+    # Registra el blueprints
+    from .controllers.citaController import citas_bp
+    from .controllers.routes import routes_bp
+    from .controllers.authController import auth_bp
+    from .controllers.diaryController import diary_bp
+    from .controllers.toolsController import tools_bp
+    from .controllers.perfilController import perfil_bp
+    app.register_blueprint(routes_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(citas_bp)
+    app.register_blueprint(diary_bp)
+    app.register_blueprint(tools_bp)
+    app.register_blueprint(perfil_bp)
     return app

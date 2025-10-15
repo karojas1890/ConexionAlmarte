@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+
+{% block title %}Diario{% endblock %}
+
+{% block content %}
+    
+<main class="main-content">
+    <div class="page-header">
+        <div class="page-title">Diario de afrontamiento</div>
+        <div class="page-subtitle">Registra tus avances y situaciones de afrontamiento</div>
+    </div>
+
+    <div class="main">
+        <div class="tabs">
+            <button class="tab" onclick="showTab('disparadores')">Disparadores</button>
+            <button class="tab active" onclick="showTab('avances')">Avances</button>
+        </div>
+
+        
+    <div id="avances-content">
+        <div class="content-card">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Avances</div>
+                    <div class="section-subtitle">Registra tus logros y avances</div>
+                </div>
+            </div>
+
+             <a style="text-decoration: none;" class="add-button" href="{{ url_for('routes.diary_progess') }}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    Agregar nuevo registro
+                </a>
+               
+            </a>
+
+           
+        </div>
+    </div>
+
+    <div id="disparadores-content" style="display: none;">
+        <div class="content-card">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Disparadores</div>
+                    <div class="section-subtitle">Registra situaciones que te causan malestar</div>
+                </div>
+            </div>
+
+            
+                 <a style="text-decoration: none;" class="add-button" href="{{ url_for('routes.diary_trygger') }}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    Agregar nuevo registro
+                </a>
+            </a>
+
+            
+        </div>
+    </div>
+
+       
+ </div>
+
+
+   </main> 
+
+    <script>
+        function showTab(tab) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'avances') {
+                document.getElementById('avances-content').style.display = 'block';
+                document.getElementById('disparadores-content').style.display = 'none';
+                tabs[1].classList.add('active');
+            } else {
+                document.getElementById('avances-content').style.display = 'none';
+                document.getElementById('disparadores-content').style.display = 'block';
+                tabs[0].classList.add('active');
+            }
+        }
+    </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const avancesContainer = document.getElementById("avances-content").querySelector(".content-card");
+    const disparadoresContainer = document.getElementById("disparadores-content").querySelector(".content-card");
+
+    // Limpiar contenido previo (excepto el header y botón)
+    avancesContainer.querySelectorAll(".entry-card").forEach(el => el.remove());
+    disparadoresContainer.querySelectorAll(".entry-card").forEach(el => el.remove());
+
+    fetch("{{ url_for('diary.ObtenerDiario') }}")
+        .then(response => response.json())
+        .then(data => {
+            // Función para generar HTML de cada registro
+            function crearEntryCard(registro, tipo) {
+                const card = document.createElement("div");
+                card.classList.add("entry-card");
+
+                card.innerHTML = `
+                    <div class="entry-header">
+                        <div class="entry-datetime">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>${new Date(registro.fechahoraregistro).toLocaleDateString()}</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span>${new Date(registro.fechahoraregistro).toLocaleTimeString()}</span>
+                        </div>
+                        <div class="entry-badge ${tipo === "avances" ? "progress" : "trigger"}">
+                            ${tipo === "avances" ? "Apropiado" : "Disparador"}
+                        </div>
+                    </div>
+
+                    <div class="entry-title">${registro.descripcionevento}</div>
+
+                    <div class="entry-details">
+                        <div class="entry-detail">
+                            <div class="entry-detail-icon">😊</div>
+                            <div class="entry-detail-label">Emoción:</div>
+                            <div class="entry-detail-value">${registro.emocion_nombre || "-"}</div>
+                        </div>
+                        <div class="entry-detail">
+                            <div class="entry-detail-icon">💪</div>
+                            <div class="entry-detail-label">Conducta:</div>
+                            <div class="entry-detail-value">${registro.conducta_nombre || "-"}</div>
+                        </div>
+                        <div class="entry-detail">
+                            <div class="entry-detail-icon">🎯</div>
+                            <div class="entry-detail-label">Estrategia:</div>
+                            <div class="entry-detail-value">${registro.estrategia_nombre || "-"}</div>
+                        </div>
+                        <div class="entry-detail">
+                            <div class="entry-detail-icon">📊</div>
+                            <div class="entry-detail-label">Escala:</div>
+                            <div class="entry-detail-value">${registro.efectividad || "-"}/10</div>
+                        </div>
+                    </div>
+                `;
+                return card;
+            }
+
+            // Agregar avances
+            data.avances.forEach(registro => {
+                avancesContainer.appendChild(crearEntryCard(registro, "avances"));
+            });
+
+            // Agregar disparadores
+            data.disparadores.forEach(registro => {
+                disparadoresContainer.appendChild(crearEntryCard(registro, "disparadores"));
+            });
+        })
+        .catch(err => console.error("Error al cargar el diario:", err));
+});
+</script>
+
+{% endblock %}

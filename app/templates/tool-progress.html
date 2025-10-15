@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block title %}Porgreso Formulario{% endblock %}
+
+{% block content %}
+   
+    <button class="back-button" onclick="window.history.back()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        volver
+    </button>
+
+    <div class="content">
+        <div class="page-title">Progreso en uso de estrategia de salud mental</div>
+
+        <div class="progress-card">
+            <div class="progress-header">Preguntas curiosas en vez de indicaciones</div>
+            <div class="progress-category">Categoría: Disciplina positiva en la familia</div>
+            <div class="progress-date">12/10/2025, 21:05:00</div>
+
+            <div class="progress-metrics">
+                <div class="metric-box">
+                    <div class="metric-label">Estado de Ánimo</div>
+                    <div class="metric-value">
+                        Regular
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="8" fill="#FFD700"/>
+                            <path d="M7 9C7 9 7.5 8 8.5 8C9.5 8 10 9 10 9M10 9C10 9 10.5 8 11.5 8C12.5 8 13 9 13 9M7 13C7 13 8.5 14 10 14C11.5 14 13 13 13 13" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Nivel de Bienestar</div>
+                    <div class="metric-value">
+                        Medio
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2L12 8H18L13 12L15 18L10 14L5 18L7 12L2 8H8L10 2Z" fill="#FFD700"/>
+                        </svg>
+                        Alto
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2L12 8H18L13 12L15 18L10 14L5 18L7 12L2 8H8L10 2Z" fill="#FFD700"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-observation">
+                <div class="observation-label">Observación</div>
+                <div class="observation-text">
+                    Hoy me sentí más tranquila al usar preguntas curiosas con mi hijo. En lugar de dar órdenes, le pregunté qué podría hacer para prepararse para la escuela. Se mostró más colaborativo y el ambiente en casa fue más positivo. Noté que responde mejor cuando se siente escuchado.
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-card">
+            <div class="progress-header">Preguntas curiosas en vez de indicaciones</div>
+            <div class="progress-category">Categoría: Disciplina positiva en la familia</div>
+
+            <div class="progress-metrics">
+                <div class="metric-box">
+                    <div class="metric-label">Estado de Ánimo</div>
+                    <div class="metric-value">
+                        Medio
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="8" fill="#FFD700"/>
+                            <path d="M7 9C7 9 7.5 8 8.5 8C9.5 8 10 9 10 9M10 9C10 9 10.5 8 11.5 8C12.5 8 13 9 13 9M7 12H13" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Nivel de Bienestar</div>
+                    <div class="metric-value">
+                        Bien
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2L12 8H18L13 12L15 18L10 14L5 18L7 12L2 8H8L10 2Z" fill="#FFD700"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-observation">
+                <div class="observation-label">Observación</div>
+                <div class="observation-text">
+                    La estrategia funcionó bien durante la mañana, pero en la tarde cuando estaba cansada, volví a dar órdenes directas. Necesito practicar más para que se vuelva un hábito natural.
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            
+            <a class="btn btn-register" style="text-decoration: none;" href="{{ url_for('routes.tools_usage') }}">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16 5L7.5 13.5L4 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Registrar uso
+            </a>
+            <button class="btn btn-progress">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 10H17M10 3V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                Progreso
+            </button>
+        </div>
+    </div>
+
+{% endblock %}

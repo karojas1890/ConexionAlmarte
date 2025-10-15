@@ -1,0 +1,213 @@
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #f7fafc;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #edf2f7;
+        }
+
+       
+
+        .filters {
+            display: flex;
+            gap: 12px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: #718096;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .appointments-table {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f7fafc;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: #718096;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tbody tr {
+            transition: background 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .patient-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .patient-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .service-name {
+            font-size: 14px;
+            color: #2d3748;
+        }
+
+        .date-time {
+            font-size: 14px;
+            color: #2d3748;
+        }
+
+        .payment-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .payment-card {
+            background: #e6f2ff;
+            color: #2c5282;
+        }
+
+        .payment-cash {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .payment-transfer {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-confirmed {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-pending {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .status-completed {
+            background: #bee3f8;
+            color: #1a365d;
+        }
+
+        .status-cancelled {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: #f7fafc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .action-icon-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+      
+
+        @media (max-width: 767px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .filters {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .appointments-table {
+                overflow-x: scroll;
+            }
+
+            table {
+                min-width: 800px;
+            }
+        }

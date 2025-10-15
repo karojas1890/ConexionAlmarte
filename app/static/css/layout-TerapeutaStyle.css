@@ -1,0 +1,205 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            font-size: 16px;
+            color: #5a9b9b;
+            margin-right: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 18px;
+        }
+        
+.logout-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+           
+            border-radius: 12px;
+            background:url('/static/images/logo.png') no-repeat center  ;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-title h1 {
+            font-size: 18px;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .header-title p {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-name {
+            font-size: 14px;
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+       
+        .action-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            text-align: center;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #718096;
+            transition: color 0.3s ease;
+            padding: 8px 15px;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-item:hover {
+            color: #667eea;
+        }
+
+        .nav-icon {
+            width: 28px;
+            height: 28px;
+            margin-bottom: 5px;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .header-title h1 {
+                font-size: 16px;
+            }
+
+            .header-title p {
+                font-size: 12px;
+            }
+
+            .user-avatar {
+                width: 35px;
+                height: 35px;
+            }
+        }

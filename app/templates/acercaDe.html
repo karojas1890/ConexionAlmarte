@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acerca De</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/acercaDe.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <!-- Vista Acerca de -->
+<div class="about-container">
+    <div class="about-card">
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Almarte" class="company-logo">
+        </div>
+
+        <!-- Encabezado -->
+        <div class="about-header">
+            <h1>Acerca de</h1>
+        </div>
+
+        <!-- Contenido -->
+        <div class="about-body">
+            <p class="version"><strong>Versión:</strong> 1.0.3</p>
+            <p class="developer"><strong>Desarrollado por:</strong> Katherine Rojas Salazar</p>
+            <p class="company">AlmarteCR: Especialistas en Salud Mental y Tecnología</p>
+            <p class="description">
+                Este software ha sido desarrollado con el objetivo de facilitar el registro, seguimiento y análisis de los avances personales y de los disparadores emocionales. Su diseño intuitivo permite a los usuarios documentar experiencias, evaluar emociones y conductas, y aplicar estrategias de afrontamiento de manera estructurada. De esta forma, proporciona herramientas profesionales para la gestión de la salud mental, promoviendo la autoobservación, el crecimiento personal y el bienestar emocional de manera continua y efectiva.
+            </p>
+        </div>
+
+        <!-- Botón volver -->
+        <div class="about-footer">
+            <button onclick="window.history.back()" class="back-btn">← Volver</button>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

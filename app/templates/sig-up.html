@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - Almarte</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sig-upStyle.css') }}">
+</head>
+<body>
+     <header class="header">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Almarte Logo" class="logo">
+    </header>
+
+    <div class="form-container">
+        <h1 class="form-title">Crear cuenta</h1>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="identification">Identificación</label>
+                <input type="text" id="identification" required>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="firstName">Primer Apellido</label>
+                <input type="text" id="firstName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="secondName">Segundo Apellido</label>
+                <input type="text" id="secondName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Teléfono</label>
+                <input type="tel" id="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="province">Provincia</label>
+                <select id="province" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="san-jose">San José</option>
+                    <option value="alajuela">Alajuela</option>
+                    <option value="cartago">Cartago</option>
+                    <option value="heredia">Heredia</option>
+                    <option value="guanacaste">Guanacaste</option>
+                    <option value="puntarenas">Puntarenas</option>
+                    <option value="limon">Limón</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="canton">Cantón</label>
+                <select id="canton" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="canton1">Cantón 1</option>
+                    <option value="canton2">Cantón 2</option>
+                    <option value="canton3">Cantón 3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="district">Distrito</label>
+                <select id="district" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="distrito1">Distrito 1</option>
+                    <option value="distrito2">Distrito 2</option>
+                    <option value="distrito3">Distrito 3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Dirección exacta</label>
+                <input type="text" id="address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="birthdate">Fecha de Nacimiento</label>
+                <input type="date" id="birthdate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Edad</label>
+                <input type="number" id="age" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="workplace">Lugar de Trabajo/Estudio</label>
+                <input type="text" id="workplace" required>
+            </div>
+
+            <button type="submit" class="submit-button">Crear Cuenta</button>
+        </form>
+    </div>
+
+    
+    
+<script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
+</body>
+</html>

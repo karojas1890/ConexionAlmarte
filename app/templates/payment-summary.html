@@ -1,28 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resumen y Pago - Almarte</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/paymentsummaryStyle.css') }}"  >
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="logo-section">
-                <div class="logo"></div>
-                <div>
-                    <div class="app-title">Conexión by Almarte</div>
-                    <div class="app-subtitle">Agendar cita</div>
-                </div>
-            </div>
-            <div class="user-section">
-                <div class="user-name">María González</div>
-                <div class="user-avatar">👤</div>
-                <div style="color: #5f9ea0; font-size: 18px;">⋮</div>
-            </div>
-        </div>
+{% extends "layout.html" %}
+
+{% block title %}Pago{% endblock %}
+
+{% block content %}
+    <main class="main-content">  
+    
 
         <div class="progress-section">
             <div class="progress-title">Agendar cita</div>
@@ -35,23 +17,28 @@
             </div>
         </div>
 
-        <div class="main-content">
-            <button class="back-btn" onclick="goBack()">← volver</button>
+        <div class="main">
+            <button class="back-button" onclick="window.history.back()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Volver
+            </button>
             <div class="section-title">Resumen de tu cita</div>
 
             <div class="summary-card">
-                <div class="summary-header">Atención psicoterapéutica individual: Adultos</div>
+                <div class="summary-header" id="service-summary-text"></div>
                 <div class="summary-row">
                     <span class="summary-label">Fecha</span>
-                    <span class="summary-value">Jueves 25 de septiembre</span>
+                    <span class="summary-value" id="summary-date">No seleccionada</span>
                 </div>
                 <div class="summary-row">
                     <span class="summary-label">Hora</span>
-                    <span class="summary-value">8am</span>
+                    <span class="summary-value" id="summary-time">No seleccionada</span>
                 </div>
                 <div class="summary-row">
                     <span class="summary-label">Total</span>
-                    <span class="summary-value">₡35000</span>
+                    <span class="summary-value" id="summary-price">₡0</span>
                 </div>
             </div>
 
@@ -79,92 +66,78 @@
                 </div>
             </div>
 
-            <button class="continue-btn" onclick="continueToPaymentForm()">Continuar</button>
+        
+             <button class="continue-btn" 
+                data-url="{{ url_for('routes.payment') }}" 
+                onclick="continueToPaymentForm(this)">
+                 Continuar
+            </button>
         </div>
 
-       <div class="bottom-nav">
-            <a href="{{ url_for('routes.dashboard') }}" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Inicio</span>
-            </a>
-            <a href="{{ url_for('routes.select_Service') }}" class="nav-item active">
-                <div class="nav-icon"></div>
-                <span>Citas</span>
-            </a>
-            <a href="{{url_for('routes.tools_Menu')}}" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Herramientas</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Diario</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>PME</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Perfil</span>
-            </a>
-        </div>
-    </div>
+      
+    </main>
 
-    <script>
-        function selectPayment(element) {
-            // Remove selected class from all payment options
-            document.querySelectorAll('.payment-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            // Add selected class to clicked option
-            element.classList.add('selected');
-        }
+    <script src="{{ url_for('static', filename='js/payment-summary.js') }}"></script>
+<script>
+    // Variable global para guardar la opción seleccionada
+    window.selectedPayment = 'Tarjeta de crédito o débito'; // por defecto
 
-        function goBack() {
-            window.location.href = 'select-datetime.html';
-        }
+    // Función para seleccionar pago
+    window.selectPayment = function(element) {
+        // Remover la clase 'selected' de todas las opciones
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        // Agregar la clase 'selected' al elemento clickeado
+        element.classList.add('selected');
 
-        function continueToPaymentForm() {
-            const selectedPayment = document.querySelector('.payment-option.selected .payment-text')?.textContent;
-            localStorage.setItem('selectedPayment', selectedPayment);
-            
-            // If credit card is selected, go to payment form, otherwise show confirmation
-            if (selectedPayment === 'Tarjeta de crédito o débito') {
-                window.location.href = "{{ url_for('routes.payment') }}";
-            } else {
-                showConfirmation();
-            }
-        }
+        // Guardar la opción seleccionada en la variable global
+        window.selectedPayment = element.querySelector('.payment-text').innerText;
+        console.log('Método de pago seleccionado:', window.selectedPayment);
+    }
 
-        function showConfirmation() {
-            // Show confirmation modal
-            const modal = document.createElement('div');
-            modal.innerHTML = `
-                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-                    <div style="background: white; border-radius: 15px; padding: 30px; max-width: 300px; text-align: center; margin: 20px;">
-                        <div style="width: 60px; height: 60px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 30px;">✓</div>
-                        <h3 style="color: #333; margin-bottom: 15px; font-size: 18px;">¡Cita confirmada!</h3>
-                        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Tu cita ha sido agendada exitosamente. Te enviaremos los detalles por email.</p>
-                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left;">
-                            <h4 style="color: #333; font-size: 14px; margin-bottom: 10px;">Detalles de tu cita</h4>
-                            <p style="font-size: 12px; color: #666; margin-bottom: 5px;">Atención psicoterapéutica individual: Adultos</p>
-                            <p style="font-size: 12px; color: #666; margin-bottom: 5px;">Jueves 25 de septiembre, 8am</p>
-                            <p style="font-size: 12px; color: #666;">Total: ₡35000</p>
-                        </div>
-                        <button onclick="closeModal()" style="background: #5f9ea0; color: white; border: none; border-radius: 20px; padding: 12px 30px; font-size: 14px; cursor: pointer;">Entendido</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
+    const dashboardUrl = "{{ url_for('routes.dashboard_Consultante') }}";
 
-        function closeModal() {
-            const modal = document.querySelector('[style*="position: fixed"]');
-            if (modal) {
-                modal.remove();
-                window.location.href = "{{ url_for('routes.dashboard') }}";
-            }
+    function continueToPaymentForm() {
+        // Tomar todos los datos del localStorage
+        const usuario = "{{ session.get('idusuario') }}";
+        const servicio = localStorage.getItem("selectedServiceId"); // id del servicio
+        const iddisponibilidad = localStorage.getItem("idDisponibilidadSeleccionada");
+        const estado = 0; // por defecto
+        const pago = 1; // por defecto
+
+        const citaData = {
+            usuario,
+            servicio: parseInt(servicio),
+            iddisponibilidad: parseInt(iddisponibilidad),
+            estado,
+            pago 
+        };
+
+        if (window.selectedPayment === 'Tarjeta de crédito o débito') {
+            // Redirigir a la pasarela de pago
+            const paymentforUrl = "{{ url_for('routes.payment') }}";
+            window.location.href = paymentforUrl;
+        } else {
+            // Enviar POST al backend
+            fetch("{{ url_for('Citas.CrearCita') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(citaData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert("Error: " + data.error);
+                } else {
+                    showConfirmation();
+                }
+            })
+            .catch(err => console.error("Error al crear cita:", err));
         }
-    </script>
-</body>
-</html>
+    }
+</script>
+
+{% endblock %}

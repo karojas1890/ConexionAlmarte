@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quién eres? - Conexión Almarte</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/quienEresStyle.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+</head>
+<body>
+    <div class="container">
+        <div class="logo">AM</div>
+        <h1>¿Quién eres?</h1>
+
+        <div class="profiles-grid">
+
+          
+            <div class="profile-card" data-avatar="{{ url_for('static', filename='images/avatar3.jpeg') }}" onclick="selectProfile('pme', 'Carlos Salazar', this.dataset.avatar)">
+                <div class="profile-avatar">
+                   <img src="{{ url_for('static', filename='images/avatar3.jpeg') }}" alt="Carlos Salazar">
+                </div>
+                <div class="profile-name">Carlos Salazar</div>
+                <div class="profile-type">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    33 años • PIN requerido
+                </div>
+           </div>
+
+       
+            <div class="profile-card" data-avatar="{{ url_for('static', filename='images/avatar1.jpeg') }}" onclick="selectProfile('pme', 'Ana Salazar', this.dataset.avatar)">
+                <div class="profile-avatar">
+                    <img src="{{ url_for('static', filename='images/avatar1.jpeg') }}" alt="Ana Salazar">
+                </div>
+                <div class="profile-name">Ana Salazar</div>
+                <div class="profile-type">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                   11 años • PIN requerido
+                </div>
+            </div>
+
+    </div>
+
+    
+    <div class="modal" id="pinModal">
+        <div class="modal-content">
+            <div class="modal-avatar" id="modalAvatar">
+                <img src="/placeholder.svg" alt="" id="modalAvatarImg">
+            </div>
+            <h2 id="modalName"></h2>
+            <p>Ingresa el PIN para continuar</p>
+            <div class="pin-input">
+                <input type="password" maxlength="1" class="pin-digit" id="pin1" oninput="moveFocus(this, 'pin2')">
+                <input type="password" maxlength="1" class="pin-digit" id="pin2" oninput="moveFocus(this, 'pin3')">
+                <input type="password" maxlength="1" class="pin-digit" id="pin3" oninput="moveFocus(this, 'pin4')">
+                <input type="password" maxlength="1" class="pin-digit" id="pin4" oninput="verifyPin()">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeModal()">Cancelar</button>
+                <button class="modal-btn primary" onclick="verifyPin()">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal edit-modal" id="editModal">
+        <div class="modal-content">
+            <h2>Crear nuevo perfil</h2>
+            
+            <div class="form-group">
+                <label>Selecciona un avatar</label>
+                <div class="avatar-selector">
+                   
+                    <div class="avatar-option" data-src="{{ url_for('static', filename='images/avatar1.jpeg') }}">
+                       <img src="{{ url_for('static', filename='images/avatar1.jpeg') }}" alt="Avatar 1">
+                    </div>
+
+                    <div class="avatar-option" data-src="{{ url_for('static', filename='images/avatar2.jpeg') }}">
+                        <img src="{{ url_for('static', filename='images/avatar2.jpeg') }}" alt="Avatar 2">
+                    </div>
+                    <div class="avatar-option" data-src="{{ url_for('static', filename='images/avatar3.jpeg') }}">
+                        <img src="{{ url_for('static', filename='images/avatar3.jpeg') }}" alt="Avatar 3">
+                    </div>
+                    <div class="avatar-option" data-src="{{ url_for('static', filename='images/avatar4.jpeg') }}">
+                        <img src="{{ url_for('static', filename='images/avatar4.jpeg') }}" alt="Avatar 4">
+                    </div>
+                    <div class="avatar-option" data-src="{{ url_for('static', filename='images/avatar5.jpeg') }}">
+                        <img src="{{ url_for('static', filename='images/avatar5.jpeg') }}" alt="Avatar 5">
+                    </div>
+                    <div class="avatar-option" data-src="{{ url_for('static', filename='images/avatar6.jpeg') }}">
+                        <img src="{{ url_for('static', filename='images/avatar6.jpeg') }}" alt="Avatar 6">
+                    </div>
+                    <div class="avatar-option" data-src="{{ url_for('static', filename='images/avatar7.jpeg') }}">
+                        <img src="{{ url_for('static', filename='images/avatar7.png') }}" alt="Avatar 7">
+                    </div>
+                    <div class="avatar-option" data-src="{{ url_for('static', filename='images/avatar8.jpeg') }}">
+                        <img src="{{ url_for('static', filename='images/avatar8.jpeg') }}" alt="Avatar 8">
+                    </div>
+                </div>
+            </div>
+            
+            <input type="hidden" name="avatar_url" id="selectedAvatarInput" value="{{ url_for('static', filename='images/avatar1.jpeg') }}">
+
+
+            <div class="form-group">
+                <label>Nombre completo</label>
+                <input type="text" placeholder="Ingresa el nombre" id="profileName">
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de perfil</label>
+                <select id="profileType" onchange="togglePinField()">
+                    <option value="tutor">Tutor</option>
+                    <option value="pme">Persona menor de edad</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="ageGroup" style="display: none;">
+                <label>Edad</label>
+                <input type="number" placeholder="Edad" id="profileAge" min="1" max="17">
+            </div>
+
+            <div class="form-group" id="pinGroup" style="display: none;">
+                <label>PIN de seguridad (4 dígitos)</label>
+                <input type="password" placeholder="****" id="profilePin" maxlength="4">
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeEditModal()">Cancelar</button>
+                <button class="modal-btn primary" onclick="saveProfile()">Guardar perfil</button>
+            </div>
+        </div>
+    </div>
+
+   <script>
+let selectedProfileData = {};
+let selectedAvatarUrl = '';
+
+/* -------- AVATAR SELECTION -------- */
+document.querySelectorAll('.avatar-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+        // Remover selección anterior
+        document.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
+        // Agregar selección al nuevo
+        opt.classList.add('selected');
+        // Guardar URL en hidden input y variable global
+        selectedAvatarUrl = opt.dataset.src;
+        document.getElementById('selectedAvatarInput').value = selectedAvatarUrl;
+    });
+});
+
+/* -------- PROFILE SELECTION -------- */
+function selectProfile(type, name, avatar) {
+    selectedAvatarUrl = avatar; // Guardar avatar seleccionado
+    if (type === 'pme') {
+        selectedProfileData = { type, name, avatar };
+        document.getElementById('modalName').textContent = name;
+        document.getElementById('modalAvatarImg').src = avatar;
+        document.getElementById('pinModal').classList.add('active');
+        setTimeout(() => document.getElementById('pin1').focus(), 100);
+    } else {
+        window.location.href = "{{ url_for('routes.dashboard_Consultante') }}";
+    }
+}
+
+/* -------- PIN MODAL -------- */
+function moveFocus(current, nextId) {
+    if (current.value.length === 1) {
+        const nextInput = document.getElementById(nextId);
+        if (nextInput) nextInput.focus();
+    }
+}
+
+function verifyPin() {
+    const pin = Array.from({length: 4}, (_, i) => document.getElementById(`pin${i+1}`).value).join('');
+    if (pin.length === 4) {
+        console.log('[v0] PIN ingresado:', pin);
+         window.location.href = "{{ url_for('routes.dashboard_Consultante') }}";
+    } else alert('Por favor ingresa los 4 dígitos del PIN');
+}
+
+function closeModal() {
+    document.getElementById('pinModal').classList.remove('active');
+    Array.from({length: 4}, (_, i) => document.getElementById(`pin${i+1}`).value = '');
+}
+
+/* -------- EDIT PROFILE MODAL -------- */
+function openEditModal() { document.getElementById('editModal').classList.add('active'); }
+function closeEditModal() { document.getElementById('editModal').classList.remove('active'); }
+
+function togglePinField() {
+    const profileType = document.getElementById('profileType').value;
+    const pinGroup = document.getElementById('pinGroup');
+    const ageGroup = document.getElementById('ageGroup');
+    pinGroup.style.display = (profileType === 'pme') ? 'block' : 'none';
+    ageGroup.style.display = (profileType === 'pme') ? 'block' : 'none';
+}
+
+function saveProfile() {
+    const name = document.getElementById('profileName').value;
+    const type = document.getElementById('profileType').value;
+    const age = document.getElementById('profileAge').value;
+    const pin = document.getElementById('profilePin').value;
+
+    if (!name) { alert('Por favor ingresa un nombre'); return; }
+    if (type === 'pme' && (!age || !pin || pin.length !== 4)) {
+        alert('Por favor completa todos los campos requeridos'); return;
+    }
+
+    console.log('[v0] Nuevo perfil:', { name, type, age, pin, avatar: selectedAvatarUrl });
+
+    
+    const profileContainer = document.getElementById('profileList');
+if (profileContainer) {
+    const newDiv = document.createElement('div');
+    newDiv.classList.add('avatar-option');
+    newDiv.dataset.src = selectedAvatarUrl;  // <- aquí ya está la URL real
+    newDiv.innerHTML = `<img src="${selectedAvatarUrl}" alt="${name}">`;
+
+    newDiv.addEventListener('click', () => {
+        document.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
+        newDiv.classList.add('selected');
+        selectedAvatarUrl = newDiv.dataset.src;
+        document.getElementById('selectedAvatarInput').value = selectedAvatarUrl;
+    });
+
+    profileContainer.appendChild(newDiv);
+}
+
+    alert('Perfil creado exitosamente');
+    closeEditModal();
+}
+
+/* -------- CLOSE MODALS CLICK OUTSIDE -------- */
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', e => {
+        if (e.target === modal) modal.classList.remove('active');
+    });
+});
+</script>
+
+</body>
+</html>

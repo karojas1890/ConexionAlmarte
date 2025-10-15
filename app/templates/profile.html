@@ -1,0 +1,259 @@
+{% extends "layout.html" %}
+
+{% block title %}Perfil{% endblock %}
+
+{% block content %}
+<!--js y css boostrap para el modal de perfil-->
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="main">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-details">
+                    <h2>{{ session.get('nombre', 'Nombre') }} {{ session.get('apellido1', 'Apellido') }}</h2>
+                    <p>{{ session.get('correo', 'Correo') }}</p>
+                    <p>Miembro desde el 15 de agosto del 2025</p>
+                </div>
+                <button id="btnEditarPerfil" class="edit-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Editar información
+                </button>
+            </div>
+            
+             
+
+<div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="form-perfil-modal">
+            <label>Cédula</label>
+            <input type="text" name="identificacion" readonly>
+
+            <label>Nombre</label>
+            <input type="text" name="nombre">
+
+            <label>Apellido1</label>
+            <input type="text" name="apellido1">
+
+            <label>Apellido2</label>
+            <input type="text" name="apellido2">
+
+            <label>Correo</label>
+            <input type="email" name="correo">
+
+            <label>Teléfono</label>
+            <input type="text" name="telefono">
+
+            <label>Provincia</label>
+            <input type="text" name="provincia">
+
+            <label>Cantón</label>
+            <input type="text" name="canton">
+
+            <label>Distrito</label>
+            <input type="text" name="distrito">
+
+            <label>Dirección Exacta</label>
+            <input type="text" name="direccionexacta">
+
+            <label>Fecha de Nacimiento</label>
+            <input type="date" name="fechanacimiento">
+
+            <label>Edad</label>
+            <input type="number" name="edad">
+
+            <label>Ocupación</label>
+            <input type="text" name="ocupacion">
+
+            <label>Lugar de trabajo/estudio</label>
+            <input type="text" name="lugartrabajoestudio">
+
+            
+            <input type="hidden"  name="urlimagen">
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="guardarPerfilModalBtn">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+            <div class="section-title">Próxima cita</div>
+            <div class="appointments-card">
+                <div class="appointments-header">
+                <div class="calendar-icon">📅</div>
+                <div>
+                    <div class="appointments-title">Próximas citas</div>
+                    <div class="appointments-subtitle">Tus citas programadas</div>
+                </div>
+                </div>
+
+       
+                <div id="appointments-container"></div>
+
+       
+            </div>
+
+            <div class="section-title">Mi progreso</div>
+            <div class="progress-grid">
+                <div class="progress-item">
+                    <div class="progress-icon">❤️</div>
+                    <div class="progress-label">Sesiones</div>
+                    <div class="progress-value">8</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-icon">💡</div>
+                    <div class="progress-label">Herramientas</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-icon">📖</div>
+                    <div class="progress-label">Registros</div>
+                    <div class="progress-value">20</div>
+                </div>
+            </div>
+
+            <div class="section-title">Configuración</div>
+            <div class="config-section">
+                <div class="config-item">
+                    <div class="config-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
+                    <div class="config-label">Notificaciones</div>
+                </div>
+                <div class="config-item">
+                    <div class="config-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <div class="config-label">Privacidad y seguridad</div>
+                </div>
+            </div>
+
+          
+    </div>
+
+    <script>
+      
+document.addEventListener("DOMContentLoaded", () => {
+    // Declarar variables
+    const btnEditar = document.getElementById('btnEditarPerfil');
+    const modalEl = document.getElementById('perfilModal');
+    const guardarBtn = document.getElementById('guardarPerfilModalBtn');
+    const form = document.getElementById('form-perfil-modal');
+    const appointmentsContainer = document.getElementById('appointments-container');
+
+    // Inicializar modal Bootstrap
+    const modal = new bootstrap.Modal(modalEl);
+
+    // Abrir modal al hacer click
+    btnEditar.addEventListener('click', () => {
+        fetch("{{ url_for('perfil.ObtenerPerfil') }}")
+            .then(res => res.json())
+            .then(consultante => {
+                for (let key in consultante) {
+                    const input = form.querySelector(`[name=${key}]`);
+                    if (input) input.value = consultante[key] || '';
+                }
+                modal.show();
+            })
+            .catch(err => console.error("Error al cargar perfil:", err));
+    });
+
+    // Guardar cambios
+    guardarBtn.addEventListener('click', () => {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        fetch("{{ url_for('perfil.GuardarPerfil') }}", {  
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(resp => {
+            if(resp.success){
+                alert("Perfil actualizado correctamente");
+                modal.hide();
+                window.location.reload();
+            } else {
+                alert("Error: " + resp.error);
+            }
+        })
+        .catch(err => console.error("Error al actualizar perfil:", err));
+    });
+
+    // Cargar citas
+    fetch("{{ url_for('Citas.CitasPendientes') }}")
+        .then(res => res.json())
+        .then(citas => {
+            const todasLasCitas = citas || [];
+            mostrarUltimasCitas(todasLasCitas);
+        })
+        .catch(err => console.error("Error al cargar citas:", err));
+
+    function mostrarUltimasCitas(citas) {
+        appointmentsContainer.innerHTML = "";
+        const citasAMostrar = citas.slice(-2).reverse();
+        if (citasAMostrar.length === 0) {
+            const noCitas = document.createElement('div');
+            noCitas.textContent = "No tienes citas programadas.";
+            noCitas.style.padding = "10px";
+            appointmentsContainer.appendChild(noCitas);
+            return;
+        }
+        citasAMostrar.forEach(mostrarCita);
+    }
+
+    function mostrarCita(cita) {
+        const fechaTexto = cita.fecha 
+            ? new Date(cita.fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) 
+            : "Fecha N/A";
+        const horaTexto = cita.horainicio || "Hora N/A";
+
+        const div = document.createElement("div");
+        div.className = "appointment-item";
+
+        div.innerHTML = `
+            <div class="appointment-info">
+                <div class="appointment-type">${cita.nombreservicio || "Servicio N/A"}</div>
+                <div class="appointment-therapist">Lic. ${cita.nombre_terapeuta || ""} ${cita.apellido1_terapeuta || ""} ${cita.apellido2_terapeuta || ""}</div>
+                <div style="display: flex; align-items: center;">
+                    <div class="appointment-date">
+                        <div class="date-icon">📅</div>
+                        ${fechaTexto}
+                    </div>
+                    <div class="appointment-time">
+                        <div class="time-icon">🕐</div>
+                        ${horaTexto}
+                    </div>
+                </div>
+            </div>
+            <div class="appointment-status ${cita.estado === 0 ? 'status-pending' : 'status-completed'}">
+                ${cita.estado === 0 ? 'Pendiente' : 'Finalizada'}
+            </div>
+        `;
+
+        appointmentsContainer.appendChild(div);
+    }
+});
+
+
+    </script>
+
+{% endblock %}

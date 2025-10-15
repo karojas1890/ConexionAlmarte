@@ -1,30 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle Herramienta - Almarte</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/tools-detail.css') }}"  >
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="logo-section">
-                <div class="logo"></div>
-                <div>
-                    <div class="app-title">Conexión by Almarte</div>
-                    <div class="app-subtitle">Herramientas</div>
-                </div>
-            </div>
-            <div class="user-section">
-                <div class="user-name">Mauricio Acuna</div>
-                <div class="user-avatar">👤</div>
-                <div style="color: #5f9ea0; font-size: 18px;">⋮</div>
-            </div>
-        </div>
+{% extends "layout.html" %}
 
-        <div class="main-content">
+{% block title %}Detalles{% endblock %}
+
+{% block content %}
+    
+    <main class="main-content">
+       
+
+        <div class="main">
             <div class="section-title">Mis herramientas</div>
             <div class="section-subtitle">Recomendaciones de salud mental sugeridas por tu terapeuta</div>
 
@@ -71,41 +54,31 @@
                         <div class="support-arrow">›</div>
                     </div>
                 </div>
-
-                <div class="action-buttons">
-                    <button class="btn-primary">Completar</button>
-                    <button class="btn-secondary">Registrar uso</button>
-                    <button class="btn-tertiary">Progreso</button>
-                </div>
+                 <div class="action-buttons">
+            <div class="action-buttons">
+            <button class="btn btn-add" >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Agregar uso
+            </button>
+            <a class="btn btn-register" style="text-decoration: none;" style="text-decoration: none;" href="{{ url_for('routes.tools_usage') }}" >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16 5L7.5 13.5L4 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Registrar uso
+            </a>
+            <a class="btn btn-progress"  style="text-decoration: none;" href="{{ url_for('routes.tools_progress') }}">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 10H17M10 3V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                Progreso
+            </a>
+        </div>
+                
             </div>
         </div>
-
-        <div class="bottom-nav">
-            <a href="{{ url_for('routes.dashboard') }}" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Inicio</span>
-            </a>
-            <a href="{{ url_for('routes.select_Service') }}" class="nav-item active">
-                <div class="nav-icon"></div>
-                <span>Citas</span>
-            </a>
-            <a href="{{url_for('routes.tools_Menu')}}" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Herramientas</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Diario</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>PME</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Perfil</span>
-            </a>
-        </div>
-    </div>
-</body>
-</html>
+    </main>
+       
+{% endblock %}

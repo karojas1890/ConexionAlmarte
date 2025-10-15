@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recuperarContraStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <title>Recuperar Contraseña - COnexion</title>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-text">Conexion</div>
+            <div class="logo-subtitle">Almarte</div>
+        </div>
+        
+        <!-- Estado inicial -->
+        <div class="initial-state" id="initialState">
+            <div class="icon-container">
+                <div class="icon">🔐</div>
+            </div>
+
+            <h1 class="title">Recuperar Contraseña</h1>
+            
+
+            <div class="info-message">
+                <strong>💡 Información:</strong> Ingresa tu correo electronico para restablecer la contrseña.
+            </div>
+
+            <form asp-controller="Auth" asp-action="RecuperarContrasena" id="recoveryForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Correo electrónico</label>
+                    <input type="email"
+                           id="correo"
+                           name="correo"
+                           class="form-input"
+                           placeholder="correo@ejemplo.com"
+                           required>
+                    <div class="error-message" id="emailError"></div>
+                    <div class="success-message" id="emailSuccess"></div>
+                </div>
+              
+                 <a href="{{ url_for('routes.restablecer_contra') }}"   class="primary-btn" id="sendBtn">
+                    Procesar
+                </a>
+            </form>
+
+            <a href="{{ url_for('routes.index') }}" style="text-decoration:none;" class="secondary-btn" asp-controller="Home" asp-action="Index" >
+                <span class="btn-icon">←</span>
+                <span>Volver al inicio de sesión</span>
+            </a>
+
+            
+        </div>
+
+    </div>
+
+  
+    <script src="{{ url_for('static', filename='js/recuperarContrasena.js') }}" > </script>
+</body>
+</html>

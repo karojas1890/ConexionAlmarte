@@ -1,0 +1,212 @@
+{% extends "layout.html" %}
+
+{% block title %}Menu Principal{% endblock %}
+
+{% block content %}
+    
+
+   <main class="main-content">
+    <div class="welcome-section">
+        <h1 class="welcome-title">¡Hola, {{ session.get('nombre', 'Nombre') }}!</h1>
+        <p class="welcome-subtitle">Bienvenid@ a tu espacio de bienestar</p>
+    </div>
+
+    <div class="appointments-card">
+        <div class="appointments-header">
+            <div class="calendar-icon">📅</div>
+            <div>
+                <div class="appointments-title">Próximas citas</div>
+                <div class="appointments-subtitle">Tus citas programadas</div>
+            </div>
+        </div>
+
+       
+        <div id="appointments-container"></div>
+
+        <button class="view-all-btn" onclick="mostrarTodasCita()">
+            Ver todas las citas
+        </button>
+    </div>
+ <div class="container-sub"></div>
+     <div class="nav-tabs">
+            <div class="nav-tab active" data-page="page1">Cuenta de menor</div>
+            <div class="nav-tab" data-page="page2">Herramientas de salud mental</div>
+        </div>
+
+     <div id="page2" class="page">
+            <div class="card">
+                <h1 class="section-title">Herramientas de salud mental</h1>
+                <p class="subtitle">Tus actividades terapéuticas</p>
+                
+                <ul id="activityList" class="activity-list">
+                    
+                </ul>
+                
+                <div class="divider"></div>
+                
+                <a href="{{ url_for('routes.tools_details') }}" class="link">
+                    Ver todas las recomendaciones terapéuticas
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 12L10 8L6 4" stroke="#3498db" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+         
+        
+      
+        <div id="page1" class="page active">
+            <div class="card">
+                <h1 class="page-title">Cuenta de persona menor de edad</h1>
+                <p class="subtitle">Información de la persona menor de edad a tu cargo</p>
+                
+                <div class="profile-pme">
+                    <div class="icon-pme">C</div>
+                    <div class="details-pme">
+                        <div class="profile-name">Carlos Salazar González</div>
+                        <div class="profile-role">Hijo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</main>
+
+    <script>
+    const appointmentsContainer = document.getElementById("appointments-container");
+    let todasLasCitas = [];
+    let mostrandoTodas = false;
+ document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remover clase activa de todas las pestañas
+                document.querySelectorAll('.nav-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                
+                // Añadir clase activa a la pestaña clickeada
+                tab.classList.add('active');
+                
+                // Ocultar todas las páginas
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Mostrar la página correspondiente
+                const pageId = tab.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+            });
+        });
+
+    document.addEventListener("DOMContentLoaded", () => {
+    
+
+    fetch("{{ url_for('Citas.CitasPendientes') }}")
+        .then(res => res.json())
+        .then(citas => {
+            todasLasCitas = citas || [];
+            mostrarUltimasCitas();
+        })
+        .catch(err => console.error("Error al cargar citas:", err));
+
+    function mostrarUltimasCitas() {
+        appointmentsContainer.innerHTML = "";
+        const citasAMostrar = todasLasCitas.slice(-2).reverse();
+        if (citasAMostrar.length === 0) {
+            const noCitas = document.createElement('div');
+            noCitas.textContent = "No tienes citas programadas.";
+            noCitas.style.padding = "10px";
+            appointmentsContainer.appendChild(noCitas);
+            return;
+        }
+        citasAMostrar.forEach(mostrarCita);
+    }
+
+    function mostrarCita(cita) {
+        const fechaTexto = cita.fecha 
+            ? new Date(cita.fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) 
+            : "Fecha N/A";
+        const horaTexto = cita.horainicio || "Hora N/A";
+
+        const div = document.createElement("div");
+        div.className = "appointment-item";
+
+        div.innerHTML = `
+            <div class="appointment-info">
+                <div class="appointment-type">${cita.nombreservicio || "Servicio N/A"}</div>
+                <div class="appointment-therapist">Lic. ${cita.nombre_terapeuta || ""} ${cita.apellido1_terapeuta || ""} ${cita.apellido2_terapeuta || ""}</div>
+                <div style="display: flex; align-items: center;">
+                    <div class="appointment-date">
+                        <div class="date-icon">📅</div>
+                        ${fechaTexto}
+                    </div>
+                    <div class="appointment-time">
+                        <div class="time-icon">🕐</div>
+                        ${horaTexto}
+                    </div>
+                </div>
+            </div>
+            <div class="appointment-status ${cita.estado === 0 ? 'status-pending' : 'status-completed'}">
+                ${cita.estado === 0 ? 'Pendiente' : 'Finalizada'}
+            </div>
+        `;
+
+        appointmentsContainer.appendChild(div);
+    }
+
+   
+    function mostrarTodasCita() {
+    appointmentsContainer.innerHTML = "";
+    todasLasCitas.slice().reverse().forEach(mostrarCita);
+    mostrandoTodas = true;
+}
+});
+
+//herrramientas
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch("{{ url_for('tools.ObtenerRecomendacionesTools') }}");
+        const data = await response.json();
+
+        const list = document.getElementById("activityList");
+        list.innerHTML = ""; // Limpiar lista
+
+        if (data.error) {
+            list.innerHTML = `<li>Error: ${data.error}</li>`;
+            return;
+        }
+
+        if (data.length === 0) {
+            list.innerHTML = `<li>No tienes recomendaciones asignadas.</li>`;
+            return;
+        }
+
+        data.forEach(rec => {
+            const li = document.createElement("li");
+            li.className = "activity-item";
+
+            li.innerHTML = `
+                <div class="activity-content">
+                    <h3 class="activity-title">${rec.nombrerecomendacion}</h3>
+                    <p class="activity-category">Categoría: ${rec.nombrecategoria}</p>
+                </div>
+                <span class="activity-status status-not-started">${rec.momento || "Pendiente"}</span>
+            `;
+
+            list.appendChild(li);
+        });
+
+    } catch (error) {
+        console.error("Error al cargar recomendaciones:", error);
+        document.getElementById("activityList").innerHTML = 
+            `<li>Error al conectar con el servidor</li>`;
+    }
+});
+
+
+
+</script>
+    
+{% endblock %}

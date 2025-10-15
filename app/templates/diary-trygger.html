@@ -1,0 +1,169 @@
+{% extends "layout.html" %}
+
+{% block title %}Ingresar Progreso Diario{% endblock %}
+
+{% block content %}
+<!--estilos y js para el choices de los select -->
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+         <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+   
+    const diaryUrl = "{{ url_for('routes.diary') }}";
+</script>
+
+<button class="back-button" onclick="window.history.back()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    Volver
+</button>
+
+<div class="content-trigger">
+    <div class="page-title">Registro de evento disparador</div>
+
+    <div class="form-container">
+        <form id="triggerForm">
+            <!-- Situación -->
+            <div class="form-group">
+                <label for="situationInput">Describe la situación</label>
+                <textarea 
+                    id="situationInput" 
+                    placeholder="Registra situaciones en las que usaste la estrategia terapéutica"
+                ></textarea>
+            </div>
+
+          
+           <div class="form-group">
+                <label for="emotionSelect">Selecciona la emoción generada</label>
+                <select id="emotionSelect" class="custom-select">
+                    <option value="">Seleccionar...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="copingSelect">Selecciona la conducta de afrontamiento</label>
+                <select id="copingSelect" class="custom-select">
+                    <option value="">Seleccionar...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="strategySelect">Selecciona la estrategia terapéutica</label>
+                <select id="strategySelect" class="custom-select">
+                   <option value="">Seleccionar...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <div class="slider-container">
+                    <div class="slider-label">Nivel de efectividad (0-10)</div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="0" max="10" value="5" class="slider" id="effectivenessInput">
+                        <div class="slider-labels">
+                            <span>0</span>
+                            <span>5</span>
+                            <span>10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+            <div class="button-group">
+                <button type="submit" class="btn btn-save">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M16 5L7.5 13.5L4 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Guardar
+                </button>
+                <a type="button" style="text-decoration: none;" class="btn btn-cancel" href="{{ url_for('routes.diary') }}">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--<script src="{{ url_for('static', filename='js/diary-trigger.js') }}"></script>-->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // inicializamos Choices con el select vacio
+    const emotionSelect = new Choices('#emotionSelect', { searchEnabled: true, itemSelectText: '', shouldSort: false });
+    const copingSelect = new Choices('#copingSelect', { searchEnabled: true, itemSelectText: '', shouldSort: false });
+    const strategySelect = new Choices('#strategySelect', { searchEnabled: true, itemSelectText: '', shouldSort: false });
+
+    // funcion auxiliar para cargar datos en Choices
+    const loadChoices = (selectInstance, data, valueKey, labelKey) => {
+        const choices = data.map(item => ({ value: item[valueKey], label: item[labelKey] }));
+        // limpia primero
+        selectInstance.clearStore();
+        // setea nuevas opciones
+        selectInstance.setChoices(choices, 'value', 'label', true);
+    };
+
+    
+    fetch("{{ url_for('diary.ObtenerEmociones') }}")
+        .then(res => res.json())
+        .then(emociones => loadChoices(emotionSelect, emociones, 'id', 'nombre'))
+        .catch(err => console.error("Error cargando emociones:", err));
+
+    fetch("{{ url_for('diary.ObtenerAfrontamiento') }}")
+        .then(res => res.json())
+        .then(conductas => loadChoices(copingSelect, conductas, 'id', 'nombre'))
+        .catch(err => console.error("Error cargando conductas:", err));
+
+   
+    fetch("{{ url_for('diary.ObtenerRecomendaciones') }}")
+        .then(res => res.json())
+        .then(recomendaciones => loadChoices(strategySelect, recomendaciones, 'idrecomendacion', 'nombre'))
+        .catch(err => console.error("Error cargando recomendaciones:", err));
+
+ 
+    const form = document.getElementById("triggerForm");
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const data = {
+        situacion: document.getElementById("situationInput").value,
+        emocion_id: emotionSelect.getValue(true),      
+        afrontamiento_id: copingSelect.getValue(true), 
+        estrategia_id: strategySelect.getValue(true),  
+        efectividad: document.getElementById("effectivenessInput").value,
+        tiporegistro: 0
+    };
+
+    console.log("Datos a enviar:", data);
+
+    fetch("{{ url_for('diary.GuardarEvento') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
+        if (response.mensaje) {
+            alert(response.mensaje);
+            window.location.href = "{{ url_for('routes.diary') }}"; // redirige al diario
+        } else if (response.error) {
+            alert("Error: " + response.error);
+        }
+    })
+    .catch(err => {
+        console.error("Error al enviar los datos:", err);
+        alert("Ocurrió un error al guardar el registro.");
+    });
+  });
+
+});
+
+
+</script>
+
+
+{% endblock %}

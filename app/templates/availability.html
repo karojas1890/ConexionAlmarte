@@ -1,0 +1,253 @@
+{% extends "layout_terapeuta.html" %}
+
+{% block title %}Menu Principal{% endblock %}
+
+{% block content %}
+    
+
+   <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Disponibilidad de Horarios</h1>
+            <p class="page-subtitle">Selecciona las fechas y horas en las que estarás disponible para atender pacientes</p>
+        </div>
+
+        <div class="content-grid">
+          
+            <div class="calendar-card">
+                <div class="calendar-header">
+                    <h2 class="calendar-title">Enero 2025</h2>
+                    <div class="calendar-nav">
+                        <button class="nav-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <button class="nav-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="calendar">
+                    <div class="calendar-weekdays">
+                        <div class="weekday">Dom</div>
+                        <div class="weekday">Lun</div>
+                        <div class="weekday">Mar</div>
+                        <div class="weekday">Mié</div>
+                        <div class="weekday">Jue</div>
+                        <div class="weekday">Vie</div>
+                        <div class="weekday">Sáb</div>
+                    </div>
+
+                    <div class="calendar-days">
+                        <div class="day"></div>
+                        <div class="day"></div>
+                        <div class="day"></div>
+                        <div class="day">
+                            <span class="day-number">1</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">2</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">3</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">4</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">5</span>
+                        </div>
+                        <div class="day partially-available">
+                            <span class="day-number">6</span>
+                            <span class="day-slots">4 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">7</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">8</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available selected">
+                            <span class="day-number">9</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">10</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">11</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">12</span>
+                        </div>
+                        <div class="day unavailable">
+                            <span class="day-number">13</span>
+                            <span class="day-slots">Bloqueado</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">14</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">15</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">16</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">17</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">18</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">19</span>
+                        </div>
+                        <div class="day partially-available">
+                            <span class="day-number">20</span>
+                            <span class="day-slots">4 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">21</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">22</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">23</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day available">
+                            <span class="day-number">24</span>
+                            <span class="day-slots">8 slots</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">25</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">26</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">27</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">28</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">29</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">30</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-number">31</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #c6f6d5; border: 2px solid #38a169;"></div>
+                        <span>Disponible</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #feebc8; border: 2px solid #dd6b20;"></div>
+                        <span>Parcialmente disponible</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #fed7d7; border: 2px solid #e53e3e;"></div>
+                        <span>No disponible</span>
+                    </div>
+                </div>
+            </div>
+
+              
+            <div class="time-slots-card">
+                <div class="slots-header">
+                    <h3 class="slots-title">Horarios Disponibles</h3>
+                    <p class="selected-date">Jueves, 9 de Enero 2025</p>
+                </div>
+
+                <div class="time-slots-list">
+                    <div class="time-slot">
+                        <span class="slot-time">8:00 AM - 9:00 AM</span>
+                        <div class="slot-toggle active"></div>
+                    </div>
+                    <div class="time-slot">
+                        <span class="slot-time">9:00 AM - 10:00 AM</span>
+                        <div class="slot-toggle active"></div>
+                    </div>
+                    <div class="time-slot">
+                        <span class="slot-time">10:00 AM - 11:00 AM</span>
+                        <div class="slot-toggle active"></div>
+                    </div>
+                    <div class="time-slot">
+                        <span class="slot-time">11:00 AM - 12:00 PM</span>
+                        <div class="slot-toggle active"></div>
+                    </div>
+                    <div class="time-slot">
+                        <span class="slot-time">2:00 PM - 3:00 PM</span>
+                        <div class="slot-toggle active"></div>
+                    </div>
+                    <div class="time-slot">
+                        <span class="slot-time">3:00 PM - 4:00 PM</span>
+                        <div class="slot-toggle active"></div>
+                    </div>
+                    <div class="time-slot">
+                        <span class="slot-time">4:00 PM - 5:00 PM</span>
+                        <div class="slot-toggle active"></div>
+                    </div>
+                    <div class="time-slot">
+                        <span class="slot-time">5:00 PM - 6:00 PM</span>
+                        <div class="slot-toggle active"></div>
+                    </div>
+                </div>
+
+                <button class="add-slot-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Agregar horario
+                </button>
+
+                <button class="save-btn">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <script>
+        
+        document.querySelectorAll('.slot-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+   
+        document.querySelectorAll('.day').forEach(day => {
+            day.addEventListener('click', function() {
+                if (this.querySelector('.day-number')) {
+                    document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+                    this.classList.add('selected');
+                }
+            });
+        });
+    </script>
+   
+   {% endblock %}

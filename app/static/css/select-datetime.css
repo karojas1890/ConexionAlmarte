@@ -1,134 +1,11 @@
-* {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #7fb3d3 0%, #5f9ea0 100%);
-           width: 100%;
-            color: #333;
-        }
-
-        .container {
-         width: 100%;
-            margin: 0 auto;
-            background: white;
-            
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            background: white;
-            padding: 15px 20px;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo {
-            width: 30px;
-            height: 30px;
-            background:url('/static/images/logo.png') no-repeat center  ;
-            background-size: contain;
-        }
-
-        .app-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .app-subtitle {
-            font-size: 14px;
-            color: #5f9ea0;
-            margin: 0;
-        }
-
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .user-name {
-            font-size: 14px;
-            color: #5f9ea0;
-            font-weight: 500;
-        }
-
-        .progress-section {
-            background: #e8f4f8;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .progress-title {
-            font-size: 16px;
-            color: #5f9ea0;
-            margin-bottom: 15px;
-        }
-
-        .progress-steps {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .step {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .step.completed {
-            background: #5f9ea0;
-            color: white;
-        }
-
-        .step.active {
-            background: #5f9ea0;
-            color: white;
-        }
-
-        .step.inactive {
-            background: white;
-            color: #5f9ea0;
-            border: 2px solid #5f9ea0;
-        }
-
-        .step-arrow {
-            color: #5f9ea0;
-            font-size: 18px;
-        }
 
         .main-content {
+            flex: 1;
+            padding: 30px 20px;
+            
+        }
+        
+        .main {
             flex: 1;
             background: linear-gradient(135deg, #7fb3d3 0%, #5f9ea0 100%);
             padding: 30px 20px;
@@ -163,6 +40,8 @@
 
         .date-section {
             margin-bottom: 30px;
+            overflow: auto;
+            height: 600px;
         }
 
         .date-title {
@@ -264,94 +143,13 @@
             cursor: not-allowed;
         }
 
-        .bottom-nav {
-            background: white;
-            padding: 15px 0;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            text-decoration: none;
-            color: #666;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .nav-item.active {
-            color: #5f9ea0;
-        }
-
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-            background: #666;
-            border-radius: 3px;
-        }
-
-        .nav-item.active .nav-icon {
-            filter: brightness(0) saturate(100%) invert(45%) sepia(15%) saturate(1500%) hue-rotate(155deg) brightness(95%) contrast(85%);
-        }
+       
 
         /* Desktop Styles */
         @media (min-width: 1024px) {
-            .container {
-                max-width: 800px;
-                margin: 20px auto;
-                border-radius: 20px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-                min-height: calc(100vh - 40px);
-            }
+           
 
-            .header {
-                padding: 25px 40px;
-                border-radius: 20px 20px 0 0;
-            }
-
-            .logo {
-                width: 60px;
-                height: 60px;
-            }
-
-            .app-title {
-                font-size: 24px;
-            }
-
-            .app-subtitle {
-                font-size: 18px;
-            }
-
-            .user-name {
-                font-size: 18px;
-            }
-
-            .user-avatar {
-                width: 50px;
-                height: 50px;
-            }
-
-            .progress-section {
-                padding: 30px 40px;
-            }
-
-            .progress-title {
-                font-size: 24px;
-                margin-bottom: 25px;
-            }
-
-            .step {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-
-            .main-content {
+            .main {
                 padding: 40px;
             }
 

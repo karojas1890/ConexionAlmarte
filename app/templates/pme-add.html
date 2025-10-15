@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+
+{% block title %}Agregar PME{% endblock %}
+
+{% block content %}
+    
+
+    <button class="back-button" onclick="window.history.back()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        volver
+    </button>
+
+    <div class="contentPME">
+        <div class="page-title">Agrega una cuenta de un PME a tu cargo</div>
+
+        <div class="form-container">
+            <form id="pmeForm">
+                <div class="form-group">
+                    <label for="name">Nombre de la persona menor de edad</label>
+                    <input type="text" id="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstName">Primer apellido</label>
+                    <input type="text" id="firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="secondName">Segundo apellido</label>
+                    <input type="text" id="secondName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="identification">Identificación</label>
+                    <input type="text" id="identification" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthdate">Fecha de nacimiento</label>
+                    <input type="date" id="birthdate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="academicLevel">Nivel académico</label>
+                    <select id="academicLevel" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="preescolar">Preescolar</option>
+                        <option value="primaria">Primaria</option>
+                        <option value="secundaria">Secundaria</option>
+                        <option value="bachillerato">Bachillerato</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="school">Centro educativo</label>
+                    <input type="text" id="school" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="relationship">Relación con la PME</label>
+                    <select id="relationship" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="padre">Padre</option>
+                        <option value="madre">Madre</option>
+                        <option value="tutor">Tutor legal</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-save">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Agregar nueva cuenta
+                    </button>
+                    <button type="button" class="btn btn-cancel" onclick="window.history.back()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+   
+
+    <script src="{{ url_for('static', filename='js/pme-add.js') }}"></script>
+{% endblock %}

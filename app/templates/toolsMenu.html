@@ -1,32 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conexion-Herramientas</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/toolsStyle.css') }}"  >
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="logo-section">
-                <div class="logo"></div>
-                <div>
-                    <div class="app-title">Conexión Almarte</div>
-                    <div class="app-subtitle">Herramientas</div>
-                </div>
-            </div>
-            <div class="user-section">
-                <div class="user-name">Mauricio Acuna</div>
-                <div class="user-avatar">👤</div>
-                <div style="color: #5f9ea0; font-size: 18px;">⋮</div>
-            </div>
-        </div>
+{% extends "layout.html" %}
 
-        <div class="main-content">
-            <div class="section-title">Mis herramientas</div>
-            <div class="section-subtitle">Recomendaciones de salud mental sugeridas por tu terapeuta</div>
+{% block title %}Herramientas{% endblock %}
+
+{% block content %}
+    
+    
+
+        <div class="main-contentTools">
+            <div class="section-titleTools">Mis herramientas</div>
+            <div class="section-subtitleTools">Recomendaciones de salud mental sugeridas por tu terapeuta</div>
 
             <div class="tool-card" onclick="openToolDetail()">
                 <div class="tool-image"></div>
@@ -42,38 +24,12 @@
             </div>
         </div>
 
-         <div class="bottom-nav">
-            <a href="{{ url_for('routes.dashboard') }}" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Inicio</span>
-            </a>
-            <a href="{{ url_for('routes.select_Service') }}" class="nav-item active">
-                <div class="nav-icon"></div>
-                <span>Citas</span>
-            </a>
-            <a href="{{url_for('routes.tools_Menu')}}" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Herramientas</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Diario</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>PME</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Perfil</span>
-            </a>
-        </div>
-    </div>
-
-    <script>
-        function openToolDetail() {
+       <script>
+          function openToolDetail() {
            window.location.href = "{{ url_for('routes.tools_details') }}";
         }
-    </script>
-</body>
-</html>
+       </script>
+
+    <!-- <script src="{{ url_for('static', filename='js/tools-menu.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
+{% endblock %}

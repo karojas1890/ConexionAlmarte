@@ -1,0 +1,20 @@
+# importa todos los modelos
+from .user import Usuario
+from .consultante import Consultante
+from .PME import PME
+from .Terapeuta import Terapeuta
+from .Servicio import Servicios
+from .Disponibilidad import Disponibilidad
+from .Cita import Citas
+from .MetodoPago import MetodosPago
+from .PagoCita import PagosCita
+from .CategoriaRecomendacion import CategoriasRecomendaciones
+from .RecomendacionTerapeutica import RecomendacionesTerapeuticas
+from .RecomendacionPaciente import RecomendacionPaciente
+from .RegistroAplicacionRecomendacion import RegistroAplicacionRecomendacion
+from .RecursoApoyo import RecursosApoyo
+from .Emocion import Emociones
+from .ConductaAfrontamiento import ConductasAfrontamiento
+from .Diario import Diario
+
+

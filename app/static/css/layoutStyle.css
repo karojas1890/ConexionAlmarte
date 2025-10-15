@@ -1,0 +1,185 @@
+
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+             
+        }
+
+        body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: large;
+        background: linear-gradient(135deg, #4a9b9b 0%, #2d7a7a 100%);
+        min-height: 100vh;
+        padding-bottom: 80px;
+        font-size: 1rem;    
+        }
+         
+        .header {
+            border-radius: 0 !important;
+            background: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo {
+            width: 50px !important;
+            height: 50px !important;
+            background:url('/static/images/logo.png') no-repeat center  ;
+            background-size: contain;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 1;
+        }
+
+        .logo-subtitle {
+            font-size: 14px;
+            color: #6366f1;
+        }
+
+        
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e5e7eb;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #5b8a9d;
+        }
+.progress-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .step.completed {
+            background: #5f9ea0;
+            color: white;
+        }
+
+        .step.active {
+            background: #5f9ea0;
+            color: white;
+        }
+
+        .step.inactive {
+            background: white;
+            color: #5f9ea0;
+            border: 2px solid #5f9ea0;
+        }
+
+        .step-arrow {
+            color: #5f9ea0;
+            font-size: 18px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            font-size: 16px;
+            color: #5a9b9b;
+            margin-right: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 18px;
+        }
+        
+.logout-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+             border-radius: 0 !important;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            text-decoration: none;
+            color: #6b7280;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: #5b8a9d;
+        }
+
+        .nav-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
