@@ -46,10 +46,12 @@ def create_app():
     from .controllers.diaryController import diary_bp
     from .controllers.toolsController import tools_bp
     from .controllers.perfilController import perfil_bp
+    from .controllers.disponibilidadController import availability_bp
     app.register_blueprint(routes_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(citas_bp)
     app.register_blueprint(diary_bp)
     app.register_blueprint(tools_bp)
     app.register_blueprint(perfil_bp)
+    app.register_blueprint(availability_bp)
     return app

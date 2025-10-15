@@ -70,7 +70,7 @@ def ObtenerDisponibilidad():
                for row in result
                if row.estado == 1
         ]
-
+        print(data)
         return jsonify(data)
 
     except Exception as e:
@@ -102,9 +102,6 @@ def Servicios():
         return jsonify({"error": str(e)}), 500
     
     
-from sqlalchemy import text
-from flask import jsonify, session
-from app.extensions import db
 
 @citas_bp.route("/pendientes", methods=['GET'])
 def CitasPendientes():

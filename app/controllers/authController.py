@@ -33,10 +33,10 @@ def login():
         session["nombre"] = user_data.nombre
         session["apellido1"] = user_data.apellido1
         session["correo"]=user_data.correo
-
+        session["idterapeuta"]=user_data.identificacion_terapeuta
         # Si el usuario es consultante, guarda también datos del terapeuta
         if user_data.tipo == 1:  # 1 = Consultante
-            session["idterapeuta"]=user_data.identificacion_terapeuta
+            
             session["terapeuta_nombre"] = user_data.terapeuta_nombre
             session["terapeuta_apellido1"] = user_data.terapeuta_apellido1
             session["terapeuta_apellido2"] = user_data.terapeuta_apellido2
