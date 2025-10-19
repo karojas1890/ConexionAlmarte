@@ -62,7 +62,7 @@ def GuardarUso():
 
         # se crea una instancia para  validar el modelo 
         registro = RegistroAplicacionRecomendacion(
-            recomendacionaplicada = data.get("recomendacionAplicada"),
+            recomendacionaplicada = data.get("idasignacion"),
             efectividad = data.get("efectividad"),
             animoantes = data.get("animoAntes"),
             animodespues = data.get("animoDespues"),
@@ -77,7 +77,7 @@ def GuardarUso():
         sql = text("""
             CALL insertarRegistroHerramienta(
                 :p_idUsuario,
-                :p_recomendacionAplicada,
+                :p_idasignacion,
                 :p_efectividad,
                 :p_animoAntes,
                 :p_animoDespues,
@@ -89,7 +89,7 @@ def GuardarUso():
 
         params = {
             "p_idUsuario": id_usuario,
-            "p_recomendacionAplicada": registro.recomendacionaplicada,
+            "p_idasignacion": registro.recomendacionaplicada,
             "p_efectividad": registro.efectividad,
             "p_animoAntes": registro.animoantes,
             "p_animoDespues": registro.animodespues,
@@ -148,7 +148,7 @@ def ObtenerHistorialHerramientas():
         if not id_usuario:
             return jsonify({"error": "Usuario no logueado"}), 401
 
-        # Llamamos a la función SQL ajustando el nombre de la columna de categoría
+        # Llamamos a la función SQL
         sql = text("SELECT * FROM obtenerRegistrosAplicacion(:p_idusuario)")
         result = db.session.execute(sql, {"p_idusuario": id_usuario})
 
@@ -156,7 +156,7 @@ def ObtenerHistorialHerramientas():
         for row in result:
             registros.append({
                 "idregistro": row._mapping["idregistro"],
-                "recomendacionaplicada": row._mapping["recomendacionaplicada"],
+                "idasignacion": row._mapping["idasignacion"],  # 🔹 aquí usamos el nombre correcto
                 "efectividad": row._mapping["efectividad"],
                 "animoantes": row._mapping["animoantes"],
                 "animodespues": row._mapping["animodespues"],
@@ -168,10 +168,9 @@ def ObtenerHistorialHerramientas():
                 "nombrecategoria": row._mapping["nombrecategoria"]
             })
 
-        
         return jsonify(registros), 200
 
     except Exception as e:
         print("Error al obtener historial de herramientas:", e)
         return jsonify({"error": str(e)}), 500
-    
+

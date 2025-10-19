@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify,url_for,session
 from app.extensions import db
+from app.Service.EmailService import emailService
+from app.models.Disponibilidad import Disponibilidad
 from sqlalchemy import text
-citas_bp = Blueprint("Citas", __name__)
+citas_bp = Blueprint("Citas", __name__,url_prefix='/citas')
 
 @citas_bp.route("/citas", methods=["POST"])
 def CrearCita():
@@ -35,7 +37,30 @@ def CrearCita():
             "estado": estado
         })
         db.session.commit()
+        
+        disponibilidad = db.session.query(Disponibilidad).filter_by(
+            iddisponibilidad=data["iddisponibilidad"]
+        ).first()
 
+        if not disponibilidad:
+            return jsonify({"message": "Cita creada, pero no se encontró la disponibilidad."}), 201
+
+        
+        correo = data.get("correo_terapeuta")  
+        paciente = data.get("nombre")  
+        fecha = f"{disponibilidad.fecha} de {disponibilidad.horainicio} a {disponibilidad.horafin}"
+         
+        
+        terapeuta = disponibilidad.terapeuta_rel
+        if not terapeuta:
+            return jsonify({"message": "Cita creada, pero no se encontró el terapeuta asociado."}), 201
+
+        if correo:
+            emailService.SendNewAppointment(
+                mail='ma129418@gmail.com',
+                pacient=paciente,
+                date=fecha
+            )
         return jsonify({
             "message": "Cita creada exitosamente",
             "cita": {
@@ -49,6 +74,7 @@ def CrearCita():
 
     except Exception as e:
         db.session.rollback()
+        print(e)
         return jsonify({"error": str(e)}), 500
     
     
@@ -70,12 +96,12 @@ def ObtenerDisponibilidad():
                for row in result
                if row.estado == 1
         ]
-        print(data)
+     
         return jsonify(data)
 
     except Exception as e:
         
-        print("Error en obtener_disponibilidad:", e)
+        
         return jsonify({"error": str(e)}), 500
 @citas_bp.route("/servicios", methods=['GET'])
 def Servicios():

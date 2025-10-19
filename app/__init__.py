@@ -2,6 +2,7 @@
 from flask import Flask
 from app.extensions import db
 import os
+from config import EMAIL_SETTINGS
 from app.models import (
     Usuario, Consultante, PME, Terapeuta, Servicio, Disponibilidad, 
     Cita, MetodoPago, PagoCita, CategoriaRecomendacion, 
@@ -9,6 +10,9 @@ from app.models import (
     RegistroAplicacionRecomendacion, RecursoApoyo, Emocion, 
     ConductaAfrontamiento, Diario
 )
+
+
+from app.Service import email_service 
 def create_app():
     app = Flask(__name__)
 
@@ -37,7 +41,9 @@ def create_app():
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     # Importa los modelos 
    
-  
+    app.config['EMAIL_SETTINGS'] = EMAIL_SETTINGS
+    email_service.init_app(app)
+
 
     # Registra el blueprints
     from .controllers.citaController import citas_bp

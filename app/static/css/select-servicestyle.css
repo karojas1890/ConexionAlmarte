@@ -112,15 +112,11 @@
         
 
         /* Desktop Styles */
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 800px;
-                margin: 20px auto;
-                border-radius: 20px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-                min-height: calc(100vh - 40px);
-            }
-
+        @media (max-width: 619px) {
+            
+            .main-content {
+                  padding: 2px 2px; 
+           }
             .header {
                 padding: 25px 40px;
                 border-radius: 20px 20px 0 0;
@@ -163,10 +159,8 @@
                 font-size: 20px;
             }
 
-            .main-content {
-                padding: 40px;
-            }
-
+            
+            
             .section-title {
                 font-size: 28px;
                 margin-bottom: 15px;
@@ -178,35 +172,37 @@
             }
 
             .services-container {
-                padding: 30px;
-                border-radius: 15px;
-            }
+        padding: 10px;
+        margin: 10px 0;
+        height: auto ;
+        max-height: 85vh; 
+        padding: 5px 5px; 
+    }
 
-            .service-item {
-                padding: 25px;
-                border-radius: 12px;
-                margin-bottom: 15px;
-            }
+    .service-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px;
+        gap: 8px;
+    }
 
-            .service-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 28px;
-            }
+    .service-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
 
-            .service-details h3 {
-                font-size: 18px;
-                margin-bottom: 8px;
-            }
+    .service-details h3 {
+        font-size: 14px;
+    }
 
-            .service-details p {
-                font-size: 16px;
-                margin-bottom: 5px;
-            }
+    .service-details p {
+        font-size: 12px;
+    }
 
-            .service-price {
-                font-size: 18px;
-            }
+    .service-price {
+        font-size: 14px;
+    }
 
             
         }
