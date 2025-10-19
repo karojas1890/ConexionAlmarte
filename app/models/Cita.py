@@ -13,5 +13,5 @@ class Citas(db.Model):
     pago = Column(Integer, default=1)   
 
     consultante_Cita = relationship("Consultante")
-    servicio_Cita= relationship("Servicios")
+    servicio_Cita= relationship("servicios")
     disponibilidad_Cita = relationship("Disponibilidad")

@@ -3,52 +3,72 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from flask import current_app
 
-class emailService:
-    def __init__(self, app=None):
-        if app:
-            self.init_app(app)
+class EmailService:
+    def __init__(self):
     
+        self.smtp_server = None
+        self.smtp_port = None
+        self.sender_email = None
+        self.sender_password = None
+
     def init_app(self, app):
-        self.smtp_server = app.config['EMAIL_SETTINGS']['SMTP_SERVER']
-        self.smtp_port = app.config['EMAIL_SETTINGS']['SMTP_PORT']
-        self.sender_email = app.config['EMAIL_SETTINGS']['SENDER_EMAIL']
-        self.sender_password = app.config['EMAIL_SETTINGS']['SENDER_PASSWORD']
+       
+        settings = app.config.get("EMAIL_SETTINGS")
+        
+
+        self.smtp_server = settings.get("SMTP_SERVER")
+        self.smtp_port = settings.get("SMTP_PORT")
+        self.sender_email = settings.get("SENDER_EMAIL")
+        self.sender_password = settings.get("SENDER_PASSWORD")
+
+        
 
     def send_email(self, to_email, subject, html_body):
-        msg = MIMEMultipart()
-        msg['From'] = self.sender_email
-        msg['To'] = to_email
-        msg['Subject'] = subject
-        msg.attach(MIMEText(html_body, 'html'))
-
-        with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-            server.starttls()
-            server.login(self.sender_email, self.sender_password)
-            server.send_message(msg)
-
+        try:
+            
+            msg = MIMEMultipart()
+            msg["From"] = self.sender_email
+            msg["To"] = to_email
+            msg["Subject"] = subject
+            msg.attach(MIMEText(html_body, "html"))
+        except Exception as ex:
+            print(ex)
+        try:
+            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+                server.ehlo()           
+                server.starttls()        
+                server.ehlo()           
+                server.login(self.sender_email, self.sender_password)
+                server.send_message(msg)
+            
+        except Exception as e:
+            print(f"[ERROR] Error enviando correo: {e}")
     #  template para cita
-    def SendNewAppointment(self, mail, pacient, date):
+    def SendNewAppointment(self, mail, pacient, date, nombreServicio):
+      try:
         subject = "Nueva cita agendada - Conexion"
         html = f"""
     <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
         <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
             
-            <img  
-                 alt="Logo JOKAVE" 
+            <img 
+                 alt="Logo Conexion" 
                  style="max-width: 150px; margin-bottom: 20px;" />
             
             <h2 style="color: #333; margin-bottom: 10px;">¡Nueva cita agendada!</h2>
             <p style="font-size: 16px; color: #555; margin-bottom: 5px;">Paciente: <b>{pacient}</b></p>
             <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Fecha/Hora: <b>{date}</b></p>
+            <p style="font-size: 16px; color: #555; margin-bottom: 5px;">Tipo de Servicio: <b>{nombreServicio}</b></p>
             
-            
-            <a href="#" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Ver Citas</a>
-            
+              
         </div>
     </div>
     """
         self.send_email(mail, subject, html)
-
+        
+      except Exception as e:
+          print (e)
+          
 
     # Template para nuevo usuario
     def send_new_user(self, email, username, password):

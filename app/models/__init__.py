@@ -3,7 +3,7 @@ from .user import Usuario
 from .consultante import Consultante
 from .PME import PME
 from .Terapeuta import Terapeuta
-from .Servicio import Servicios
+from .Servicio import servicios
 from .Disponibilidad import Disponibilidad
 from .Cita import Citas
 from .MetodoPago import MetodosPago

@@ -1,51 +1,50 @@
-
 from flask import Flask
 from app.extensions import db
 import os
-from config import EMAIL_SETTINGS
+
 from app.models import (
-    Usuario, Consultante, PME, Terapeuta, Servicio, Disponibilidad, 
-    Cita, MetodoPago, PagoCita, CategoriaRecomendacion, 
-    RecomendacionTerapeutica, RecomendacionPaciente, 
-    RegistroAplicacionRecomendacion, RecursoApoyo, Emocion, 
+    Usuario, Consultante, PME, Terapeuta, Servicio, Disponibilidad,
+    Cita, MetodoPago, PagoCita, CategoriaRecomendacion,
+    RecomendacionTerapeutica, RecomendacionPaciente,
+    RegistroAplicacionRecomendacion, RecursoApoyo, Emocion,
     ConductaAfrontamiento, Diario
 )
 
+from app.Service import email_service  
+from config import EMAIL_SETTINGS
 
-from app.Service import email_service 
+
 def create_app():
     app = Flask(__name__)
 
-
-     # string de conexion
+    #  Configuración de base de datos
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
         "DATABASE_URL",
         "postgresql://almarte:rfBfAn8FgBijU1U9k6GJVzgNepBxmrUt@dpg-d3m2mt8gjchc73cr1m1g-a.oregon-postgres.render.com/conexion_almarte"
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-  
+    #  Clave secreta para sesiones
+    app.secret_key = os.getenv(
+        "SECRET_KEY",
+        "9a8c7e4f1d2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d"
+    )
 
-#esta clave es para cifrar las cookies es inventada 
-    app.secret_key = os.getenv("SECRET_KEY", "9a8c7e4f1d2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d")
-
-    # Inicializa la DB
+    #  Inicializa la base de datos
     db.init_app(app)
-    # PARA EL PROTOCOLO HTTPS
-    app.config['SESSION_COOKIE_SECURE'] = True  
 
-    # Permite que la cookie funcione en navegadores mOviles
-    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  
+    # Seguridad de cookies
+    app.config["SESSION_COOKIE_SECURE"] = True
+    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+    app.config["SESSION_COOKIE_HTTPONLY"] = True
 
-    # Evita que JS externo manipule la cookie
-    app.config['SESSION_COOKIE_HTTPONLY'] = True
-    # Importa los modelos 
-   
-    app.config['EMAIL_SETTINGS'] = EMAIL_SETTINGS
-    email_service.init_app(app)
+    #  Configuración del servicio de correo
+    app.config["EMAIL_SETTINGS"] = EMAIL_SETTINGS
+    email_service.init_app(app) 
 
+    
 
-    # Registra el blueprints
+    #  Registra los blueprints
     from .controllers.citaController import citas_bp
     from .controllers.routes import routes_bp
     from .controllers.authController import auth_bp
@@ -53,6 +52,7 @@ def create_app():
     from .controllers.toolsController import tools_bp
     from .controllers.perfilController import perfil_bp
     from .controllers.disponibilidadController import availability_bp
+
     app.register_blueprint(routes_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(citas_bp)
@@ -60,4 +60,5 @@ def create_app():
     app.register_blueprint(tools_bp)
     app.register_blueprint(perfil_bp)
     app.register_blueprint(availability_bp)
+
     return app

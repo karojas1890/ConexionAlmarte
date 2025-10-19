@@ -1,9 +1,12 @@
 from flask import Blueprint, request, jsonify,url_for,session
 from app.extensions import db
-from app.Service.EmailService import emailService
+from app.Service.EmailService import EmailService
 from app.models.Disponibilidad import Disponibilidad
+from app.models.Servicio import servicios
 from sqlalchemy import text
+from app.Service import email_service   
 citas_bp = Blueprint("Citas", __name__,url_prefix='/citas')
+
 
 @citas_bp.route("/citas", methods=["POST"])
 def CrearCita():
@@ -42,25 +45,36 @@ def CrearCita():
             iddisponibilidad=data["iddisponibilidad"]
         ).first()
 
+        
+        servicio = db.session.query(servicios).filter_by(
+            idservicio=data["servicio"]
+        ).first()
+        
         if not disponibilidad:
             return jsonify({"message": "Cita creada, pero no se encontró la disponibilidad."}), 201
-
         
-        correo = data.get("correo_terapeuta")  
-        paciente = data.get("nombre")  
+        if not servicio:
+            return jsonify({"message": "Servicio no encontrado."}), 404
+
+        nombreservicio = servicio.nombreservicio
+        
+        correo = session.get("correo_terapeuta")  
+        paciente = session.get("nombre")  
         fecha = f"{disponibilidad.fecha} de {disponibilidad.horainicio} a {disponibilidad.horafin}"
-         
+        print(paciente)
         
         terapeuta = disponibilidad.terapeuta_rel
         if not terapeuta:
             return jsonify({"message": "Cita creada, pero no se encontró el terapeuta asociado."}), 201
 
-        if correo:
-            emailService.SendNewAppointment(
-                mail='ma129418@gmail.com',
+       
+        email_service.SendNewAppointment(
+                mail=correo ,
                 pacient=paciente,
-                date=fecha
+                date=fecha,
+                nombreServicio=nombreservicio
             )
+       
         return jsonify({
             "message": "Cita creada exitosamente",
             "cita": {

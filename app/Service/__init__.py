@@ -1,3 +1,4 @@
-from .EmailService import emailService
+from .EmailService import EmailService
 
-email_service = emailService()
+
+email_service = EmailService()
