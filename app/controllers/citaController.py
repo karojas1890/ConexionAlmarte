@@ -74,6 +74,16 @@ def CrearCita():
                 date=fecha,
                 nombreServicio=nombreservicio
             )
+        cp=session.get("correo")
+        terapeuta=session.get("terapeuta_nombre")
+        apellido=session.get("terapeuta_apellido1")
+        email_service.SendNewAppointmentPacient(
+                mail=cp ,
+                pacient=paciente,
+                date=fecha,
+                nombreServicio=nombreservicio,
+                nombreTerapeuta=terapeuta + apellido
+            )
        
         return jsonify({
             "message": "Cita creada exitosamente",

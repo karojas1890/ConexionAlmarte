@@ -74,7 +74,15 @@
             </button>
         </div>
 
-      
+      <div id="calendarModal" class="modal-overlay hidden">
+  <div class="modal-content">
+    <h3>¿Deseas agregar esta cita a tu calendario?</h3>
+    <div class="modal-buttons">
+      <button id="btnSiCalendario" class="btn-yes">Sí</button>
+      <button id="btnNoCalendario" class="btn-no">No</button>
+    </div>
+  </div>
+</div>
     </main>
 
     <script src="{{ url_for('static', filename='js/payment-summary.js') }}"></script>
@@ -97,6 +105,67 @@
     }
 
     const dashboardUrl = "{{ url_for('routes.dashboard_Consultante') }}";
+    function convertirFechaISO(fechaTexto) {
+    // Mapa de meses
+    const meses = {
+        "enero": 0, "febrero": 1, "marzo": 2, "abril": 3, "mayo": 4, "junio": 5,
+        "julio": 6, "agosto": 7, "septiembre": 8, "octubre": 9, "noviembre": 10, "diciembre": 11
+    };
+
+    try {
+        // Acepta formatos como "lunes 25 de octubre de 2025" o "25 de octubre de 2025"
+        const partes = fechaTexto.toLowerCase().split(" ");
+        let dia, mes, año;
+
+        if (partes.length === 6) { // ejemplo: lunes 25 de octubre de 2025
+            dia = parseInt(partes[1]);
+            mes = meses[partes[3]];
+            año = parseInt(partes[5]);
+        } else if (partes.length === 4) { // ejemplo: 25 de octubre de 2025
+            dia = parseInt(partes[0]);
+            mes = meses[partes[2]];
+            año = parseInt(partes[3]);
+        } else {
+            throw new Error("Formato no reconocido");
+        }
+
+        const fecha = new Date(año, mes, dia);
+        const yyyy = fecha.getFullYear();
+        const mm = String(fecha.getMonth() + 1).padStart(2, "0");
+        const dd = String(fecha.getDate()).padStart(2, "0");
+
+        return `${yyyy}${mm}${dd}`;
+    } catch (error) {
+        console.error("Error al convertir fecha:", fechaTexto, error);
+        return null;
+    }
+}
+
+
+function formatearHoraICS(horaTexto) {
+    // Acepta "08:30" o "8:30"
+    const [h, m] = horaTexto.split(":").map(x => parseInt(x));
+    return `${String(h).padStart(2, "0")}${String(m).padStart(2, "0")}00`;
+}
+
+const fechaSeleccionada = document.querySelector(".date-option.selected").dataset.fecha;
+
+// Buscar el horario completo
+const horario = JSON.parse(localStorage.getItem("horariosSeleccionados") || "{}")[idDisponibilidad];
+
+// Guardar fecha y horas originales (por si se usan en otra parte)
+localStorage.setItem("fechaCalendario", fechaSeleccionada);
+localStorage.setItem("horaInicioCalendario", horario.hora_inicio);
+localStorage.setItem("horaFinCalendario", horario.hora_fin);
+
+// Convertir formato de fecha y hora al estándar .ics (YYYYMMDDTHHmmss)
+const fechaISO = convertirFechaISO(fechaSeleccionada);
+const horaInicioISO = formatearHoraICS(horario.hora_inicio);
+const horaFinISO = formatearHoraICS(horario.hora_fin);
+
+// Guardar versión formateada para ICS
+localStorage.setItem("fechaInicioICS", `${fechaISO}T${horaInicioISO}`);
+localStorage.setItem("fechaFinICS", `${fechaISO}T${horaFinISO}`);
 
     function continueToPaymentForm() {
         // Tomar todos los datos del localStorage
@@ -132,7 +201,14 @@
                 if (data.error) {
                     alert("Error: " + data.error);
                 } else {
-                    showConfirmation();
+                    const fechaISO = convertirFechaISO(data.fecha);
+                    localStorage.setItem("fechaCalendario", fechaISO);
+                    localStorage.setItem("horaInicioCalendario", data.hora_inicio);
+                    localStorage.setItem("horaFinCalendario", data.hora_fin);
+
+                    mostrarModalCalendario();
+                    
+                    
                 }
             })
             .catch(err => console.error("Error al crear cita:", err));

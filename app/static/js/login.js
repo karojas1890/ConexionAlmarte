@@ -27,9 +27,12 @@ function createInstallButton() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;//esto hace que sepa si el usuario acepto o rechazo
-               //limpia el evento para evitar ser reutilizado
+               
+                //limpia el evento para evitar ser reutilizado
                 deferredPrompt = null;
+                window.location.reload();
             }
         });
+       
     }
 }

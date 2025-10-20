@@ -69,7 +69,33 @@ class EmailService:
       except Exception as e:
           print (e)
           
-
+    def SendNewAppointmentPacient(self, mail, pacient, date, nombreServicio,nombreTerapeuta):
+      try:
+        subject = "Confirmación de cita. - Conexion"
+        html = f"""
+    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
+        <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            
+            <img 
+                 alt="Logo Conexion" 
+                 style="max-width: 150px; margin-bottom: 20px;" />
+            
+            <h2 style="color: #333; margin-bottom: 10px;">Gracias por confiar en los servicios de AlmarteCR</h2>
+            <p style="font-size: 16px; color: #555; margin-bottom: 5px;">Hola: <b>{pacient}</b></p>
+            <p style="font-size: 16px; color: #555; margin-bottom: 5px;">Su cita en: <b>{nombreServicio}</b></p>
+            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Es el: <b>{date}</b></p>
+            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Con la Licda: <b>{nombreTerapeuta}</b></p>
+            
+            
+              
+        </div>
+    </div>
+    """
+        self.send_email(mail, subject, html)
+        
+      except Exception as e:
+          print (e)
+          
     # Template para nuevo usuario
     def send_new_user(self, email, username, password):
         subject = "Datos de acceso"

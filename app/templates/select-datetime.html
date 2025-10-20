@@ -100,6 +100,12 @@ function renderDisponibilidad(data) {
     const fechas = {};
     data.forEach(d => {
         if (d.estado !== 1) return; // Solo disponibles
+
+       
+        d.fechaCalendario = d.fecha;            
+        d.horaInicioCalendario = d.hora_inicio; 
+        d.horaFinCalendario = d.hora_fin;       
+
         if (!fechas[d.fecha]) fechas[d.fecha] = [];
         fechas[d.fecha].push(d);
     });
@@ -109,20 +115,20 @@ function renderDisponibilidad(data) {
 
     const fechasArray = Object.keys(fechas).sort();
 
-    // Crea los botones de fecha
+    // Crear botones de fecha
     fechasArray.forEach((fecha, i) => {
-    const div = document.createElement("div");
-    div.className = "date-option" + (i === 0 ? " selected" : "");
-    div.dataset.fecha = fecha; // <-- clave para guardar en ISO
-    div.textContent = new Date(fecha).toLocaleDateString("es-ES", {
-        weekday: "short",
-        day: "numeric",
-        month: "long"
-    });
+        const div = document.createElement("div");
+        div.className = "date-option" + (i === 0 ? " selected" : "");
+        div.dataset.fecha = fecha;
+        div.textContent = new Date(fecha).toLocaleDateString("es-ES", {
+            weekday: "short",
+            day: "numeric",
+            month: "long"
+        });
 
-    div.addEventListener("click", () => selectDate(div, fechas[fecha]));
-    dateGrid.appendChild(div);
-});
+        div.addEventListener("click", () => selectDate(div, fechas[fecha]));
+        dateGrid.appendChild(div);
+    });
 
     // Mostrar horas del primer día por defecto
     if (fechasArray.length > 0) renderHoras(fechas[fechasArray[0]]);
@@ -155,6 +161,8 @@ function selectTime(element, idDisponibilidad) {
 
     // Guardar la disponibilidad seleccionada
     localStorage.setItem("idDisponibilidadSeleccionada", idDisponibilidad);
+    
+    
 }
 
     </script>

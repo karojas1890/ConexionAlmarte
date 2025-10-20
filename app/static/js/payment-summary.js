@@ -6,17 +6,6 @@
             window.location.href = goBackURl ;
         }
 
-        // function continueToPaymentForm(button) {
-        //     const selectedPayment = document.querySelector('.payment-option.selected .payment-text')?.textContent;
-        //     localStorage.setItem('selectedPayment', selectedPayment);
-        //     const paymentforUrl = button.getAttribute('data-url');
-        //     // If credit card is selected, go to payment form, otherwise show confirmation
-        //     if (selectedPayment === 'Tarjeta de crédito o débito') {
-        //         window.location.href = paymentforUrl;
-        //     } else {
-        //         showConfirmation();
-        //     }
-        // }
 
         function showConfirmation() {
     // Tomar datos del localStorage
@@ -80,3 +69,65 @@
 if (selectedTime) timeText.textContent = selectedTime;
 });
 
+function mostrarModalCalendario() {
+    const modal = document.getElementById("calendarModal");
+    modal.classList.remove("hidden");
+
+    document.getElementById("btnSiCalendario").onclick = () => {
+        modal.classList.add("hidden");
+        agregarCitaAlCalendario(); 
+        setTimeout(() => {
+        showConfirmation();
+    }, 1000);       
+    };
+
+    document.getElementById("btnNoCalendario").onclick = () => {
+        modal.classList.add("hidden");
+        showConfirmation();       
+    };
+}
+
+
+
+function agregarCitaAlCalendario() {
+  const selectedDate = localStorage.getItem("fechaInicioICS");
+  const selectedTime = localStorage.getItem("fechaFinICS");
+  const selectedServiceName = localStorage.getItem("selectedServiceName");
+
+  //console.log({ selectedDate, selectedTime, selectedServiceName });
+
+//   if (!selectedDate || !selectedTime || !selectedServiceName) {
+//     alert("No hay datos suficientes para agregar la cita.");
+//     return;
+//   }
+
+  const start = new Date(`${selectedDate}T${selectedTime}`);
+  if (isNaN(start.getTime())) {
+    console.error("Fecha inválida:", selectedDate, selectedTime);
+    alert("No se pudo generar la cita por formato de fecha/hora incorrecto.");
+    return;
+  }
+
+  const end = new Date(start.getTime() + 30 * 60000);
+
+  const eventoICS = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Conexion//Agenda//ES
+BEGIN:VEVENT
+SUMMARY:${selectedServiceName}
+DTSTART:${start.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTEND:${end.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DESCRIPTION:Cita agendada en tu calendario
+END:VEVENT
+END:VCALENDAR
+  `.trim();
+
+  const blob = new Blob([eventoICS], { type: "text/calendar" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${selectedServiceName}_cita.ics`;
+  a.click();
+  URL.revokeObjectURL(url);
+}

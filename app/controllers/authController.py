@@ -43,7 +43,7 @@ def login():
             session["terapeuta_codigoProfesional"] = user_data.terapeuta_codigoprofesional
 
        
-        print(user_data.nombre)
+       
         return redirect(url_for("routes.verificar_Codigo"))
 
     return render_template("login.html")
