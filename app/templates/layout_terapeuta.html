@@ -9,6 +9,8 @@
    <link rel="stylesheet" href="{{ url_for('static', filename='css/miAgendaStyle.css') }}">
    <link rel="stylesheet" href="{{ url_for('static', filename='css/availabilityStyle.css') }}">
    <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
+
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionarPacientesStyle.css') }}">
    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
@@ -51,6 +53,7 @@
   {% endif %}
 {% endwith %}
         {% block content %}{% endblock %}
+        
       </main>
    
     <div class="bottom-nav">
@@ -81,7 +84,7 @@
                 <span class="nav-label">Disponibilidad</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="{{ url_for('routes.gestionar_pacientes') }}" class="nav-item">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle>

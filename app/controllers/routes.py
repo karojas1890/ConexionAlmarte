@@ -173,7 +173,27 @@ def Availability():
 def QuienEres():
     return render_template("quien-Eres.html")
 
+
+@routes_bp.route("/gestionar_pacientes", endpoint="gestionar_pacientes")
+@rolRequired(2)
+@loginRequired
+def GestionarPacientes():
+    return render_template("gestionarPacientes.html")
+
     
     
-    
+@routes_bp.route("/provincia", endpoint="provincia")
+def Provincia():
+    return send_from_directory(os.path.join(current_app.root_path, 'static'), 'geoBoundaries-CRI-ADM1_simplified.geojson')
+
+@routes_bp.route("/canton", endpoint="canton")
+def Canton():
+    return send_from_directory(os.path.join(current_app.root_path, 'static'), 'geoBoundaries-CRI-ADM2_simplified.geojson')
+
+@routes_bp.route("/distrito", endpoint="distrito")
+def Provincia():
+    return send_from_directory(os.path.join(current_app.root_path, 'static'), 'geoBoundaries-CRI-ADM3_simplified.geojson')
+
+       
+        
     

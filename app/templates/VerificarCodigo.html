@@ -8,8 +8,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/codigo.css') }}" >
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
 </head>
 <body>
+
+
     <div class="background-overlay"></div>
     
     <header class="header">
@@ -17,7 +20,15 @@
     </header>
 
     <main class="main-content">
+       
         <div class="verification-container">
+             {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
             <div class="email-icon">
                 <svg viewBox="0 0 24 24">
                     <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
@@ -26,11 +37,12 @@
             
             <h1 class="verification-title">Código de seguridad</h1>
             
-            <form id="verificationForm">
+            <form method="post" action="{{ url_for('auth.VerificarCodigo') }}" id="verificationForm">
                 <input 
                     type="text" 
                     class="form-input" 
-                    id="securityCode" 
+                    id="codigo" 
+                    name="codigo"
                     placeholder="Ingrese el código"
                     maxlength="6"
                     
@@ -60,16 +72,7 @@
     </footer>
 
     <script>
-        document.getElementById('verificationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const code = document.getElementById('securityCode').value;
-            
-            
-                
-                window.location.href = "{{ dashboard_url }}";
-    
-             
-        });
+       
 
         
         document.getElementById('securityCode').addEventListener('input', function(e) {
@@ -84,5 +87,6 @@
         .catch(err => console.log("Error SW:", err));
     }
     </script>
+    <script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
 </body>
 </html>

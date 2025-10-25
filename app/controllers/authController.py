@@ -1,53 +1,154 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from app.models.user import Usuario
+import requests
 from sqlalchemy import text
 from app import db
-
+import bcrypt
+import random
+from app.Service import email_service
+from datetime import datetime,timedelta
+import os
+RECAPTCHA_SECRET = "6LcqLfcrAAAAAJewaPXE_epE6yyL2L3QM0FDcaji" 
+RECAPTCHA_SITE = "6LcqLfcrAAAAAOruk2qnI2K_osHyEsSpKC7leZlJ" 
 auth_bp = Blueprint("auth", __name__)
 
-#login es el endopoint que vamos a usar en login por ejemplo apra llamar esta funcion
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        
+        
+        
         usuario = request.form.get("usuario")
         password = request.form.get("password")
 
-        # Ejecutar el SP
-        sql = text("SELECT * FROM loginUsuario(:usuario, :password);")
-        result = db.session.execute(sql, {"usuario": usuario, "password": password})
-        user_data = result.fetchone()  
+        # Valida usuario y obtener hash de la contraseña
+        sql_user = text("SELECT idusuario, password, intentos, estado, tipo FROM usuario WHERE usuario=:usuario")
+        result_user = db.session.execute(sql_user, {"usuario": usuario})
+        user = result_user.fetchone()
 
-        if user_data is None:
-            flash("Usuario o contraseña inválidos", "error")
+        if not user:
+            flash("Usuario o password incorrecto inténtelo de nuevo")
             return redirect(url_for("auth.login"))
 
-        # Limpia sesion anterior
+        if user.estado != 1:
+            flash("Usuario bloqueado", "error")
+            return redirect(url_for("auth.login"))
+
+        #  Verifica contrasena con bcrypt
+        if not bcrypt.checkpw(password.encode("utf-8"), user.password.encode("utf-8")):
+            # Incrementar intentos
+            intentos = user.intentos + 1
+            estado = 0 if intentos >= 3 else 1
+            sql_update = text("UPDATE usuario SET intentos=:intentos, estado=:estado WHERE idusuario=:idusuario")
+            db.session.execute(sql_update, {"intentos": intentos, "estado": estado, "idusuario": user.idusuario})
+            db.session.commit()
+
+            if estado == 0:
+                flash("Usuario bloqueado por demasiados intentos fallidos", "error")
+            else:
+                flash("Usuario o password incorrecto inténtelo de nuevo")
+            return redirect(url_for("auth.login"))
+
+        # si la contrasena es correcta  resetea intentos
+        sql_reset = text("UPDATE usuario SET intentos=0 WHERE idusuario=:idusuario")
+        db.session.execute(sql_reset, {"idusuario": user.idusuario})
+        db.session.commit()
+
+        #  limpia la sesion previa
         session.clear()
 
-        # Guardara datos en sesion
+        
+        sql_func = text("SELECT * FROM loginUsuario(:usuario)")
+        result_func = db.session.execute(sql_func, {"usuario": usuario})
+        user_data = result_func.fetchone()
+
+        if not user_data:
+            flash("Error al cargar datos del usuario", "error")
+            return redirect(url_for("auth.login"))
+
+        # Guardar datos en sesión
         session["idusuario"] = user_data.idusuario
         session["usuario"] = usuario
         session["rol"] = user_data.tipo
         session["nombre"] = user_data.nombre
         session["apellido1"] = user_data.apellido1
-        session["correo"]=user_data.correo
-        session["idterapeuta"]=user_data.identificacion_terapeuta
-        # Si el usuario es consultante, guarda también datos del terapeuta
-        if user_data.tipo == 1:  # 1 = Consultante
+        session["correo"] = user_data.correo
+        session["idterapeuta"] = user_data.identificacion_terapeuta
+
+        if user_data.tipo == 1:  # Consultante
             session["correo_terapeuta"] = user_data.correo_terapeuta
             session["terapeuta_nombre"] = user_data.terapeuta_nombre
             session["terapeuta_apellido1"] = user_data.terapeuta_apellido1
             session["terapeuta_apellido2"] = user_data.terapeuta_apellido2
             session["terapeuta_codigoProfesional"] = user_data.terapeuta_codigoprofesional
-
-       
-       
+        SendCode()
         return redirect(url_for("routes.verificar_Codigo"))
+    print("=== DEBUG SITE KEY ===", RECAPTCHA_SITE)
+    return render_template("login.html", recaptcha_site_key=RECAPTCHA_SITE)
 
-    return render_template("login.html")
 
+
+def GenerarCodigo():
+    return "{:06d}".format(random.randint(0, 999999))
+
+
+
+
+def SendCode():
+    code=GenerarCodigo()
+    
+    sql_update = text("""
+        UPDATE usuario 
+        SET codigo6digitos=:codigo, codigo_expiracion=:exp
+        WHERE idusuario=:idusuario
+    """)
+    
+    expiracion = datetime.utcnow() + timedelta(seconds=60)
+    db.session.execute(sql_update, {"codigo": code, "exp": expiracion, "idusuario": session["idusuario"]})
+    db.session.commit()
+    
+    email=session.get("correo")
+    nombre=session.get("nombre")
+    email_service.SendVerificationCode(email=email,username=nombre,code=code)
+    
+
+@auth_bp.route("/verificar_codigo", methods=["GET", "POST"])
+def VerificarCodigo():
+    if request.method == "POST":
+        codigo_ingresado = request.form.get("codigo")
+        sql = text("""
+            SELECT codigo6digitos, codigo_expiracion 
+            FROM usuario 
+            WHERE idusuario=:idusuario
+        """)
+        result = db.session.execute(sql, {"idusuario": session["idusuario"]}).fetchone()
+        
+        if not result:
+            flash("Error interno", "error")
+            return redirect(url_for("routes.verificar_Codigo"))
+        
+        if datetime.utcnow() > result.codigo_expiracion:
+            flash("El código ha expirado", "error")
+            return redirect(url_for("auth.login"))
+        
+        if codigo_ingresado != result.codigo6digitos:
+            flash("Código incorrecto", "error")
+            return redirect(url_for("routes.verificar_Codigo"))
+        
+        
+        sql_reset = text("UPDATE usuario SET codigo6digitos=NULL, codigo_expiracion=NULL WHERE idusuario=:idusuario")
+        db.session.execute(sql_reset, {"idusuario": session["idusuario"]})
+        db.session.commit()
+        rol=session.get("rol")
+        if rol==1:
+            return redirect(url_for("routes.dashboard_Consultante"))
+        elif rol==2:
+            return redirect(url_for("routes.dashboard"))
+        elif  rol in [3, 4]:
+            return url_for("routes.quien_eres")
+    return render_template("verificar_codigo.html")
+   
 @auth_bp.route("/logout")
 def logout():
     session.clear()

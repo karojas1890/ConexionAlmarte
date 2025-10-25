@@ -12,40 +12,37 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/loginStyle.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    
 </head>
+
 <body>
     <div class="background-overlay"></div>
     
     <header class="header">
         <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Almarte Logo" class="logo">
     </header>
-<div id="flash-container">
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="flash {{ category }}">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-</div>
+
+    <div id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
     <main class="main-content">
         <div class="login-container">
             <form method="post" action="{{ url_for('auth.login') }}">
                 <div class="form-group">
-                    <label name="nombre" class="form-label">
-                        Usuario
-                        <div class="user-icon">👤</div>
-                    </label>
+                    <label class="form-label">Usuario <div class="user-icon">👤</div></label>
                     <input type="text" class="form-input" name="usuario" id="usuario" required>
                 </div>
 
                 <div class="form-group">
-                    <label name="usuario" class="form-label">
-                        Contraseña
-                        <div class="password-icon">🔒</div>
-                    </label>
+                    <label class="form-label">Contraseña <div class="password-icon">🔒</div></label>
                     <input type="password" class="form-input" name="password" id="password" required>
                 </div>
 
@@ -53,13 +50,15 @@
                     <a href="{{ url_for('routes.recuperar_Contra') }}">Restablecer la Contraseña</a>
                 </div>
 
-                <button type="submit" class="login-btn"> Iniciar sesión 
-                    <span class="arrow">↪</span>
+              
+                
+
+                <button type="submit" class="login-btn">
+                    Iniciar sesión <span class="arrow">↪</span>
                 </button>
 
-                <a href="{{ url_for('routes.sig_up') }}" style="text-decoration: none;" class="create-account-btn">
-                    Crear cuenta
-                    <span class="plus-icon">👤+</span>
+                <a href="#" class="create-account-btn" style="text-decoration: none;">
+                    Crear cuenta <span class="plus-icon">👤+</span>
                 </a>
             </form>
         </div>
@@ -67,22 +66,32 @@
 
     <footer class="footer">
         <a href="{{ url_for('routes.acerca_de') }}" class="footer-item">
-            <div class="footer-icon">AM</div>
-            <span>Más sobre AlmarteCR</span>
+            <div class="footer-icon">AM</div><span>Más sobre AlmarteCR</span>
         </a>
         <a href="#" class="footer-item">
-            <div class="footer-icon">↪</div>
-            <span>Ingreso</span>
+            <div class="footer-icon">↪</div><span>Ingreso</span>
         </a>
         <a href="#" class="footer-item">
-            <div class="footer-icon">$</div>
-            <span>Tipo de cambio del</span>
+            <div class="footer-icon">$</div><span>Tipo de cambio del</span>
         </a>
     </footer>
 
-   
-<script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
-  
-<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+    
+
+ 
+    <script>
+    document.querySelector('form').addEventListener('submit', function(e){
+      const token = grecaptcha.getResponse();
+      if (!token || token.length === 0) {
+        e.preventDefault();
+        alert('Por favor completa el reCAPTCHA.');
+        return false;
+      }
+    });
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js?hl=es" async defer></script>
+
+    <script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify,url_for,session
 from app.extensions import db
-from app.Service.EmailService import EmailService
 from app.models.Disponibilidad import Disponibilidad
 from app.models.Servicio import servicios
 from sqlalchemy import text
@@ -82,7 +81,7 @@ def CrearCita():
                 pacient=paciente,
                 date=fecha,
                 nombreServicio=nombreservicio,
-                nombreTerapeuta=terapeuta + apellido
+                nombreTerapeuta=terapeuta +" "+apellido
             )
        
         return jsonify({
