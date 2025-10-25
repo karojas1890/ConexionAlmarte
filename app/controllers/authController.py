@@ -1,5 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-import requests
+from flask import Blueprint, render_template, request, redirect, url_for, session, flashS
 from sqlalchemy import text
 from app import db
 import bcrypt
