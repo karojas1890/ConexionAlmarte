@@ -1,0 +1,55 @@
+/* Archivo CSS global para arreglar problemas de responsive en móviles */
+
+/* Fix para contenedores principales */
+.container {
+  width: 100% !important;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem !important;
+}
+
+/* Fix para tarjetas y cards */
+.profile-card,
+.content-card,
+.card,
+.stat-card {
+  width: 100% !important;
+  padding: 1rem !important;
+}
+
+/* Fix para grids en móvil */
+@media (max-width: 640px) {
+  .stats-grid,
+  .progress-grid,
+  .quick-actions {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  .main-content {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reducir padding en móviles */
+  .header {
+    padding: 0.75rem 1rem !important;
+  }
+
+  .page-header {
+    padding: 1rem !important;
+  }
+
+  body {
+    padding-bottom: 70px !important;
+  }
+
+  /* Ajustar tamaños de fuente */
+  .stat-value {
+    font-size: 1.5rem !important;
+  }
+
+  .page-title,
+  .card-title {
+    font-size: 1.125rem !important;
+  }
+}

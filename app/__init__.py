@@ -11,7 +11,7 @@ from app.models import (
 )
 
 from app.Service import email_service  
-from config import EMAIL_SETTINGS
+
 
 
 def create_app():
@@ -39,7 +39,7 @@ def create_app():
     app.config["SESSION_COOKIE_HTTPONLY"] = True
 
     #  Configuración del servicio de correo
-    app.config["EMAIL_SETTINGS"] = EMAIL_SETTINGS
+    
     email_service.init_app(app) 
 
     

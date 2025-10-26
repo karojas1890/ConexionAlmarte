@@ -22,8 +22,7 @@ class EmailService:
         self.sender_email = os.getenv('FROM_EMAIL')
         self.api_key = os.getenv('SENDGRID_API_KEY')
 
-        print(f"✅ Email configurado: {self.sender_email}")
-        print(f"✅ API Key: {'✅' if self.api_key else '❌'}")
+       
 
     def send_email(self, to_email, subject, html_body):
         try:
@@ -60,9 +59,9 @@ class EmailService:
             <title>Nueva Cita Agendada</title>
         </head>
         <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+            <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
                 <tr>
-                    <td style="padding: 40px 20px;">
+                    <td style="padding: 30px 15px;">
                         <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                             <!-- Header con gradiente -->
                             <tr>
@@ -228,9 +227,9 @@ class EmailService:
         <title>Confirmación de Cita</title>
     </head>
     <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
             <tr>
-                <td style="padding: 40px 20px;">
+                <td style="padding: 30px 15px;">
                     <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                         <!-- Header con gradiente -->
                         <tr>
@@ -387,9 +386,9 @@ class EmailService:
         <title>Bienvenido a Almarte</title>
     </head>
     <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
             <tr>
-                <td style="padding: 40px 20px;">
+                <td style="padding: 30px 15px;">
                     <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                        
                         <tr>
@@ -516,9 +515,9 @@ class EmailService:
         <title>Código de Verificación</title>
     </head>
     <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
             <tr>
-                <td style="padding: 40px 20px;">
+                <td style="padding: 30px 15px;">
                     <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                       
                         <tr>

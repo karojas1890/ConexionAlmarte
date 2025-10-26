@@ -73,16 +73,19 @@ def login():
         session["apellido1"] = user_data.apellido1
         session["correo"] = user_data.correo
         session["idterapeuta"] = user_data.identificacion_terapeuta
-
+        
         if user_data.tipo == 1:  # Consultante
             session["correo_terapeuta"] = user_data.correo_terapeuta
             session["terapeuta_nombre"] = user_data.terapeuta_nombre
             session["terapeuta_apellido1"] = user_data.terapeuta_apellido1
             session["terapeuta_apellido2"] = user_data.terapeuta_apellido2
             session["terapeuta_codigoProfesional"] = user_data.terapeuta_codigoprofesional
-        
+            correo = session.get("correo_terapeuta")   
+        else:
+            correo = session.get("correo")    
+            
         idusuario = session.get("idusuario")
-        correo = session.get("correo")
+        
         nombre = session.get("nombre")
         app = current_app._get_current_object()
         threading.Thread(target=SendCode, args=(app,idusuario, correo, nombre)).start()

@@ -26,15 +26,15 @@
             
 
             <div class="info-message">
-                <strong>💡 Información:</strong> Ingresa tu correo electronico para restablecer la contrseña.
+                <strong>💡 Información:</strong> Ingresa tu usuario para restablecer la contrseña.
             </div>
 
             <form asp-controller="Auth" asp-action="RecuperarContrasena" id="recoveryForm">
                 <div class="form-group">
-                    <label class="form-label" for="email">Correo electrónico</label>
-                    <input type="email"
-                           id="correo"
-                           name="correo"
+                    <label class="form-label" for="email">Usuario</label>
+                    <input type="text"
+                           id="usuario"
+                           name="usuario"
                            class="form-input"
                            placeholder="correo@ejemplo.com"
                            required>
