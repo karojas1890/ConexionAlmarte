@@ -3,7 +3,9 @@ from app.extensions import db
 from app.models.Disponibilidad import Disponibilidad
 from app.models.Servicio import servicios
 from sqlalchemy import text
-from app.Service import email_service   
+from app.Service import email_service
+
+   
 citas_bp = Blueprint("Citas", __name__,url_prefix='/citas')
 
 

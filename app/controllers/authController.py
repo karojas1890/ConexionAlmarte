@@ -1,13 +1,12 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash,current_app
 from sqlalchemy import text
 from app import db
 import bcrypt
 import random
 from app.Service import email_service
 from datetime import datetime,timedelta
-import os
-RECAPTCHA_SECRET = "6LcqLfcrAAAAAJewaPXE_epE6yyL2L3QM0FDcaji" 
-RECAPTCHA_SITE = "6LcqLfcrAAAAAOruk2qnI2K_osHyEsSpKC7leZlJ" 
+import threading
+
 auth_bp = Blueprint("auth", __name__)
 
 
@@ -81,10 +80,16 @@ def login():
             session["terapeuta_apellido1"] = user_data.terapeuta_apellido1
             session["terapeuta_apellido2"] = user_data.terapeuta_apellido2
             session["terapeuta_codigoProfesional"] = user_data.terapeuta_codigoprofesional
-        SendCode()
+        
+        idusuario = session.get("idusuario")
+        correo = session.get("correo")
+        nombre = session.get("nombre")
+        app = current_app._get_current_object()
+        threading.Thread(target=SendCode, args=(app,idusuario, correo, nombre)).start()
+        
         return redirect(url_for("routes.verificar_Codigo"))
-    print("=== DEBUG SITE KEY ===", RECAPTCHA_SITE)
-    return render_template("login.html", recaptcha_site_key=RECAPTCHA_SITE)
+    
+    return render_template("login.html")
 
 
 
@@ -93,24 +98,23 @@ def GenerarCodigo():
 
 
 
+def SendCode(app,idusuario, correo, nombre):
+    from app import db
+    from app.Service import email_service
+    with app.app_context():
+       code = GenerarCodigo()
 
-def SendCode():
-    code=GenerarCodigo()
-    
-    sql_update = text("""
+       sql_update = text("""
         UPDATE usuario 
         SET codigo6digitos=:codigo, codigo_expiracion=:exp
         WHERE idusuario=:idusuario
     """)
-    
-    expiracion = datetime.utcnow() + timedelta(seconds=60)
-    db.session.execute(sql_update, {"codigo": code, "exp": expiracion, "idusuario": session["idusuario"]})
-    db.session.commit()
-    
-    email=session.get("correo")
-    nombre=session.get("nombre")
-    email_service.SendVerificationCode(email=email,username=nombre,code=code)
-    
+
+       expiracion = datetime.utcnow() + timedelta(seconds=60)
+       db.session.execute(sql_update, {"codigo": code, "exp": expiracion, "idusuario": idusuario})
+       db.session.commit()
+
+       email_service.SendVerificationCode(email=correo, username=nombre, code=code)
 
 @auth_bp.route("/verificar_codigo", methods=["GET", "POST"])
 def VerificarCodigo():

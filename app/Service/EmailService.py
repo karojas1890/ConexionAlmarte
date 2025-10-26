@@ -2,7 +2,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from flask import current_app
-
+import threading
 class EmailService:
     def __init__(self):
     
@@ -34,12 +34,11 @@ class EmailService:
         except Exception as ex:
             print(ex)
         try:
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.ehlo()           
-                server.starttls()        
-                server.ehlo()           
-                server.login(self.sender_email, self.sender_password)
-                server.send_message(msg)
+          with smtplib.SMTP(self.smtp_server, self.smtp_port, timeout=10) as server:
+            server.starttls()
+            server.login(self.sender_email, self.sender_password)
+            server.send_message(msg)
+
             
         except Exception as e:
             print(f"[ERROR] Error enviando correo: {e}")
@@ -330,5 +329,6 @@ class EmailService:
     </html>
     """
     
-        self.send_email(email, subject, html)
+        thread = threading.Thread(target=self.send_email, args=(email, subject, html))
+        thread.start()
         
