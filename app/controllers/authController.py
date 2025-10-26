@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash,current_app
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash,current_app,jsonify
 from sqlalchemy import text
 from app import db
 import bcrypt
@@ -91,7 +91,39 @@ def login():
     
     return render_template("login.html")
 
-
+@auth_bp.route('/reenviar_codigo', methods=['POST'])
+def ReenviarCodigo():
+    try:
+        # Verificar que existan los datos en sesión
+        idusuario = session.get("idusuario")
+        correo = session.get("correo")
+        nombre = session.get("nombre")
+        
+        if not all([idusuario, correo, nombre]):
+            return jsonify({'success': False, 'message': 'Sesión expirada'}), 400
+        
+        # Obtener la app correctamente
+        app = current_app._get_current_object()
+        
+        # Ejecutar en hilo
+        threading.Thread(
+            target=SendCode, 
+            args=(app, idusuario, correo, nombre),
+            daemon=True  # Para que no bloquee el cierre de la app
+        ).start()
+        
+        # Responder inmediatamente al frontend
+        return jsonify({
+            'success': True, 
+            'message': 'Código reenviado exitosamente'
+        })
+        
+    except Exception as e:
+        print(f"Error reenviando código: {e}")
+        return jsonify({
+            'success': False, 
+            'message': 'Error al reenviar el código'
+        }), 500
 
 def GenerarCodigo():
     return "{:06d}".format(random.randint(0, 999999))

@@ -155,6 +155,55 @@
             justify-content: center;
             color: white;
         }
+        /* Estilos para el temporizador */
+.timer-container {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.timer-text {
+    color: #2e2828;
+    font-size: 14px;
+    margin: 0;
+}
+
+.timer {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+/* Estilos para el botón de reenviar */
+.resend-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.resend-container p {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}
+
+.resend-link {
+    background: none;
+    border: none;
+    color: #3b3f41;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.resend-link:hover:not(:disabled) {
+    color: #b1bec7;
+}
+
+.resend-link:disabled {
+    cursor: not-allowed;
+}
 
         @media (max-width: 480px) {
             .verification-container {

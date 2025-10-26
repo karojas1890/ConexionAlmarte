@@ -36,7 +36,9 @@
             </div>
             
             <h1 class="verification-title">Código de seguridad</h1>
-            
+            <div class="timer-container">
+                <p class="timer-text">El código expira en: <span id="countdown" class="timer">01:00</span></p>
+            </div>
             <form method="post" action="{{ url_for('auth.VerificarCodigo') }}" id="verificationForm">
                 <input 
                     type="text" 
@@ -53,6 +55,9 @@
                     <span class="arrow">↪</span>
                 </button>
             </form>
+            <div class="resend-container">
+                <p>¿No recibiste el código? <button type="button" id="resendBtn" class="resend-link" disabled>Reenviar código</button></p>
+            </div>
         </div>
     </main>
 
@@ -72,21 +77,17 @@
     </footer>
 
     <script>
-       
-
-        
-        document.getElementById('securityCode').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            e.target.value = value;
-        });
-    </script>
-    <script>
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("{{ url_for('static', filename='service-worker.js') }}")
         .then(() => console.log("Service Worker registrado"))
         .catch(err => console.log("Error SW:", err));
     }
     </script>
+
+    <script>
+    const REENVIAR_URL = "{{ url_for('auth.ReenviarCodigo') }}";
+   </script>
     <script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
+     <script src="{{ url_for('static', filename='js/code.js') }}"></script>
 </body>
 </html>
