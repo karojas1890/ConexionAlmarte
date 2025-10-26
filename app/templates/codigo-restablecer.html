@@ -285,14 +285,8 @@
 <body>
     <div class="container">
         <div class="logo">AM</div>
-        <h1>Restablecer Contraseña</h1>
-        <p class="subtitle">Completa los siguientes pasos para crear tu nueva contraseña</p>
-
-        <div class="step-indicator">
-            <div class="step active" id="step1">1</div>
-            <div class="step-line" id="line1"></div>
-            <div class="step" id="step2">2</div>
-        </div>
+        <h1>Restablecer Credenciales</h1>
+        
 
         <!-- Sección 1: Verificar código -->
         <div class="form-section active" id="codeSection">
@@ -308,7 +302,8 @@
 
             <form id="codeForm">
                 <div class="form-group">
-                    <label for="verificationCode">Código de Verificación</label>
+                    <div class="form-group" >
+             <label for="verificationCode">Código de Verificación</label>
                     <input 
                         type="text" 
                         id="verificationCode" 
@@ -320,6 +315,7 @@
                         required
                     >
                 </div>
+                </div>
 
                 <button type="submit" class="btn">Verificar Código</button>
             </form>
@@ -329,62 +325,6 @@
             </div>
         </div>
 
-        <!-- Sección 2: Nueva contraseña -->
-        <div class="form-section" id="passwordSection">
-            <div class="alert">
-                <div class="alert-text">
-                    Crea una contraseña segura que cumpla con todos los requisitos de seguridad.
-                </div>
-            </div>
-
-            <div class="error-message" id="passwordError">
-                <div class="error-text">Las contraseñas no coinciden. Por favor, verifica e intenta nuevamente.</div>
-            </div>
-
-            <form id="passwordForm">
-                <div class="form-group">
-                    <label for="newPassword">Nueva Contraseña</label>
-                    <input 
-                        type="password" 
-                        id="newPassword" 
-                        name="newPassword" 
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Confirmar Contraseña</label>
-                    <input 
-                        type="password" 
-                        id="confirmPassword" 
-                        name="confirmPassword" 
-                        required
-                    >
-                </div>
-
-                <div class="password-requirements">
-                    <h4>Requisitos de la contraseña:</h4>
-                    <div class="requirement" id="req-length">
-                        <span class="requirement-icon"></span>
-                        <span>Mínimo 8 caracteres</span>
-                    </div>
-                    <div class="requirement" id="req-uppercase">
-                        <span class="requirement-icon"></span>
-                        <span>Al menos una letra mayúscula</span>
-                    </div>
-                    <div class="requirement" id="req-lowercase">
-                        <span class="requirement-icon"></span>
-                        <span>Al menos una letra minúscula</span>
-                    </div>
-                    <div class="requirement" id="req-number">
-                        <span class="requirement-icon"></span>
-                        <span>Al menos un número</span>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn" id="submitPassword" disabled>Restablecer Contraseña</button>
-            </form>
-        </div>
     </div>
 
     <script>
@@ -527,8 +467,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Contraseña actualizada exitosamente
-                    // El backend debe enviar el correo de confirmación
+                    
                     alert('¡Contraseña restablecida exitosamente! Serás redirigido al inicio de sesión.');
                     setTimeout(() => {
                         window.location.href = 'login.html';

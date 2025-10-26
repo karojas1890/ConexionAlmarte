@@ -1,68 +1,102 @@
-// Inicializar cuando la página cargue
-document.addEventListener('DOMContentLoaded', function () {
-    setupEventListeners();
-});
 
-// Configurar event listeners
-function setupEventListeners() {
-    const emailInput = document.getElementById('email');
 
-    // Validación en tiempo real del email
-    emailInput.addEventListener('input', function () {
-        clearMessages();
-        this.classList.remove('error', 'success');
+
+document.addEventListener('DOMContentLoaded', function() {
+    const tipoRecuperacion = document.getElementById('tipoRecuperacion');
+    const procesarBtn = document.getElementById('procesarBtn');
+    const usuarioInput = document.getElementById('usuario'); 
+    const emailError = document.getElementById('emailError'); 
+
+    // Actualizar texto del boton segun seleccion
+    tipoRecuperacion.addEventListener('change', function() {
+        if (this.value === '1') {
+            procesarBtn.innerHTML = '🔑 Recuperar Contraseña';
+        } else if (this.value === '2') {
+            procesarBtn.innerHTML = '👤 Recuperar Usuario';
+        } else {
+            procesarBtn.innerHTML = 'Continuar';
+        }
     });
 
-    emailInput.addEventListener('blur', function () {
-        validateEmail(this.value);
+    // Manejar el clic del botón
+    procesarBtn.addEventListener('click', function() {
+        const tipo = tipoRecuperacion.value;
+        const usuario = usuarioInput.value.trim();
+
+        if (!tipo) {
+            alert('Por favor selecciona qué necesitas recuperar');
+            return;
+        }
+
+        if (!usuario) {
+            alert('Por favor ingresa tu correo electrónico');
+            return;
+        }
+
+        // Validar formato de email
+        if (!isValidEmail(usuario)) {
+            alert('Por favor ingresa un correo electrónico válido');
+            return;
+        }
+
+        // Mostrar loading
+        procesarBtn.innerHTML = '⏳ Validando...';
+        procesarBtn.disabled = true;
+        emailError.innerHTML = ''; 
+
+        // Hacer fetch al backend
+        fetch(RECOVERY_URL , {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                usuario: usuario,
+                tipo: tipo
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.success, data.message)
+            if (data.success) {
+                window.location.href = PREGUNTAS_URL;
+            } else {
+                // Mostrar error en el div en lugar de alert
+                emailError.innerHTML = `<div class="error-text">❌ ${data.message}</div>`;
+                resetButton();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            emailError.innerHTML = '<div class="error-text">❌ Error de conexión</div>';
+            resetButton();
+        });
     });
-}
 
-// Validar email
-function validateEmail(email) {
-    const emailInput = document.getElementById('email');
-    const errorMessage = document.getElementById('emailError');
-    const successMessage = document.getElementById('emailSuccess');
-
-    if (!email.trim()) {
-        showError('El correo electrónico es requerido');
-        return false;
+    // Función para validar email
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        showError('Formato de correo electrónico inválido');
-        return false;
+    // Función para resetear botón
+    function resetButton() {
+        const tipo = document.getElementById('tipoRecuperacion').value;
+        if (tipo === '1') {
+            procesarBtn.innerHTML = '🔑 Recuperar Contraseña';
+        } else if (tipo === '2') {
+            procesarBtn.innerHTML = '👤 Recuperar Usuario';
+        } else {
+            procesarBtn.innerHTML = 'Continuar';
+        }
+        procesarBtn.disabled = false;
     }
 
-    
-    showSuccess('Correo válido');
-    return true;
-
-    function showError(message) {
-        emailInput.classList.add('error');
-        emailInput.classList.remove('success');
-        errorMessage.textContent = message;
-        errorMessage.style.display = 'block';
-        successMessage.style.display = 'none';
-    }
-
-    function showSuccess(message) {
-        emailInput.classList.add('success');
-        emailInput.classList.remove('error');
-        successMessage.textContent = message;
-        successMessage.style.display = 'block';
-        errorMessage.style.display = 'none';
-    }
-}
-
-// Limpiar mensajes
-function clearMessages() {
-    document.getElementById('emailError').style.display = 'none';
-    document.getElementById('emailSuccess').style.display = 'none';
-}
-
-// Auto-focus en el input al cargar
-window.addEventListener('load', function () {
-    document.getElementById('email').focus();
+    // También permitir enviar con Enter
+    usuarioInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            procesarBtn.click();
+        }
+    });
 });

@@ -611,3 +611,109 @@ class EmailService:
         thread = threading.Thread(target=self.send_email, args=(email, subject, html))
         thread.start()
         
+    def SendVerificationCodeCredentials(self, email, username, code):
+        subject = "Tu código de verificación - Conexión by Almarte"
+        html = f"""
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Código de Verificación</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
+        <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
+            <tr>
+                <td style="padding: 30px 15px;">
+                    <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                      
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); padding: 40px 30px; text-align: center;">
+                                <div style="width: 60px; height: 60px; background: white; border-radius: 12px; margin: 0 auto 20px; display: inline-block; line-height: 60px; font-size: 28px; font-weight: bold; color: #5BA8A0;">
+                                    AM
+                                </div>
+                                <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
+                                    Código de Verificación
+                                </h1>
+                                <p style="margin: 10px 0 0; color: #ffffff; font-size: 16px; opacity: 0.95;">
+                                    Verifica tu identidad
+                                </p>
+                            </td>
+                        </tr>
+                        
+                      
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <p style="margin: 0 0 20px; color: #333333; font-size: 16px; line-height: 1.6;">
+                                    Hola <strong>{username}</strong>,
+                                </p>
+                                
+                                <p style="margin: 0 0 30px; color: #333333; font-size: 16px; line-height: 1.6;">
+                                    Hemos recibido una solicitud para restablecer su cuenta. Utiliza el siguiente código para completar el proceso:
+                                </p>
+                                
+                              
+                                <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 30px;">
+                                    <tr>
+                                        <td style="text-align: center; padding: 30px; background: linear-gradient(135deg, #f8fafa 0%, #e8f5f4 100%); border-radius: 12px; border: 2px dashed #5BA8A0;">
+                                            <p style="margin: 0 0 15px; color: #666666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
+                                                Tu Código de Verificación
+                                            </p>
+                                            <p style="margin: 0; color: #5BA8A0; font-size: 42px; font-weight: 700; letter-spacing: 8px; font-family: 'Courier New', monospace;">
+                                                {code}
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                
+                                <div style="background-color: #fff8e6; border-left: 4px solid #ffc107; padding: 15px; border-radius: 8px; margin: 0 0 25px;">
+                                    <p style="margin: 0 0 10px; color: #856404; font-size: 14px; font-weight: 600;">
+                                        ⏱️ Información importante:
+                                    </p>
+                                    <ul style="margin: 0; padding-left: 20px; color: #856404; font-size: 14px; line-height: 1.6;">
+                                        <li>Este código es válido por <strong>10 minutos</strong></li>
+                                        <li>Solo puede ser utilizado una vez</li>
+                                        <li>No compartas este código con nadie</li>
+                                    </ul>
+                                </div>
+                                
+                                
+                                <div style="background-color: #ffebee; border-left: 4px solid #f44336; padding: 15px; border-radius: 8px; margin: 0 0 20px;">
+                                    <p style="margin: 0; color: #c62828; font-size: 14px; line-height: 1.6;">
+                                        <strong>🔒 ¿No solicitaste este código?</strong><br>
+                                        Si no reconoces esta actividad, ignora este correo y considera cambiar tu contraseña de inmediato.
+                                    </p>
+                                </div>
+                                
+                                <p style="margin: 0; color: #666666; font-size: 14px; line-height: 1.6; text-align: center;">
+                                    Si tienes problemas, contáctanos a través de nuestra plataforma.
+                                </p>
+                            </td>
+                        </tr>
+                        
+                    
+                        <tr>
+                            <td style="background-color: #f8fafa; padding: 30px; text-align: center; border-top: 1px solid #e0e0e0;">
+                                <p style="margin: 0 0 10px; color: #5BA8A0; font-size: 18px; font-weight: 600;">
+                                    Conexión by Almarte
+                                </p>
+                                <p style="margin: 0 0 15px; color: #666666; font-size: 14px;">
+                                    Tu bienestar mental es nuestra prioridad
+                                </p>
+                                <p style="margin: 0; color: #999999; font-size: 12px; line-height: 1.6;">
+                                    Este es un correo automático, por favor no respondas a este mensaje.<br>
+                                    Si necesitas ayuda, contáctanos a través de nuestra plataforma.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    """
+    
+        thread = threading.Thread(target=self.send_email, args=(email, subject, html))
+        thread.start()

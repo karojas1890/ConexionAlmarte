@@ -3,7 +3,7 @@ from sqlalchemy import text
 from app import db
 import bcrypt
 import random
-from app.Service import email_service
+
 from datetime import datetime,timedelta
 import threading
 
@@ -107,14 +107,14 @@ def ReenviarCodigo():
         if not all([idusuario, correo, nombre]):
             return jsonify({'success': False, 'message': 'Sesión expirada'}), 400
         
-        # Obtener la app correctamente
+      
         app = current_app._get_current_object()
         
-        # Ejecutar en hilo
+        
         threading.Thread(
             target=SendCode, 
             args=(app, idusuario, correo, nombre),
-            daemon=True  # Para que no bloquee el cierre de la app
+            daemon=True  
         ).start()
         
         # Responder inmediatamente al frontend

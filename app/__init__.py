@@ -53,7 +53,7 @@ def create_app():
     from .controllers.perfilController import perfil_bp
     from .controllers.disponibilidadController import availability_bp
     from .controllers.UsuarioController import usuario_bp
-        
+    from .controllers.credentialController import credential_bp  
     app.register_blueprint(routes_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(citas_bp)
@@ -62,5 +62,6 @@ def create_app():
     app.register_blueprint(perfil_bp)
     app.register_blueprint(availability_bp)
     app.register_blueprint(usuario_bp)
+    app.register_blueprint(credential_bp)
 
     return app

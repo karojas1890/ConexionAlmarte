@@ -16,7 +16,7 @@ class Consultante(db.Model):
     provincia = Column(String)
     canton = Column(String)
     distrito = Column(String)
-    direccionExacta = Column(String)
+    direccionexacta = Column(String)
     fechanacimiento = Column(Date)
     edad = Column(Integer)
     ocupacion = Column(String)

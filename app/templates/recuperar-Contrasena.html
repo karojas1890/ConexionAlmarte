@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/recuperarContraStyle.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <title>Recuperar Contraseña - COnexion</title>
-    
+    <title>Recuperar Credenciales - Conexion</title>
 </head>
 <body>
     <div class="container">
@@ -22,42 +21,55 @@
                 <div class="icon">🔐</div>
             </div>
 
-            <h1 class="title">Recuperar Contraseña</h1>
+            <h1 class="title">Recuperar Credenciales</h1>
             
-
             <div class="info-message">
-                <strong>💡 Información:</strong> Ingresa tu usuario para restablecer la contrseña.
+                <strong>💡 Información:</strong> Selecciona qué necesitas recuperar e ingrese su correo electrónico.
             </div>
 
-            <form asp-controller="Auth" asp-action="RecuperarContrasena" id="recoveryForm">
+            <form id="recoveryForm">
+                <!-- Selector de tipo de recuperación -->
                 <div class="form-group">
-                    <label class="form-label" for="email">Usuario</label>
-                    <input type="text"
+                    <label for="tipoRecuperacion" class="form-label">¿Qué necesitas recuperar?</label>
+                    <div class="select-container">
+                        <select id="tipoRecuperacion" name="tipoRecuperacion" class="form-select" required>
+                           <option value="">-- Selecciona una opción --</option>
+                           <option value=1>🔑 Contraseña</option>
+                           <option value=2>👤 Usuario</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipoRecuperacion" class="form-label">Ingrese su Correo</label>
+                   
+                    <input type="email"
                            id="usuario"
                            name="usuario"
                            class="form-input"
-                           placeholder="correo@ejemplo.com"
+                           placeholder="Correo Electronico"
                            required>
-                    <div class="error-message" id="emailError"></div>
-                    <div class="success-message" id="emailSuccess"></div>
+                    
+                    
                 </div>
-              
-                 <a href="{{ url_for('routes.restablecer_contra') }}"   class="primary-btn" id="sendBtn">
-                    Procesar
-                </a>
+                    <div class="error-message" id="emailError"></div>
+                <!-- Botón dinámico según selección -->
+                <button type="button" class="primary-btn" id="procesarBtn">
+                    Continuar
+                </button>
             </form>
 
-            <a href="{{ url_for('routes.index') }}" style="text-decoration:none;" class="secondary-btn" asp-controller="Home" asp-action="Index" >
+            <a href="{{ url_for('routes.index') }}" style="text-decoration:none;" class="secondary-btn">
                 <span class="btn-icon">←</span>
                 <span>Volver al inicio de sesión</span>
             </a>
-
-            
         </div>
-
     </div>
 
-  
-    <script src="{{ url_for('static', filename='js/recuperarContrasena.js') }}" > </script>
+    <script>
+    const RECOVERY_URL = "{{ url_for('crede.ValidarUsuarioRecovery') }}";
+    const   PREGUNTAS_URL = "{{ url_for('routes.preguntas_seguridad') }}";
+   </script>
+<script src="{{ url_for('static', filename='js/recuperarContrasena.js') }}"></script>
 </body>
 </html>

@@ -21,6 +21,12 @@ def service_worker():
 def DashboardPrincipal():
     return render_template("dashboard-Consultante.html")
 
+
+@routes_bp.route("/preguntas_seguridad",endpoint="preguntas_seguridad")
+def PreguntaSeguridad():
+    return render_template("pregunta-seguridad.html")
+    
+
 @routes_bp.route("/verificar_Codigo", endpoint="verificar_Codigo")
 #decorador para proteccion de las paginas
 @loginRequired 
