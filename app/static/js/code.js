@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    let timeLeft = 40;
+    let timeLeft = 60;
     let countdownInterval;
 
     function startCountdown() {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     
                     // Reiniciar temporizador
-                    timeLeft = 40;
+                    timeLeft = 60;
                     countdownElement.style.color = '#2c3e50';
                     countdownElement.textContent = '01:00';
                     resendBtn.disabled = true;
