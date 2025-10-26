@@ -73,16 +73,17 @@ def login():
         session["apellido1"] = user_data.apellido1
         session["correo"] = user_data.correo
         session["idterapeuta"] = user_data.identificacion_terapeuta
-        
-        if user_data.tipo == 1:  # Consultante
+        session["correo_terapeuta"] 
+        if user_data.tipo in {1,3,4}:  # Consultante
             session["correo_terapeuta"] = user_data.correo_terapeuta
             session["terapeuta_nombre"] = user_data.terapeuta_nombre
             session["terapeuta_apellido1"] = user_data.terapeuta_apellido1
             session["terapeuta_apellido2"] = user_data.terapeuta_apellido2
             session["terapeuta_codigoProfesional"] = user_data.terapeuta_codigoprofesional
-            correo = session.get("correo_terapeuta")   
+            correo = session.get("correo") 
         else:
-            correo = session.get("correo")    
+            correo = session.get("correo_terapeuta") 
+               
             
         idusuario = session.get("idusuario")
         
