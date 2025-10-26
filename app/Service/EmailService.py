@@ -2,42 +2,47 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from flask import current_app
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+import os
+#SOLO EN LOCALHOST
+# from dotenv import load_dotenv
+
+# load_dotenv()
+
 import threading
 class EmailService:
     def __init__(self):
     
-        self.smtp_server = None
-        self.smtp_port = None
         self.sender_email = None
-        self.sender_password = None
+        self.api_key = None
 
     def init_app(self, app):
        
-        settings = app.config.get("EMAIL_SETTINGS")
-        
+        self.sender_email = os.getenv('FROM_EMAIL')
+        self.api_key = os.getenv('SENDGRID_API_KEY')
 
-        self.smtp_server = settings.get("SMTP_SERVER")
-        self.smtp_port = settings.get("SMTP_PORT")
-        self.sender_email = settings.get("SENDER_EMAIL")
-        self.sender_password = settings.get("SENDER_PASSWORD")
-
-        
+        print(f"✅ Email configurado: {self.sender_email}")
+        print(f"✅ API Key: {'✅' if self.api_key else '❌'}")
 
     def send_email(self, to_email, subject, html_body):
         try:
+            message = Mail(
+                from_email=self.sender_email,
+                to_emails=to_email,
+                subject=subject,
+                html_content=html_body
+            )
             
-            msg = MIMEMultipart()
-            msg["From"] = self.sender_email
-            msg["To"] = to_email
-            msg["Subject"] = subject
-            msg.attach(MIMEText(html_body, "html"))
-        except Exception as ex:
-            print(ex)
-        try:
-          with smtplib.SMTP(self.smtp_server, self.smtp_port, timeout=10) as server:
-            server.starttls()
-            server.login(self.sender_email, self.sender_password)
-            server.send_message(msg)
+            sg = SendGridAPIClient(self.api_key)
+            response = sg.send(message)
+            
+            print(f"✅ Email enviado a {to_email} - Status: {response.status_code}")
+            return True
+            
+        except Exception as e:
+            print(f" Error enviando correo: {e}")
+            return False
 
             
         except Exception as e:
@@ -45,23 +50,166 @@ class EmailService:
     #  template para cita
     def SendNewAppointment(self, mail, pacient, date, nombreServicio):
       try:
-        subject = "Nueva cita agendada - Conexion"
+        subject = "Tienes una nueva cita - Conexión Almarte"
         html = f"""
-    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
-        <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-            
-            <img 
-                 alt="Logo Conexion" 
-                 style="max-width: 150px; margin-bottom: 20px;" />
-            
-            <h2 style="color: #333; margin-bottom: 10px;">¡Nueva cita agendada!</h2>
-            <p style="font-size: 16px; color: #555; margin-bottom: 5px;">Paciente: <b>{pacient}</b></p>
-            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Fecha/Hora: <b>{date}</b></p>
-            <p style="font-size: 16px; color: #555; margin-bottom: 5px;">Tipo de Servicio: <b>{nombreServicio}</b></p>
-            
-              
-        </div>
-    </div>
+   <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Nueva Cita Agendada</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
+            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 40px 20px;">
+                        <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <!-- Header con gradiente -->
+                            <tr>
+                                <td style="background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); padding: 40px 30px; text-align: center;">
+                                    <div style="width: 60px; height: 60px; background: white; border-radius: 12px; margin: 0 auto 20px; display: inline-block; line-height: 60px; font-size: 28px; font-weight: bold; color: #5BA8A0;">
+                                        AM
+                                    </div>
+                                    <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
+                                        🔔 Nueva Cita Agendada
+                                    </h1>
+                                    <p style="margin: 10px 0 0; color: #ffffff; font-size: 16px; opacity: 0.95;">
+                                        Un paciente ha reservado una sesión contigo
+                                    </p>
+                                </td>
+                            </tr>
+                            
+                            <!-- Contenido principal -->
+                            <tr>
+                                <td style="padding: 40px 30px;">
+                                    <p style="margin: 0 0 30px; color: #333333; font-size: 16px; line-height: 1.6; text-align: center;">
+                                        Se ha agendado una nueva cita en tu agenda profesional
+                                    </p>
+                                    
+                                    <!-- Tarjeta de información de la cita -->
+                                    <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 30px;">
+                                        <tr>
+                                            <td style="background: linear-gradient(135deg, #f8fafa 0%, #e8f5f4 100%); border-radius: 12px; padding: 25px; border: 2px solid #5BA8A0;">
+                                                <p style="margin: 0 0 20px; color: #5BA8A0; font-size: 18px; font-weight: 600; text-align: center; text-transform: uppercase; letter-spacing: 1px;">
+                                                    Detalles de la Cita
+                                                </p>
+                                                
+                                                <!-- Paciente -->
+                                                <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 15px;">
+                                                    <tr>
+                                                        <td style="padding: 12px; background-color: #ffffff; border-radius: 8px;">
+                                                            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                                                <tr>
+                                                                    <td style="width: 40px; vertical-align: top;">
+                                                                        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; line-height: 32px; text-align: center;">
+                                                                            👤
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style="padding-left: 12px;">
+                                                                        <p style="margin: 0; color: #666666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Paciente</p>
+                                                                        <p style="margin: 5px 0 0; color: #333333; font-size: 16px; font-weight: 600;">{pacient}</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                
+                                                <!-- Fecha y Hora -->
+                                                <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 15px;">
+                                                    <tr>
+                                                        <td style="padding: 12px; background-color: #ffffff; border-radius: 8px;">
+                                                            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                                                <tr>
+                                                                    <td style="width: 40px; vertical-align: top;">
+                                                                        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; line-height: 32px; text-align: center;">
+                                                                            📅
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style="padding-left: 12px;">
+                                                                        <p style="margin: 0; color: #666666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Fecha y Hora</p>
+                                                                        <p style="margin: 5px 0 0; color: #333333; font-size: 16px; font-weight: 600;">{date}</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                
+                                                <!-- Servicio -->
+                                                <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                                    <tr>
+                                                        <td style="padding: 12px; background-color: #ffffff; border-radius: 8px;">
+                                                            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                                                <tr>
+                                                                    <td style="width: 40px; vertical-align: top;">
+                                                                        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; line-height: 32px; text-align: center;">
+                                                                            📋
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style="padding-left: 12px;">
+                                                                        <p style="margin: 0; color: #666666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Tipo de Servicio</p>
+                                                                        <p style="margin: 5px 0 0; color: #333333; font-size: 16px; font-weight: 600;">{nombreServicio}</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <!-- Acciones rápidas -->
+                                    <div style="background-color: #e8f5f4; border-left: 4px solid #5BA8A0; padding: 15px; border-radius: 8px; margin: 0 0 25px;">
+                                        <p style="margin: 0 0 10px; color: #4A9B94; font-size: 14px; font-weight: 600;">
+                                            📌 Acciones recomendadas:
+                                        </p>
+                                        <ul style="margin: 0; padding-left: 20px; color: #4A9B94; font-size: 14px; line-height: 1.6;">
+                                            <li>Revisa el historial del paciente antes de la sesión</li>
+                                            <li>Prepara los materiales necesarios para el servicio</li>
+                                            <li>Confirma que tienes disponibilidad en ese horario</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Botón de acción -->
+                                    <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 20px;">
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <a href="[URL_DE_TU_APP]/therapist-appointments" style="display: inline-block; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); color: #ffffff; text-decoration: none; padding: 14px 40px; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 2px 4px rgba(91, 168, 160, 0.3);">
+                                                    Ver Mi Agenda
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <p style="margin: 0; color: #666666; font-size: 14px; line-height: 1.6; text-align: center;">
+                                        Esta cita se ha agregado automáticamente a tu agenda.
+                                    </p>
+                                </td>
+                            </tr>
+                            
+                            <!-- Footer -->
+                            <tr>
+                                <td style="background-color: #f8fafa; padding: 30px; text-align: center; border-top: 1px solid #e0e0e0;">
+                                    <p style="margin: 0 0 10px; color: #5BA8A0; font-size: 18px; font-weight: 600;">
+                                        Conexión by Almarte
+                                    </p>
+                                    <p style="margin: 0 0 15px; color: #666666; font-size: 14px;">
+                                        Plataforma Profesional para Terapeutas
+                                    </p>
+                                    <p style="margin: 0; color: #999999; font-size: 12px; line-height: 1.6;">
+                                        Este es un correo automático, por favor no respondas a este mensaje.<br>
+                                        Si necesitas ayuda, contáctanos a través de la plataforma.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </body>
+        </html>
     """
         self.send_email(mail, subject, html)
         
@@ -70,25 +218,157 @@ class EmailService:
           
     def SendNewAppointmentPacient(self, mail, pacient, date, nombreServicio,nombreTerapeuta):
       try:
-        subject = "Confirmación de cita. - Conexion"
+        subject = "Confirmación de tu cita - Conexión by Almarte"
         html = f"""
-    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
-        <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-            
-            <img 
-                 alt="Logo Conexion" 
-                 style="max-width: 150px; margin-bottom: 20px;" />
-            
-            <h2 style="color: #333; margin-bottom: 10px;">Gracias por confiar en los servicios de AlmarteCR</h2>
-            <p style="font-size: 16px; color: #555; margin-bottom: 5px;">Hola: <b>{pacient}</b></p>
-            <p style="font-size: 16px; color: #555; margin-bottom: 5px;">Su cita en: <b>{nombreServicio}</b></p>
-            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Es el: <b>{date}</b></p>
-            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Con la Licda: <b>{nombreTerapeuta}</b></p>
-            
-            
-              
-        </div>
-    </div>
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Confirmación de Cita</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
+        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="padding: 40px 20px;">
+                    <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <!-- Header con gradiente -->
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); padding: 40px 30px; text-align: center;">
+                                <div style="width: 60px; height: 60px; background: white; border-radius: 12px; margin: 0 auto 20px; display: inline-block; line-height: 60px; font-size: 28px; font-weight: bold; color: #5BA8A0;">
+                                    AM
+                                </div>
+                                <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
+                                    ✓ Cita Confirmada
+                                </h1>
+                                <p style="margin: 10px 0 0; color: #ffffff; font-size: 16px; opacity: 0.95;">
+                                    Tu sesión ha sido agendada exitosamente
+                                </p>
+                            </td>
+                        </tr>
+                        
+                        <!-- Contenido principal -->
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <p style="margin: 0 0 30px; color: #333333; font-size: 16px; line-height: 1.6; text-align: center;">
+                                    Hola <strong style="color: #5BA8A0;">{pacient}</strong>, gracias por confiar en los servicios de <strong>AlmarteCR</strong>
+                                </p>
+                                
+                                <!-- Tarjeta de información de la cita -->
+                                <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 30px;">
+                                    <tr>
+                                        <td style="background: linear-gradient(135deg, #f8fafa 0%, #e8f5f4 100%); border-radius: 12px; padding: 25px; border: 2px solid #5BA8A0;">
+                                            <p style="margin: 0 0 20px; color: #5BA8A0; font-size: 18px; font-weight: 600; text-align: center; text-transform: uppercase; letter-spacing: 1px;">
+                                                Detalles de tu Cita
+                                            </p>
+                                            
+                                            <!-- Servicio -->
+                                            <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 15px;">
+                                                <tr>
+                                                    <td style="padding: 12px; background-color: #ffffff; border-radius: 8px;">
+                                                        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                                            <tr>
+                                                                <td style="width: 40px; vertical-align: top;">
+                                                                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; line-height: 32px; text-align: center;">
+                                                                        📋
+                                                                    </div>
+                                                                </td>
+                                                                <td style="padding-left: 12px;">
+                                                                    <p style="margin: 0; color: #666666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Servicio</p>
+                                                                    <p style="margin: 5px 0 0; color: #333333; font-size: 16px; font-weight: 600;">{nombreServicio}</p>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            
+                                            <!-- Fecha y Hora -->
+                                            <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 15px;">
+                                                <tr>
+                                                    <td style="padding: 12px; background-color: #ffffff; border-radius: 8px;">
+                                                        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                                            <tr>
+                                                                <td style="width: 40px; vertical-align: top;">
+                                                                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; line-height: 32px; text-align: center;">
+                                                                        📅
+                                                                    </div>
+                                                                </td>
+                                                                <td style="padding-left: 12px;">
+                                                                    <p style="margin: 0; color: #666666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Fecha y Hora</p>
+                                                                    <p style="margin: 5px 0 0; color: #333333; font-size: 16px; font-weight: 600;">{date}</p>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            
+                                            <!-- Terapeuta -->
+                                            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                                <tr>
+                                                    <td style="padding: 12px; background-color: #ffffff; border-radius: 8px;">
+                                                        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                                            <tr>
+                                                                <td style="width: 40px; vertical-align: top;">
+                                                                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; line-height: 32px; text-align: center;">
+                                                                        👩‍⚕️
+                                                                    </div>
+                                                                </td>
+                                                                <td style="padding-left: 12px;">
+                                                                    <p style="margin: 0; color: #666666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Profesional</p>
+                                                                    <p style="margin: 5px 0 0; color: #333333; font-size: 16px; font-weight: 600;">Licda. {nombreTerapeuta}</p>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <!-- Recordatorio -->
+                                <div style="background-color: #e8f5f4; border-left: 4px solid #5BA8A0; padding: 15px; border-radius: 8px; margin: 0 0 25px;">
+                                    <p style="margin: 0 0 10px; color: #4A9B94; font-size: 14px; font-weight: 600;">
+                                        💡 Recordatorio importante:
+                                    </p>
+                                    <ul style="margin: 0; padding-left: 20px; color: #4A9B94; font-size: 14px; line-height: 1.6;">
+                                        <li>Te recomendamos llegar 5 minutos antes de tu cita</li>
+                                        <li>Si necesitas cancelar o reprogramar, hazlo con al menos 24 horas de anticipación</li>
+                                        <li>Prepara cualquier pregunta o tema que desees abordar en la sesión</li>
+                                    </ul>
+                                </div>
+                                
+                                
+                                
+                                <p style="margin: 0; color: #666666; font-size: 14px; line-height: 1.6; text-align: center;">
+                                    Si tienes alguna pregunta, no dudes en contactarnos.
+                                </p>
+                            </td>
+                        </tr>
+                        
+                        <!-- Footer -->
+                        <tr>
+                            <td style="background-color: #f8fafa; padding: 30px; text-align: center; border-top: 1px solid #e0e0e0;">
+                                <p style="margin: 0 0 10px; color: #5BA8A0; font-size: 18px; font-weight: 600;">
+                                    Conexión Almarte
+                                </p>
+                                <p style="margin: 0 0 15px; color: #666666; font-size: 14px;">
+                                    Tu bienestar mental es nuestra prioridad
+                                </p>
+                                <p style="margin: 0; color: #999999; font-size: 12px; line-height: 1.6;">
+                                    Este es un correo automático, por favor no respondas a este mensaje.<br>
+                                    Si necesitas ayuda, contáctanos a través de nuestra plataforma.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
     """
         self.send_email(mail, subject, html)
         
@@ -97,7 +377,7 @@ class EmailService:
           
     #para nuevo usuario
     def SendNewUser(self, email, username, password):
-        subject = "Bienvenido a Conexión by Almarte - Tus Credenciales de Acceso"
+        subject = "Bienvenido a Conexión by Almarte - Tus credenciales de acceso"
         html = f"""
     <!DOCTYPE html>
     <html lang="es">
@@ -226,7 +506,7 @@ class EmailService:
         self.send_email(tutor_email, subject, html)
         
     def SendVerificationCode(self, email, username, code):
-        subject = "Código de Verificación - Conexión by Almarte"
+        subject = "Tu código de verificación - Conexión by Almarte"
         html = f"""
     <!DOCTYPE html>
     <html lang="es">
