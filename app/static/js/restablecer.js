@@ -162,3 +162,40 @@ function checkFormValidity() {
 
     resetBtn.disabled = !(passwordValid && confirmValid);
 }
+document.getElementById('resetForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const newPassword = document.getElementById('newPassword').value;
+    
+
+
+    fetch(NewPass_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ new_password: newPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+             
+            showModal('¡Contraseña actualizada!', 'Tu contraseña se cambió correctamente. Serás redirigido al login.', 'success', '/login');
+
+
+            
+            setTimeout(() => {
+                window.location.href = REDIREC_UTL
+            }, 3000);
+           
+        } else {
+            showModal('¡Algo salio mal!', data.message);
+
+            
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al comunicar con el servidor. Intenta nuevamente.');
+    });
+});

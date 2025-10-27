@@ -6,22 +6,20 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    background-color: #a1ced4;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background-image: url("/static/images/fondo.png");
-            background-size: cover;
-            background-position: center;
+    
 }
  
 
 
 .container {
-    background-color: white;
-    border: 2px solid #0de9f1;
+    background-color: rgb(244, 251, 252);
+    border: 2px solid #76cfd2;
     border-radius: 20px;
     padding: 40px 30px;
     max-width: 450px;
@@ -129,7 +127,7 @@ body {
 .form-input {
     width: 100%;
     padding: 15px 20px;
-    border: 2px solid #7ED321;
+    border: 2px solid #32d9d9;
     border-radius: 25px;
     font-size: 16px;
     background-color: #f8f8f8;
@@ -140,7 +138,7 @@ body {
 
     .form-input:focus {
         background-color: white;
-        border-color: #6BC91A;
+        border-color: #42b9e4;
         box-shadow: 0 0 0 3px rgba(126, 211, 33, 0.1);
     }
 
@@ -154,7 +152,7 @@ body {
     }
 
     .form-input.success {
-        border-color: #7ED321;
+        border-color: #26bed2;
         background-color: #f0fff0;
     }
 
@@ -183,7 +181,7 @@ body {
 }
 
 .strength-strong {
-    background-color: #7ED321;
+    background-color: #22b2af;
 }
 
 .strength-text {
@@ -234,14 +232,14 @@ body {
 }
 
 .requirement-met {
-    background-color: #7ED321;
+    background-color: #1faddd;
     color: white;
 }
 
 .primary-btn {
     width: 100%;
     padding: 15px;
-    background-color: #7ED321;
+    background-color: #085050;
     color: #333;
     border: none;
     border-radius: 25px;
@@ -254,7 +252,7 @@ body {
 }
 
     .primary-btn:hover {
-        background-color: #6BC91A;
+        background-color: #28b1c0;
     }
 
     .primary-btn:active {
@@ -272,7 +270,7 @@ body {
     padding: 12px 20px;
     background-color: #e8e8e8;
     color: #666;
-    border: 2px solid #7ED321;
+    border: 2px solid #050707;
     border-radius: 25px;
     font-size: 16px;
     font-weight: 500;
@@ -317,7 +315,7 @@ body {
 }
 
 .success-message {
-    color: #7ED321;
+    color: #048f9f;
     font-size: 12px;
     margin-top: 5px;
     display: none;

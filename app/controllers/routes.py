@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, send_from_directory, current_app,url_for,redirect,session
 import os
-from .decorators import loginRequired,rolRequired
-from .authController import login
+from .decorators import loginRequired,rolRequired,codeVerifiedRequired
 
 routes_bp = Blueprint("routes", __name__)
 
@@ -20,6 +19,10 @@ def service_worker():
 @loginRequired
 def DashboardPrincipal():
     return render_template("dashboard-Consultante.html")
+
+@routes_bp.route("/codigo_restablecer", endpoint="codigo_restablecer")
+def CodigoRestablecer():
+    return render_template("codigo-restablecer.html")
 
 
 @routes_bp.route("/preguntas_seguridad",endpoint="preguntas_seguridad")
@@ -62,7 +65,9 @@ def SigUp():
 def AcercaDe():
     return render_template("acercaDe.html")
 
+
 @routes_bp.route("/restablecer_contra", endpoint="restablecer_contra")
+@codeVerifiedRequired
 def RestablecerCOntrasena():
     return render_template("restablecer-contrasena.html")
 

@@ -6,9 +6,9 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import os
 #SOLO EN LOCALHOST
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 
 import threading
 class EmailService:
@@ -48,21 +48,21 @@ class EmailService:
             print(f"[ERROR] Error enviando correo: {e}")
     #  template para cita
     def SendNewAppointment(self, mail, pacient, date, nombreServicio):
-      try:
-        subject = "Tienes una nueva cita - Conexión Almarte"
-        html = f"""
-   <!DOCTYPE html>
-        <html lang="es">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Nueva Cita Agendada</title>
-        </head>
-        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-            <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
-                <tr>
-                    <td style="padding: 30px 15px;">
-                        <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        try:
+            subject = "Tienes una nueva cita - Conexión Almarte"
+            html = f"""
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Nueva Cita Agendada</title>
+                </head>
+                <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
+                    <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
+                        <tr>
+                            <td style="padding: 30px 15px;">
+                                 <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                             <!-- Header con gradiente -->
                             <tr>
                                 <td style="background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); padding: 40px 30px; text-align: center;">
@@ -201,18 +201,19 @@ class EmailService:
                                         Este es un correo automático, por favor no respondas a este mensaje.<br>
                                         Si necesitas ayuda, contáctanos a través de la plataforma.
                                     </p>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </body>
-        </html>
-    """
-        self.send_email(mail, subject, html)
+                                   </td>
+                                </tr>
+                             </table>
+                          </td>
+                       </tr>
+                    </table>
+                </body>
+                </html>
+            """
+            thread = threading.Thread(target=self.send_email, args=(mail, subject, html))
+            thread.start()
         
-      except Exception as e:
+        except Exception as e:
           print (e)
           
     def SendNewAppointmentPacient(self, mail, pacient, date, nombreServicio,nombreTerapeuta):
@@ -369,13 +370,15 @@ class EmailService:
     </body>
     </html>
     """
-        self.send_email(mail, subject, html)
+        thread = threading.Thread(target=self.send_email, args=(mail, subject, html))
+        thread.start()
         
       except Exception as e:
           print (e)
           
     #para nuevo usuario
     def SendNewUser(self, email, username, password):
+      try: 
         subject = "Bienvenido a Conexión by Almarte - Tus credenciales de acceso"
         html = f"""
     <!DOCTYPE html>
@@ -448,7 +451,16 @@ class EmailService:
                                         </td>
                                     </tr>
                                 </table>
-                                
+                                <!-- Botón de acción -->
+                                <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 25px;">
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            <a href="https://conexionalmarte.onrender.com" style="display: inline-block; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); color: #ffffff; text-decoration: none; padding: 14px 40px; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 2px 4px rgba(91, 168, 160, 0.3);">
+                                                Iniciar Sesión
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
                                 <!-- Recomendaciones de seguridad -->
                                 <div style="background-color: #fff8e6; border-left: 4px solid #ffc107; padding: 15px; border-radius: 8px; margin: 0 0 20px;">
                                     <p style="margin: 0 0 10px; color: #856404; font-size: 14px; font-weight: 600;">
@@ -489,36 +501,115 @@ class EmailService:
     </body>
     </html>
     """
-        self.send_email(email, subject, html)
+        thread = threading.Thread(target=self.send_email, args=(email, subject, html))
+        thread.start()
+      except Exception as e:
+          print (e)
+   
+       
+       
+    def SendUsernameReminder(self, email, uss):
+        try:
+            subject = "Recuperación de usuario - Conexión by Almarte"
+            html = f"""
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Recuperación de usuario</title>
+            </head>
+            <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
+                <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 30px 15px;">
+                            <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); padding: 40px 30px; text-align: center;">
+                                <div style="width: 60px; height: 60px; background: white; border-radius: 12px; margin: 0 auto 20px; display: inline-block; line-height: 60px; font-size: 28px; font-weight: bold; color: #5BA8A0;">
+                                    AM
+                                </div>
+                                <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 600;">
+                                    Recuperación de usuario
+                                </h1>
+                                <p style="margin: 10px 0 0; color: #ffffff; font-size: 16px;">
+                                    Hola, hemos encontrado tu nombre de usuario registrado en Conexión by Almarte.
+                                </p>
+                            </td>
+                        </tr>
 
-    # Template para tutor
-    def send_tutor_info(self, tutor_email, minor_name, username, pin):
-        subject = "Datos de acceso del menor"
-        html = f"""
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
-            <h2>Acceso al perfil del menor</h2>
-            <p>Nombre del menor: <b>{minor_name}</b></p>
-            <p>Usuario: <b>{username}</b></p>
-            <p>PIN: <b>{pin}</b></p>
-        </div>
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <p style="color: #333333; font-size: 16px; line-height: 1.6;">
+                                    A continuación encontrarás tu usuario de acceso:
+                                </p>
+
+                                <div style="background-color: #f8fafa; border-left: 4px solid #5BA8A0; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                                    <p style="margin: 0; font-size: 18px; font-weight: 600; color: #333333;">👤 Usuario: {uss}</p>
+                                </div>
+
+                                <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 25px 0;">
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            <a href="https://conexionalmarte.onrender.com" 
+                                               style="display: inline-block; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+                                                      color: #ffffff; text-decoration: none; padding: 14px 40px;
+                                                      border-radius: 8px; font-size: 16px; font-weight: 600;">
+                                                Iniciar sesión
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <p style="color: #666666; font-size: 14px;">
+                                    Si no solicitaste esta información, puedes ignorar este correo de forma segura.
+                                </p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color: #f8fafa; padding: 30px; text-align: center; border-top: 1px solid #e0e0e0;">
+                                <p style="margin: 0 0 10px; color: #5BA8A0; font-size: 18px; font-weight: 600;">
+                                    Conexión Almarte
+                                </p>
+                                <p style="margin: 0 0 15px; color: #666666; font-size: 14px;">
+                                    Tu bienestar mental es nuestra prioridad
+                                </p>
+                                <p style="margin: 0; color: #999999; font-size: 12px;">
+                                    Este es un mensaje automático, por favor no respondas a este correo.
+                                </p>
+                            </td>
+                          </tr>
+                       </table>
+                   </td>
+                 </tr>
+               </table>
+            </body>
+            </html>
         """
-        self.send_email(tutor_email, subject, html)
-        
+     
+            thread = threading.Thread(target=self.send_email, args=(email, subject, html))
+            thread.start()
+        except Exception as e:
+          print (e)
+    
     def SendVerificationCode(self, email, username, code):
-        subject = "Tu código de verificación - Conexión by Almarte"
-        html = f"""
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Código de Verificación</title>
-    </head>
-    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-        <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
-            <tr>
-                <td style="padding: 30px 15px;">
-                    <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        try:
+            subject = "Tu código de verificación - Conexión by Almarte"
+            html = f"""
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Código de Verificación</title>
+            </head>
+            <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
+                <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
+                  <tr>
+                       <td style="padding: 30px 15px;">
+                          <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                       
                         <tr>
                             <td style="background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); padding: 40px 30px; text-align: center;">
@@ -599,33 +690,36 @@ class EmailService:
                                     Si necesitas ayuda, contáctanos a través de nuestra plataforma.
                                 </p>
                             </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </body>
-    </html>
-    """
+                         </tr>
+                      </table>
+                   </td>
+               </tr>
+           </table>
+        </body>
+        </html>
+       """
     
-        thread = threading.Thread(target=self.send_email, args=(email, subject, html))
-        thread.start()
+            thread = threading.Thread(target=self.send_email, args=(email, subject, html))
+            thread.start()
+        except Exception as e:
+          print (e)
         
     def SendVerificationCodeCredentials(self, email, username, code):
-        subject = "Tu código de verificación - Conexión by Almarte"
-        html = f"""
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Código de Verificación</title>
-    </head>
-    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-        <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
-            <tr>
-                <td style="padding: 30px 15px;">
-                    <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        try: 
+            subject = "Tu código de verificación - Conexión by Almarte"
+            html = f"""
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Código de Verificación</title>
+            </head>
+            <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
+                <table role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; border-collapse: collapse;">
+                     <tr>
+                        <td style="padding: 30px 15px;">
+                           <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                       
                         <tr>
                             <td style="background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); padding: 40px 30px; text-align: center;">
@@ -707,13 +801,15 @@ class EmailService:
                                 </p>
                             </td>
                         </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </body>
-    </html>
-    """
+                     </table>
+                   </td>
+                 </tr>
+               </table>
+         </body>
+        </html>
+       """
     
-        thread = threading.Thread(target=self.send_email, args=(email, subject, html))
-        thread.start()
+            thread = threading.Thread(target=self.send_email, args=(email, subject, html))
+            thread.start()
+        except Exception as e:
+          print (e)

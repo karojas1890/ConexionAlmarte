@@ -6,11 +6,13 @@
     <title>Restablecer Contraseña - Conexion</title>
      <link rel="stylesheet" href="{{ url_for('static', filename='css/restablcerContraStyle.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
     
     <div class="container">
+
         <div class="logo">
             <div class="logo-text">Conexion</div>
             <div class="logo-subtitle">Almarte</div>
@@ -28,6 +30,15 @@
             <div class="token-status token-valid" id="tokenStatus">
                 ✅ Puedes restablecer tu contraseña
             </div>
+<!-- Modal de confirmación -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-icon">✅</div>
+        <h2>¡Contraseña actualizada!</h2>
+        <p>Tu contraseña se ha cambiado correctamente. Serás redirigido al inicio de sesión.</p>
+    </div>
+</div>
 
             <form asp-controller="Auth" asp-action="Restablecer" id="resetForm">
                 <div class="form-group">
@@ -86,58 +97,20 @@
                 </button>
             </form>
 
-            <button class="secondary-btn" onclick="goToLogin()">
-                <span class="btn-icon">←</span>
-                <span>Volver al inicio de sesión</span>
-            </button>
-        </div>
-
-        <!-- Estado de éxito -->
-        <div class="success-state" id="successState">
-            <div class="icon-container">
-                <div class="icon">✅</div>
-            </div>
-
-            <h1 class="title">¡Contraseña Actualizada!</h1>
-            <p class="subtitle">Tu contraseña ha sido restablecida exitosamente</p>
-
-            <div class="token-status token-valid">
-                🎉 Ya puedes iniciar sesión con tu nueva contraseña
-            </div>
-
-            <button class="primary-btn" onclick="goToLogin()">
-                Iniciar Sesión
-            </button>
-
-            <div class="login-link">
-                <a href="#" onclick="goToLogin()">Ir al inicio de sesión</a>
-            </div>
-        </div>
-
-        <!-- Estado de enlace expirado -->
-        <div class="expired-state" id="expiredState">
-            <div class="icon-container">
-                <div class="icon">⏰</div>
-            </div>
-
-            <h1 class="title">Enlace Expirado</h1>
-            <p class="subtitle">Este enlace de recuperación ya no es válido</p>
-
-            <div class="token-status token-expired">
-                ❌ El enlace ha expirado o ya fue utilizado
-            </div>
-
-            <button class="primary-btn" onclick="requestNewLink()">
-                Solicitar Nuevo Enlace
-            </button>
-
-            <a href="{{ url_for('routes.index') }}" class="secondary-btn">
+           <a href="{{ url_for('auth.login') }}" class="secondary-btn">
                  <span class="btn-icon">←</span>
                  <span>Volver al inicio de sesión</span>
             </a>
         </div>
-    </div>
 
+            
+        </div>
+    </div>
+     <script>
+        const REDIREC_UTL="{{ url_for('auth.login') }}"
+    const NewPass_URL = "{{ url_for('crede.UpdatePassword') }}";
+   </script>
     <script src="{{ url_for('static', filename='js/restablecer.js') }}" > </script>
+    <script src="{{ url_for('static', filename='js/modal.js') }}" > </script>
 </body>
 </html>

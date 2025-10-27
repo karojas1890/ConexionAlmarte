@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Auditoría - Almarte</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Filters Section */
+        .filters {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.875rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 0.625rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #5BA8A0;
+            box-shadow: 0 0 0 3px rgba(91, 168, 160, 0.1);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 168, 160, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.success {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        }
+
+        .stat-icon.error {
+            background: linear-gradient(135deg, #f44336 0%, #e53935 100%);
+        }
+
+        .stat-icon.warning {
+            background: linear-gradient(135deg, #ff9800 0%, #fb8c00 100%);
+        }
+
+        .stat-icon.info {
+            background: linear-gradient(135deg, #2196f3 0%, #1e88e5 100%);
+        }
+
+        .stat-content h3 {
+            font-size: 1.75rem;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-content p {
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        /* Audit Log Table */
+        .audit-log {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .audit-log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .audit-log-header h2 {
+            color: #333;
+            font-size: 1.25rem;
+        }
+
+        .export-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 168, 160, 0.3);
+        }
+
+        /* Activity Items */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .activity-item:hover {
+            border-color: #5BA8A0;
+            box-shadow: 0 2px 8px rgba(91, 168, 160, 0.1);
+        }
+
+        .activity-item.expanded {
+            border-color: #5BA8A0;
+            background: #f8fafa;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .activity-main {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .activity-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .activity-type {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .activity-description {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .activity-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .activity-time {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.25rem;
+        }
+
+        .activity-date {
+            font-size: 0.875rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .activity-timestamp {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* Expanded Details */
+        .activity-details {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e0e0;
+            display: none;
+        }
+
+        .activity-item.expanded .activity-details {
+            display: block;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 0.875rem;
+            border-radius: 8px;
+            border-left: 3px solid #5BA8A0;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            color: #333;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .json-data {
+            background: #f5f5f5;
+            padding: 0.875rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #333;
+            overflow-x: auto;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 0.5rem 0.875rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            border-color: #5BA8A0;
+            color: #5BA8A0;
+        }
+
+        .pagination button.active {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            color: white;
+            border-color: #5BA8A0;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #999;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-header {
+                flex-direction: column;
+            }
+
+            .activity-time {
+                align-items: flex-start;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Registro de Auditoría</h1>
+            <p>Monitoreo de actividades y eventos del sistema</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon success">✓</div>
+                <div class="stat-content">
+                    <h3 id="totalSuccess">0</h3>
+                    <p>Acciones Exitosas</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon error">✕</div>
+                <div class="stat-content">
+                    <h3 id="totalErrors">0</h3>
+                    <p>Acciones Fallidas</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon warning">⚠</div>
+                <div class="stat-content">
+                    <h3 id="totalWarnings">0</h3>
+                    <p>Advertencias</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon info">📊</div>
+                <div class="stat-content">
+                    <h3 id="totalActivities">0</h3>
+                    <p>Total de Eventos</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label for="filterUser">Usuario/Identificación</label>
+                    <input type="text" id="filterUser" placeholder="Buscar por identificación...">
+                </div>
+                <div class="filter-group">
+                    <label for="filterType">Tipo de Actividad</label>
+                    <select id="filterType">
+                        <option value="">Todos</option>
+                        <option value="1">Inicio de Sesión</option>
+                        <option value="2">Cierre de Sesión</option>
+                        <option value="3">Registro de Usuario</option>
+                        <option value="4">Recuperación de Contraseña</option>
+                        <option value="5">Cambio de Contraseña</option>
+                        <option value="6">Actualización de Perfil</option>
+                        <option value="7">Creación de Cita</option>
+                        <option value="8">Cancelación de Cita</option>
+                        <option value="9">Acceso Denegado</option>
+                        <option value="10">Error del Sistema</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterStatus">Estado</label>
+                    <select id="filterStatus">
+                        <option value="">Todos</option>
+                        <option value="true">Exitoso</option>
+                        <option value="false">Fallido</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterDateFrom">Desde</label>
+                    <input type="date" id="filterDateFrom">
+                </div>
+                <div class="filter-group">
+                    <label for="filterDateTo">Hasta</label>
+                    <input type="date" id="filterDateTo">
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="btn btn-primary" onclick="applyFilters()">Aplicar Filtros</button>
+                <button class="btn btn-secondary" onclick="clearFilters()">Limpiar</button>
+            </div>
+        </div>
+
+        <!-- Audit Log -->
+        <div class="audit-log">
+            <div class="audit-log-header">
+                <h2>Eventos Recientes</h2>
+                <button class="export-btn" onclick="exportToCSV()">
+                    <span>📥</span>
+                    <span>Exportar CSV</span>
+                </button>
+            </div>
+
+            <div class="activity-list" id="activityList">
+                <!-- Activities will be loaded here -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - Replace with actual API call
+        const activityTypes = {
+            1: 'Inicio de Sesión',
+            2: 'Cierre de Sesión',
+            3: 'Registro de Usuario',
+            4: 'Recuperación de Contraseña',
+            5: 'Cambio de Contraseña',
+            6: 'Actualización de Perfil',
+            7: 'Creación de Cita',
+            8: 'Cancelación de Cita',
+            9: 'Acceso Denegado',
+            10: 'Error del Sistema'
+        };
+
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let allActivities = [];
+        let filteredActivities = [];
+
+        // Load activities from API
+        async function loadActivities() {
+            try {
+                // Replace with actual API endpoint
+                // const response = await fetch('/api/audit-log');
+                // allActivities = await response.json();
+                
+                // Sample data for demonstration
+                allActivities = generateSampleData();
+                filteredActivities = [...allActivities];
+                updateStats();
+                renderActivities();
+            } catch (error) {
+                console.error('Error loading activities:', error);
+            }
+        }
+
+        // Generate sample data
+        function generateSampleData() {
+            const data = [];
+            const now = new Date();
+            
+            for (let i = 0; i < 50; i++) {
+                const date = new Date(now - Math.random() * 7 * 24 * 60 * 60 * 1000);
+                const type = Math.floor(Math.random() * 10) + 1;
+                const success = Math.random() > 0.2;
+                
+                data.push({
+                    id_actividad: i + 1,
+                    identificacion_consultante: `${Math.floor(Math.random() * 900000000) + 100000000}`,
+                    tipo_actividad: type,
+                    descripcion: `Descripción de la actividad ${activityTypes[type]}`,
+                    codigo: success ? null : `ERR${Math.floor(Math.random() * 1000)}`,
+                    fecha: date.toISOString(),
+                    ip_origen: `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`,
+                    dispositivo: ['Chrome/Windows', 'Safari/iOS', 'Firefox/Linux', 'Edge/Windows'][Math.floor(Math.random() * 4)],
+                    ubicacion: ['San José, CR', 'Heredia, CR', 'Alajuela, CR', 'Cartago, CR'][Math.floor(Math.random() * 4)],
+                    datos_modificados: type === 6 ? { campo: 'email', anterior: 'old@email.com', nuevo: 'new@email.com' } : null,
+                    exito: success
+                });
+            }
+            
+            return data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        }
+
+        // Update statistics
+        function updateStats() {
+            const success = filteredActivities.filter(a => a.exito).length;
+            const errors = filteredActivities.filter(a => !a.exito).length;
+            const warnings = filteredActivities.filter(a => a.tipo_actividad === 9).length;
+            
+            document.getElementById('totalSuccess').textContent = success;
+            document.getElementById('totalErrors').textContent = errors;
+            document.getElementById('totalWarnings').textContent = warnings;
+            document.getElementById('totalActivities').textContent = filteredActivities.length;
+        }
+
+        // Render activities
+        function renderActivities() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageActivities = filteredActivities.slice(start, end);
+            
+            const listContainer = document.getElementById('activityList');
+            
+            if (pageActivities.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>No se encontraron registros</h3>
+                        <p>No hay actividades que coincidan con los filtros seleccionados</p>
+                    </div>
+                `;
+                document.getElementById('pagination').innerHTML = '';
+                return;
+            }
+            
+            listContainer.innerHTML = pageActivities.map(activity => {
+                const date = new Date(activity.fecha);
+                const dateStr = date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+                const timeStr = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                
+                return `
+                    <div class="activity-item" onclick="toggleDetails(${activity.id_actividad})">
+                        <div class="activity-header">
+                            <div class="activity-main">
+                                <div class="activity-title">
+                                    <span class="activity-badge ${activity.exito ? 'badge-success' : 'badge-error'}">
+                                        ${activity.exito ? 'Exitoso' : 'Fallido'}
+                                    </span>
+                                    <span class="activity-type">${activityTypes[activity.tipo_actividad]}</span>
+                                </div>
+                                <div class="activity-description">${activity.descripcion}</div>
+                                <div class="activity-meta">
+                                    <span class="activity-meta-item">👤 ${activity.identificacion_consultante}</span>
+                                    <span class="activity-meta-item">📍 ${activity.ip_origen}</span>
+                                    <span class="activity-meta-item">💻 ${activity.dispositivo}</span>
+                                </div>
+                            </div>
+                            <div class="activity-time">
+                                <span class="activity-date">${dateStr}</span>
+                                <span class="activity-timestamp">${timeStr}</span>
+                            </div>
+                        </div>
+                        <div class="activity-details" id="details-${activity.id_actividad}">
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <div class="detail-label">ID de Actividad</div>
+                                    <div class="detail-value">${activity.id_actividad}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Identificación</div>
+                                    <div class="detail-value">${activity.identificacion_consultante}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">IP de Origen</div>
+                                    <div class="detail-value">${activity.ip_origen}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Dispositivo</div>
+                                    <div class="detail-value">${activity.dispositivo}</div>
+                                </div>
+                                ${activity.ubicacion ? `
+                                <div class="detail-item">
+                                    <div class="detail-label">Ubicación</div>
+                                    <div class="detail-value">${activity.ubicacion}</div>
+                                </div>
+                                ` : ''}
+                                ${activity.codigo ? `
+                                <div class="detail-item">
+                                    <div class="detail-label">Código</div>
+                                    <div class="detail-value">${activity.codigo}</div>
+                                </div>
+                                ` : ''}
+                            </div>
+                            ${activity.datos_modificados ? `
+                            <div class="json-data">
+                                <strong>Datos Modificados:</strong><br>
+                                ${JSON.stringify(activity.datos_modificados, null, 2)}
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            renderPagination();
+        }
+
+        // Toggle activity details
+        function toggleDetails(id) {
+            const item = event.currentTarget;
+            item.classList.toggle('expanded');
+        }
+
+        // Render pagination
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredActivities.length / itemsPerPage);
+            const paginationContainer = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            let html = `
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                    ← Anterior
+                </button>
+            `;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    html += `
+                        <button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">
+                            ${i}
+                        </button>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    html += '<span>...</span>';
+                }
+            }
+            
+            html += `
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+                    Siguiente →
+                </button>
+            `;
+            
+            paginationContainer.innerHTML = html;
+        }
+
+        // Change page
+        function changePage(page) {
+            currentPage = page;
+            renderActivities();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const userFilter = document.getElementById('filterUser').value.toLowerCase();
+            const typeFilter = document.getElementById('filterType').value;
+            const statusFilter = document.getElementById('filterStatus').value;
+            const dateFromFilter = document.getElementById('filterDateFrom').value;
+            const dateToFilter = document.getElementById('filterDateTo').value;
+            
+            filteredActivities = allActivities.filter(activity => {
+                if (userFilter && !activity.identificacion_consultante.toLowerCase().includes(userFilter)) {
+                    return false;
+                }
+                if (typeFilter && activity.tipo_actividad.toString() !== typeFilter) {
+                    return false;
+                }
+                if (statusFilter && activity.exito.toString() !== statusFilter) {
+                    return false;
+                }
+                if (dateFromFilter) {
+                    const activityDate = new Date(activity.fecha).toISOString().split('T')[0];
+                    if (activityDate < dateFromFilter) {
+                        return false;
+                    }
+                }
+                if (dateToFilter) {
+                    const activityDate = new Date(activity.fecha).toISOString().split('T')[0];
+                    if (activityDate > dateToFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            
+            currentPage = 1;
+            updateStats();
+            renderActivities();
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('filterUser').value = '';
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterDateFrom').value = '';
+            document.getElementById('filterDateTo').value = '';
+            
+            filteredActivities = [...allActivities];
+            currentPage = 1;
+            updateStats();
+            renderActivities();
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const headers = ['ID', 'Identificación', 'Tipo', 'Descripción', 'Fecha', 'IP', 'Dispositivo', 'Ubicación', 'Estado'];
+            const rows = filteredActivities.map(a => [
+                a.id_actividad,
+                a.identificacion_consultante,
+                activityTypes[a.tipo_actividad],
+                a.descripcion,
+                new Date(a.fecha).toLocaleString('es-ES'),
+                a.ip_origen,
+                a.dispositivo,
+                a.ubicacion || '',
+                a.exito ? 'Exitoso' : 'Fallido'
+            ]);
+            
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `auditoria_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Initialize
+        loadActivities();
+    </script>
+</body>
+</html>

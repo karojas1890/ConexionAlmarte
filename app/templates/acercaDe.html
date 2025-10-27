@@ -6,6 +6,9 @@
     <title>Acerca De - Conexión Almarte</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/acercaDe.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+   
 </head>
 <body>
     <div class="about-container">
@@ -77,7 +80,7 @@
 
         <!-- Footer con botón -->
         <div class="about-footer">
-            <button onclick="window.history.back()" class="back-btn">← Volver</button>
+            <a href="{{ url_for('auth.login') }}" style="text-decoration: none;" class="back-btn">← Volver</a>
         </div>
     </div>
 </body>

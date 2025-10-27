@@ -3,11 +3,11 @@
            
             {
                 id: 'id_digits',
-                label: 'Indique los últimos 4 dígitos de su número de identificación',
+                label: 'Indique los últimos 3 dígitos de su número de identificación',
                 type: 'text',
                 placeholder: 'Ej: 123',
-                maxlength: 3,
-                pattern: '[0-9]{4}'
+                maxlength: 4,
+                pattern: '[0-9]{3}'
             },
            
         ];
@@ -40,13 +40,13 @@
             
 
             
-            validateSecurityAnswers(answer1, answer2, q1.id, q2.id);
+            validateSecurityAnswers(answer1, q1.id);
         });
 
-        function validateSecurityAnswers(answer1, answer2, questionId1, questionId2) {
+        function validateSecurityAnswers(answer1,  questionId1) {
          
             
-            fetch('/api/validate-security-questions', {
+            fetch(Questions_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,30 +54,33 @@
                 body: JSON.stringify({
                     question1: questionId1,
                     answer1: answer1,
-                    question2: questionId2,
-                    answer2: answer2
+                    
                 })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Respuestas correctas
+                   
                     document.getElementById('successMessage').classList.add('show');
                     document.getElementById('errorMessage').classList.remove('show');
                     
-                    // Enviar código por correo (esto se hace en el backend)
-                    // Redirigir después de 3 segundos
+                   
                     setTimeout(() => {
-                        window.location.href = 'reset-password.html';
+                        window.location.href = CODE_URL;
                     }, 3000);
                 } else {
-                    // Respuestas incorrectas
+                    document.getElementById('errorMessage').textContent = data.message;
                     document.getElementById('errorMessage').classList.add('show');
                     document.getElementById('successMessage').classList.remove('show');
+
+        
+                    if (data.blocked) {
+                        document.getElementById('securityForm').style.opacity = '0.5';
+                        document.getElementById('securityForm').style.pointerEvents = 'none';
+                    } else {
+                           console.log(`Intentos fallidos: ${data.attempts}`);
+                        }
                     
-                    // Deshabilitar el formulario
-                    document.getElementById('securityForm').style.opacity = '0.5';
-                    document.getElementById('securityForm').style.pointerEvents = 'none';
                 }
             })
             .catch(error => {

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Contraseña - Almarte</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/preguntaSeguridad.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
     <div class="container">
@@ -40,9 +41,12 @@
             <button type="submit" class="btn">Verificar Datos</button>
         </form>
 
-        <a href="login.html" class="back-link">← Volver al inicio de sesión</a>
+        <a href="{{ url_for('auth.login') }}" class="back-link">← Volver al inicio de sesión</a>
     </div>
-
+    <script>
+    const Questions_URL = "{{ url_for('crede.ValidateSecurityQuestions') }}";
+     const CODE_URL = "{{ url_for('routes.codigo_restablecer') }}";
+   </script>
     <script src="{{ url_for('static', filename='js/preguntaSeguridad.js') }}"></script>
 </body>
 </html>
