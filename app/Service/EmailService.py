@@ -6,9 +6,9 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import os
 #SOLO EN LOCALHOST
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
-load_dotenv()
+#Sload_dotenv()
 
 import threading
 class EmailService:
