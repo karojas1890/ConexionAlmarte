@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify,session
+from flask import Blueprint, request, jsonify, session
 from PIL import Image
 from app.extensions import db
 import pytesseract
@@ -6,18 +6,18 @@ import cv2
 import numpy as np
 import re
 from app.models.Tarjetas import Tarjeta
-import bcrypt
 import os
 from cryptography.fernet import Fernet
-#from dotenv import load_dotenv
 
+# from dotenv import load_dotenv
+# load_dotenv()  # solo para desarrollo
 
-#load_dotenv()
 key = os.getenv("FERNET_KEY")
 if not key:
-    raise RuntimeError("No se encontró la clave de cifrado en .env")
+    raise RuntimeError("No se encontró la clave de cifrado. Define FERNET_KEY en las variables de entorno")
 
 f = Fernet(key.encode())
+
 card_bp = Blueprint('card', __name__)
 
 
