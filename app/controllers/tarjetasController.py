@@ -9,8 +9,6 @@ from app.models.Tarjetas import Tarjeta
 import os
 from cryptography.fernet import Fernet
 
-# from dotenv import load_dotenv
-# load_dotenv()  # solo para desarrollo
 
 key = os.getenv("FERNET_KEY")
 if not key:
@@ -18,9 +16,10 @@ if not key:
 
 f = Fernet(key.encode())
 
+
+
+
 card_bp = Blueprint('card', __name__)
-
-
 
 def PilToCv(img_pil):
     return cv2.cvtColor(np.array(img_pil), cv2.COLOR_RGB2BGR)
