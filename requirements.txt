@@ -6,7 +6,4 @@ sqlalchemy
 pyodbc
 bcrypt
 sendgrid
-pillow
-numpy
-opencv-python
-pytesseract
+

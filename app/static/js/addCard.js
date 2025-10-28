@@ -1,15 +1,5 @@
 let stream = null;
 
-// Detecta si es dispositivo móvil
-function isMobileDevice() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
-    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const isSmallScreen = window.innerWidth <= 768;
-
-    return isMobile || (hasTouch && isSmallScreen);
-}
-
 // Mostrar/ocultar botón escaneo según dispositivo
 window.addEventListener('DOMContentLoaded', function() {
     const scanButton = document.querySelector('.btn-scan-card');
