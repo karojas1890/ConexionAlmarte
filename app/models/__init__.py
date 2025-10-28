@@ -16,5 +16,6 @@ from .RecursoApoyo import RecursosApoyo
 from .Emocion import Emociones
 from .ConductaAfrontamiento import ConductasAfrontamiento
 from .Diario import Diario
+from .Tarjetas import Tarjeta
 
 

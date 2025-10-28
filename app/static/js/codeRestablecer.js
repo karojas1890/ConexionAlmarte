@@ -16,8 +16,12 @@
             .then(data => {
                 console.log(data)
                 if (data.success) {
-                
+                  
+                    showModal('¡Usuario recuperado!', 'Revisa el correo electronico paraverificar los datos .', 'success');
+
+                setTimeout(() => {
                    window.location.href= data.redirect_url
+                },4000)
                 } else {
                     // Código incorrecto
                     document.getElementById('codeError').classList.add('show');
@@ -25,7 +29,8 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Ocurrió un error al verificar el código. Por favor, intenta nuevamente.');
+               
+                 showModal('Ocurrió un error al verificar el código', 'Por favor, intenta nuevamente.','"error"');
             });
         });
 

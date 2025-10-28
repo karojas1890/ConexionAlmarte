@@ -205,4 +205,38 @@
             align-items: center;
         }
 
-       
+        .manage-cards-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(91, 168, 160, 0.3);
+        }
+
+        .manage-cards-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 168, 160, 0.4);
+        }
+
+        .manage-cards-btn:active {
+            transform: translateY(0);
+        }
+
+        .card-icon {
+            font-size: 20px;
+        }
+
+        .arrow-icon {
+            font-size: 18px;
+            font-weight: bold;
+        }

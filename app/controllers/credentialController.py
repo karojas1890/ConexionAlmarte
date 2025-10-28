@@ -32,7 +32,7 @@ def ValidarUsuarioRecovery():
             if not usuario:
                 return jsonify({'success': False, 'message': 'Error: Usuario no encontrado'})
 
-            if usuario.estado != 1:
+            if usuario.estado != 1 and tipo_recuperacion!="1":
                 session['recovery_estado'] = usuario.estado
                 return jsonify({
                     'success': False,
@@ -66,7 +66,7 @@ def ValidarUsuarioRecovery():
             if not usuario:
                 return jsonify({'success': False, 'message': 'Error: Usuario no encontrado'})
 
-            if usuario.estado != 1:
+            if usuario.estado != 1 and tipo_recuperacion!="1":
                 session['recovery_estado'] = usuario.estado
                 return jsonify({
                     'success': False,

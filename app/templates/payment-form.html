@@ -27,25 +27,29 @@
               </button>
             <div class="section-title">Resumen de tu cita</div>
 
-            <div class="summary-card">
-                <div class="summary-header">Atención psicoterapéutica individual: Adultos</div>
+             <div class="summary-card">
+                <div class="summary-header" id="service-summary-text"></div>
                 <div class="summary-row">
                     <span class="summary-label">Fecha</span>
-                    <span class="summary-value">Jueves 25 de septiembre</span>
+                    <span class="summary-value" id="summary-date">No seleccionada</span>
                 </div>
                 <div class="summary-row">
                     <span class="summary-label">Hora</span>
-                    <span class="summary-value">8am</span>
+                    <span class="summary-value" id="summary-time">No seleccionada</span>
                 </div>
                 <div class="summary-row">
                     <span class="summary-label">Total</span>
-                    <span class="summary-value">₡35000</span>
+                    <span class="summary-value" id="summary-price">₡0</span>
                 </div>
             </div>
 
             <div class="form-section">
                 <div class="form-title">Ingrese la información para realizar el pago</div>
-                
+                 <button class="manage-cards-btn" onclick="goToManageCards()">
+                    <span class="card-icon">💳</span>
+                    <span>Usar tarjeta guardada</span>
+                    <span class="arrow-icon">→</span>
+                </button>
                 <div class="form-group">
                     <label class="form-label">Número de tarjeta</label>
                     <input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19">
@@ -77,14 +81,19 @@
             </div>
 
             
-            <button class="continue-btn" onclick="processPayment()">Confirmar y pagar</button>
+            <button class="continue-btn" onclick="continueToPaymentForm()">Confirmar y pagar</button>
         </div>
 
        
-<script>
-   
-    const dashboardUrl = "{{ url_for('routes.dashboard_Consultante') }}";
-</script>
+
 </main> 
+
+<script>
+    // URL del dashboard
+const dashboardUrl = "{{ url_for('routes.dashboard_Consultante') }}"
+const CITA_URL ="{{ url_for('Citas.CrearCita') }}"
+const usuario = "{{ session.get('idusuario') }}"
+const ADDCARD_URL="{{ url_for('routes.add_card') }}"
+</script>
    <script src="{{ url_for('static', filename='js/payment-form.js') }}"></script>
 {% endblock %}

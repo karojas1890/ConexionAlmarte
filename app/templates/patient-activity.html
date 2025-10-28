@@ -1,0 +1,236 @@
+{% extends "layout.html" %}
+
+{% block title %}Mi actividad{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="header">
+            <h1>📊 Mi Actividad</h1>
+            <p>Revisa el historial de acciones realizadas en tu cuenta</p>
+        </div>
+
+        <div class="filters">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>Tipo de Actividad</label>
+                    <select id="activityType" onchange="filterActivities()">
+                        <option value="">Todas las actividades</option>
+                        <option value="1">Inicio de Sesión</option>
+                        <option value="2">Cierre de Sesión</option>
+                        <option value="3">Citas</option>
+                        <option value="4">Pagos</option>
+                        <option value="5">Perfil</option>
+                        <option value="6">Seguridad</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Fecha Desde</label>
+                    <input type="date" id="dateFrom" onchange="filterActivities()">
+                </div>
+                <div class="filter-group">
+                    <label>Fecha Hasta</label>
+                    <input type="date" id="dateTo" onchange="filterActivities()">
+                </div>
+                <div class="filter-group">
+                    <label>Estado</label>
+                    <select id="statusFilter" onchange="filterActivities()">
+                        <option value="">Todos</option>
+                        <option value="true">Exitoso</option>
+                        <option value="false">Fallido</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon success">✓</div>
+                <div class="stat-content">
+                    <h3>156</h3>
+                    <p>Acciones Exitosas</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon info">📅</div>
+                <div class="stat-content">
+                    <h3>12</h3>
+                    <p>Citas Agendadas</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon warning">⚠️</div>
+                <div class="stat-content">
+                    <h3>3</h3>
+                    <p>Intentos Fallidos</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="activity-list">
+            <h2>Historial de Actividades</h2>
+
+            <div id="activitiesContainer">
+                <!-- Actividad 1: Inicio de sesión exitoso -->
+                <div class="activity-item" onclick="toggleDetails(this)">
+                    <div class="activity-header">
+                        <div class="activity-title">
+                            <div class="activity-icon login">🔐</div>
+                            <div class="activity-info">
+                                <h3>Inicio de Sesión</h3>
+                                <p>Accediste a tu cuenta desde un navegador web</p>
+                                <span class="activity-status success">Exitoso</span>
+                            </div>
+                        </div>
+                        <div class="activity-time">Hace 2 horas</div>
+                    </div>
+                    <div class="activity-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Fecha y Hora:</span>
+                            <span class="detail-value">28/10/2025 14:30:45</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Dirección IP:</span>
+                            <span class="detail-value">192.168.1.100</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Dispositivo:</span>
+                            <span class="detail-value">Chrome 120 en Windows 11</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Ubicación:</span>
+                            <span class="detail-value">San José, Costa Rica</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividad 2: Cita agendada -->
+                <div class="activity-item" onclick="toggleDetails(this)">
+                    <div class="activity-header">
+                        <div class="activity-title">
+                            <div class="activity-icon appointment">📅</div>
+                            <div class="activity-info">
+                                <h3>Cita Agendada</h3>
+                                <p>Reservaste una sesión de terapia individual</p>
+                                <span class="activity-status success">Exitoso</span>
+                            </div>
+                        </div>
+                        <div class="activity-time">Hace 1 día</div>
+                    </div>
+                    <div class="activity-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Fecha y Hora:</span>
+                            <span class="detail-value">27/10/2025 10:15:22</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Servicio:</span>
+                            <span class="detail-value">Terapia Individual</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Terapeuta:</span>
+                            <span class="detail-value">Licda. María González</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Fecha de Cita:</span>
+                            <span class="detail-value">30/10/2025 15:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividad 3: Pago realizado -->
+                <div class="activity-item" onclick="toggleDetails(this)">
+                    <div class="activity-header">
+                        <div class="activity-title">
+                            <div class="activity-icon payment">💳</div>
+                            <div class="activity-info">
+                                <h3>Pago Procesado</h3>
+                                <p>Pago de sesión de terapia completado</p>
+                                <span class="activity-status success">Exitoso</span>
+                            </div>
+                        </div>
+                        <div class="activity-time">Hace 1 día</div>
+                    </div>
+                    <div class="activity-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Fecha y Hora:</span>
+                            <span class="detail-value">27/10/2025 10:16:05</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Monto:</span>
+                            <span class="detail-value">₡35,000.00</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Método de Pago:</span>
+                            <span class="detail-value">Visa •••• 4532</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">ID Transacción:</span>
+                            <span class="detail-value">TXN-2025-001234</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividad 4: Actualización de perfil -->
+                <div class="activity-item" onclick="toggleDetails(this)">
+                    <div class="activity-header">
+                        <div class="activity-title">
+                            <div class="activity-icon profile">👤</div>
+                            <div class="activity-info">
+                                <h3>Perfil Actualizado</h3>
+                                <p>Modificaste tu información personal</p>
+                                <span class="activity-status success">Exitoso</span>
+                            </div>
+                        </div>
+                        <div class="activity-time">Hace 3 días</div>
+                    </div>
+                    <div class="activity-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Fecha y Hora:</span>
+                            <span class="detail-value">25/10/2025 16:45:30</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Campos Modificados:</span>
+                            <span class="detail-value">Teléfono, Dirección</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividad 5: Intento fallido -->
+                <div class="activity-item" onclick="toggleDetails(this)">
+                    <div class="activity-header">
+                        <div class="activity-title">
+                            <div class="activity-icon security">🔒</div>
+                            <div class="activity-info">
+                                <h3>Intento de Inicio de Sesión</h3>
+                                <p>Contraseña incorrecta</p>
+                                <span class="activity-status failed">Fallido</span>
+                            </div>
+                        </div>
+                        <div class="activity-time">Hace 1 semana</div>
+                    </div>
+                    <div class="activity-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Fecha y Hora:</span>
+                            <span class="detail-value">21/10/2025 08:22:15</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Dirección IP:</span>
+                            <span class="detail-value">192.168.1.100</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Motivo:</span>
+                            <span class="detail-value">Contraseña incorrecta</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <button onclick="previousPage()" id="prevBtn">← Anterior</button>
+                <span>Página <strong>1</strong> de <strong>5</strong></span>
+                <button onclick="nextPage()" id="nextBtn">Siguiente →</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/patientActivity.js') }}"></script>
+{% endblock %}

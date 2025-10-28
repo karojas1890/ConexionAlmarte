@@ -6,26 +6,29 @@
     <title>{% block title %}Conexión by Almarte{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toolsStyle.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboardStyle.css') }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='css/toolsStyle.css') }}"  >
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/tools-detail.css') }}"  >
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/tool-progressStyle.css') }}"  >
-     <link rel="stylesheet" href="{{ url_for('static', filename='css/layoutStyle.css') }}"  >
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/profileStyle.css') }}"  >
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/paymentFormStyle.css') }}"  >
-       <link rel="stylesheet" href="{{ url_for('static', filename='css/paymentsummaryStyle.css') }}"  >
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/select-datetime.css') }}"  >
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/select-servicestyle.css') }}"  >
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/diaryStyle.css') }}"  >
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/pme-management.css') }}"  >
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/diary-tryggerStyle.css') }}"  >
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/pme-addStyle.css') }}"  >
-          <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
-          <link rel="stylesheet" href="{{ url_for('static', filename='css/tools-usageStyle.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/modalEdit.css') }}">
-          <link rel="stylesheet" href="{{ url_for('static', filename='css/modalCalendar.css') }}">
-     
-         <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboardStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toolsStyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tools-detail.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tool-progressStyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layoutStyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profileStyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/paymentFormStyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/paymentsummaryStyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/select-datetime.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/select-servicestyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/diaryStyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pme-management.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/diary-tryggerStyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pme-addStyle.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tools-usageStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modalEdit.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/addCard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/patientActivity.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/addCard.css') }}">
+   
 </head>
 <body>
 
@@ -132,6 +135,7 @@
             <span>Perfil</span>
         </a>
     </nav>
+    <script src="{{ url_for('static', filename='js/modal.js') }}" > </script>
  <script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>

@@ -7,7 +7,7 @@ from app.models import (
     Cita, MetodoPago, PagoCita, CategoriaRecomendacion,
     RecomendacionTerapeutica, RecomendacionPaciente,
     RegistroAplicacionRecomendacion, RecursoApoyo, Emocion,
-    ConductaAfrontamiento, Diario
+    ConductaAfrontamiento, Diario, Tarjeta
 )
 
 from app.Service import email_service  
@@ -53,7 +53,8 @@ def create_app():
     from .controllers.perfilController import perfil_bp
     from .controllers.disponibilidadController import availability_bp
     from .controllers.UsuarioController import usuario_bp
-    from .controllers.credentialController import credential_bp  
+    from .controllers.credentialController import credential_bp 
+    from .controllers.tarjetasController import card_bp 
     app.register_blueprint(routes_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(citas_bp)
@@ -63,5 +64,5 @@ def create_app():
     app.register_blueprint(availability_bp)
     app.register_blueprint(usuario_bp)
     app.register_blueprint(credential_bp)
-
+    app.register_blueprint(card_bp)
     return app

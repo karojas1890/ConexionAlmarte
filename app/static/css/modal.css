@@ -16,7 +16,7 @@
 
 /* ===== Contenido del modal ===== */
 .modal-content {
-  background: #fff;
+  background: #fff !important;
   border-radius: 20px;
   padding: 30px 40px;
   max-width: 400px;

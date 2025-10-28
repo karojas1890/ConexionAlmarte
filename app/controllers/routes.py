@@ -77,6 +77,19 @@ def RestablecerCOntrasena():
 def ManagementPME():
     return render_template("pme-management.html")
 
+
+@routes_bp.route("/add_card", endpoint="add_card")
+@rolRequired(1,3)
+@loginRequired 
+def AddCard():
+    return render_template("add-card.html")
+
+@routes_bp.route("/patient_activity", endpoint="patient_activity")
+@rolRequired(1,3)
+@loginRequired
+def PatientActivity():
+    return render_template("patient-activity.html")
+
 @routes_bp.route("/pme_add", endpoint="pme_add")
 
 @rolRequired(3)

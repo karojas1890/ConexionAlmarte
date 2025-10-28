@@ -151,7 +151,7 @@ def SendCode(app,idusuario, correo, nombre):
        db.session.execute(sql_update, {"codigo": code, "exp": expiracion, "idusuario": idusuario})
        db.session.commit()
 
-       email_service.SendVerificationCode(email=correo, username=nombre, code=code)
+       #email_service.SendVerificationCode(email=correo, username=nombre, code=code)
 
 @auth_bp.route("/verificar_codigo", methods=["GET", "POST"])
 def VerificarCodigo():

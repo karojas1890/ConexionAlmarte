@@ -19,19 +19,28 @@ def GenerarContrasena():
 
 def GenerarAlias(nombre, apellido):
     inicial = nombre[0].lower()
-    apellido = apellido.split()[0].lower()  
-   
+    apellido = apellido.split()[0].lower()
+
+    # Buscar el último usuario creado
     sql = text("""
-        SELECT usuario FROM Usuario WHERE usuario LIKE :pattern ORDER BY usuario DESC LIMIT 1
+        SELECT usuario FROM Usuario
+        ORDER BY idusuario DESC   
+        LIMIT 1
     """)
-    pattern = f"{inicial}{apellido}%"
-    result = db.session.execute(sql, {"pattern": pattern}).fetchone()
+    result = db.session.execute(sql).fetchone()
+
     if result:
-        ultimo = int(''.join(filter(str.isdigit, result[0])))  
-        nuevo_num = ultimo + 1
+        ultimo_usuario = result[0]
+        # Separar texto y número
+        texto = ''.join(filter(str.isalpha, ultimo_usuario))
+        numero = int(''.join(filter(str.isdigit, ultimo_usuario)))
+        nuevo_num = numero + 1
     else:
+        # Primer usuario
+        texto = f"{inicial}{apellido}"
         nuevo_num = 1000
-    alias = f"{inicial}{apellido}{nuevo_num}"
+
+    alias = f"{texto}{nuevo_num}"
     return alias
 
 @usuario_bp.route("/crear", methods=["POST"])
