@@ -9,10 +9,10 @@ from app.models.Tarjetas import Tarjeta
 import bcrypt
 import os
 from cryptography.fernet import Fernet
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
 
-load_dotenv()
+#load_dotenv()
 key = os.getenv("FERNET_KEY")
 if not key:
     raise RuntimeError("No se encontró la clave de cifrado en .env")
