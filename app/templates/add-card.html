@@ -24,6 +24,12 @@
      
             </div>
         </div>
+        <button class="back-button" onclick="window.history.back()">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+               <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+               </svg>
+                Volver
+              </button>
         <div class="add-card-form">
             <h2>➕ Agregar Nueva Tarjeta</h2>
 
@@ -74,18 +80,19 @@
                     >
                 </div>
 
-                <div class="form-row">
+               <div class="form-row">
                     <div class="form-group">
-                        <label for="expiryDate">Fecha de Expiración</label>
-                        <input 
-                            type="text" 
-                            id="expiryDate" 
-                            placeholder="MM/AA"
-                            maxlength="5"
-                            required
-                            oninput="formatExpiry(this); updatePreview()"
-                        >
+                    <label for="expiryDate">Fecha de Expiración</label>
+                    <input 
+                        type="text" 
+                        id="expiryDate" 
+                        placeholder="MM/AA"
+                        maxlength="5"
+                        required
+                        oninput="formatExpiry(this)"
+                    >
                     </div>
+                </div>
                     <div class="form-group">
                         <label for="cvv">CVV</label>
                         <input 
@@ -99,10 +106,6 @@
                     </div>
                 </div>
 
-                <div class="checkbox-group">
-                    <input type="checkbox" id="setDefault">
-                    <label for="setDefault">Establecer como método de pago predeterminado</label>
-                </div>
 
                 <button type="submit" class="btn-submit">
                     Guardar Tarjeta
@@ -147,6 +150,7 @@
      <script>
     const SCANCARD_URL = "{{ url_for('card.ScanCard') }}";
     const ADDCARD_URL = "{{ url_for('card.AddCard') }}";
+    const paymentforUrl = "{{ url_for('routes.payment') }}";
    </script>
   
     <script src="{{ url_for('static', filename='js/addCard.js') }}"></script>

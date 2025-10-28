@@ -110,3 +110,27 @@ function closeModal() {
  function goToManageCards() {
             window.location.href = ADDCARD_URL;
         }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const cardData = localStorage.getItem("selectedCard");
+    if (!cardData) return; // Si no hay datos, no hace nada
+
+    const card = JSON.parse(cardData);
+
+    // Llena los campos
+    const cardNumberInput = document.querySelector('input[placeholder="1234 5678 9012 3456"]');
+    const expMonthInput = document.querySelector('input[placeholder="MM"]');
+    const expYearInput = document.querySelector('input[placeholder="AA"]');
+
+    if (cardNumberInput && card.ultimo4) {
+        // Solo muestra los últimos 4, por seguridad
+        cardNumberInput.value = `•••• •••• •••• ${card.ultimo4}`;
+    }
+
+    if (card.fecha_expiracion) {
+        const [month, year] = card.fecha_expiracion.split('/');
+        if (expMonthInput) expMonthInput.value = month;
+        if (expYearInput) expYearInput.value = year;
+    }
+
+});

@@ -84,6 +84,12 @@ def ManagementPME():
 def AddCard():
     return render_template("add-card.html")
 
+@routes_bp.route("/use_card", endpoint="use_card")
+@rolRequired(1,3)
+@loginRequired 
+def UseCard():
+    return render_template("usar-tarjetas.html")
+
 @routes_bp.route("/patient_activity", endpoint="patient_activity")
 @rolRequired(1,3)
 @loginRequired

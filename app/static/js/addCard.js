@@ -173,6 +173,62 @@ function deleteCard(cardId) {
     
 }
 
+function formatExpiry(input) {
+    // Limpia caracteres que no sean números o "/"
+    let value = input.value.replace(/[^0-9/]/g, '');
+
+    // Agrega "/" automáticamente después del mes
+    if (value.length === 2 && !value.includes('/')) {
+        value = value + '/';
+    }
+
+    // Limita a formato MM/AA
+    if (value.length > 5) {
+        value = value.slice(0, 5);
+    }
+
+    input.value = value;
+
+    // Valida automáticamente cuando ya tiene 5 caracteres (MM/AA)
+    if (value.length === 5) {
+        validateExpiry(input);
+    }
+}
+
+function validateExpiry(input) {
+    const value = input.value;
+    const [monthStr, yearStr] = value.split('/');
+    const month = parseInt(monthStr, 10);
+    const year = parseInt("20" + yearStr, 10); // convierte "25" → 2025
+
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1;
+    const currentYear = today.getFullYear();
+
+    let valid = true;
+    let mensaje = "";
+
+    if (isNaN(month) || month < 1 || month > 12) {
+        valid = false;
+        mensaje = "El mes debe estar entre 01 y 12.";
+    } else if (isNaN(year) || year < currentYear) {
+        valid = false;
+        mensaje = "El año no puede ser menor al actual.";
+    } else if (year === currentYear && month < currentMonth) {
+        valid = false;
+        mensaje = "La fecha ya expiró.";
+    }
+
+    if (!valid) {
+        // 🔥 Aquí usas tu modal personalizado
+        showModal('Fecha inválida', mensaje, 'error');
+        input.value = ""; // limpia el campo si está incorrecto
+        input.setCustomValidity("Fecha inválida");
+    } else {
+        input.setCustomValidity("");
+    }
+}
+
 
 
 function renderCards(cards) {
@@ -188,13 +244,9 @@ function renderCards(cards) {
         const cardDiv = document.createElement("div");
         cardDiv.classList.add("card-item");
 
-        // Si es predeterminada, agregamos una clase especial
-        if (card.predeterminada) cardDiv.classList.add("card-default-active");
-
         cardDiv.innerHTML = `
             <div class="card-header">
                 <span class="card-type">${card.tipo || "Tarjeta"}</span>
-                ${card.predeterminada ? `<span class="card-default">Predeterminada</span>` : ""}
             </div>
 
             <div class="card-number">•••• •••• •••• ${card.ultimo4}</div>
@@ -211,9 +263,8 @@ function renderCards(cards) {
             </div>
 
             <div class="card-actions">
-                <button class="btn-card-action" onclick="setDefaultCard(${card.id_tarjeta})">
-                    ${card.predeterminada ? "Predeterminada" : "Hacer predeterminada"}
-                </button>
+                <button class="btn-card-action" onclick='useCard(${JSON.stringify(card)})'>Usar esta tarjeta</button>
+
                 <button class="btn-card-action" onclick="deleteCard(${card.id_tarjeta})">Eliminar</button>
             </div>
         `;
@@ -221,3 +272,33 @@ function renderCards(cards) {
         container.appendChild(cardDiv);
     });
 }
+
+
+function useCard(card) {
+    try {
+        // Guarda la tarjeta seleccionada en localStorage
+        localStorage.setItem("selectedCard", JSON.stringify(card));
+
+        window.location.href = paymentforUrl; 
+    } catch (error) {
+        console.error("Error seleccionando tarjeta:", error);
+        showModal('Error', 'No se pudo seleccionar la tarjeta.', 'error');
+    }
+}
+async function loadUserCards() {
+    try {
+        const response = await fetch('/get_cards');
+        if (!response.ok) throw new Error("Error al cargar tarjetas");
+        
+        const cards = await response.json();
+        renderCards(cards);  // Llama a la función que te di antes
+    } catch (error) {
+        console.error("Error cargando tarjetas:", error);
+        const container = document.getElementById("cardsContainer");
+        container.innerHTML = "<p style='text-align:center; color:#888;'>No se pudieron cargar las tarjetas</p>";
+    }
+}
+
+
+
+window.addEventListener('DOMContentLoaded', loadUserCards);

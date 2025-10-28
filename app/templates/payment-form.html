@@ -93,7 +93,7 @@
 const dashboardUrl = "{{ url_for('routes.dashboard_Consultante') }}"
 const CITA_URL ="{{ url_for('Citas.CrearCita') }}"
 const usuario = "{{ session.get('idusuario') }}"
-const ADDCARD_URL="{{ url_for('routes.add_card') }}"
+const ADDCARD_URL="{{ url_for('routes.use_card') }}"
 </script>
    <script src="{{ url_for('static', filename='js/payment-form.js') }}"></script>
 {% endblock %}

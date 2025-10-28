@@ -14,6 +14,9 @@ from app.Service import email_service
 
 
 
+# Genera la clave
+
+
 def create_app():
     app = Flask(__name__)
 
@@ -42,7 +45,7 @@ def create_app():
     
     email_service.init_app(app) 
 
-    
+   
 
     #  Registra los blueprints
     from .controllers.citaController import citas_bp

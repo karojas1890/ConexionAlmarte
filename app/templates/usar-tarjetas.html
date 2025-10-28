@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}Agregar Tarjeta{% endblock %}
+
+{% block content %} 
+ <div class="container">
+  <div class="cards-list">
+            <h2>🏦 Mis Tarjetas</h2>
+            <div id="cardsContainer">
+     
+            </div>
+        </div>
+        </div>
+   <script>
+    const SCANCARD_URL = "{{ url_for('card.ScanCard') }}";
+    const ADDCARD_URL = "{{ url_for('card.AddCard') }}";
+    const paymentforUrl = "{{ url_for('routes.payment') }}";
+   </script>
+  
+    <script src="{{ url_for('static', filename='js/addCard.js') }}"></script>
+{% endblock %} 

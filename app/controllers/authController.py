@@ -85,9 +85,9 @@ def login():
             session["correo_terapeuta"] = user_data.correo_terapeuta
             correo = session.get("correo_terapeuta") 
                
-         
-        idusuario = session.get("idusuario")
         
+        idusuario = session.get("idusuario")
+        print(idusuario)
         nombre = session.get("nombre")
         app = current_app._get_current_object()
         threading.Thread(target=SendCode, args=(app,idusuario, correo, nombre)).start()
@@ -151,7 +151,7 @@ def SendCode(app,idusuario, correo, nombre):
        db.session.execute(sql_update, {"codigo": code, "exp": expiracion, "idusuario": idusuario})
        db.session.commit()
 
-       email_service.SendVerificationCode(email=correo, username=nombre, code=code)
+       #email_service.SendVerificationCode(email=correo, username=nombre, code=code)
 
 @auth_bp.route("/verificar_codigo", methods=["GET", "POST"])
 def VerificarCodigo():
