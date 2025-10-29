@@ -1,4 +1,4 @@
-const CACHE_NAME = "flask-pwa-v1";
+const CACHE_NAME = "flask-pwa-v2";
 const urlsToCache = [
   "/",                              // Pagina principal
   "/static/css/loginStyle.css",        // CSS         
