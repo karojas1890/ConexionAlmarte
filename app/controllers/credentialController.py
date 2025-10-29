@@ -7,6 +7,8 @@ from app.models.Terapeuta import Terapeuta
 from app.Service import email_service
 import random
 import bcrypt
+from app.Service.auditoria import registrarAuditoria
+from datetime import datetime
 
 credential_bp = Blueprint("crede", __name__)
 
@@ -169,6 +171,7 @@ def ValidateSecurityQuestions():
     except Exception as e:
         print(f" Error validando preguntas: {e}")
         return jsonify({'success': False, 'message': 'Error interno del servidor'}), 500
+    
 @credential_bp.route('/validate_code', methods=['POST'])
 def ValidateCode():
     try:
@@ -210,9 +213,16 @@ def ValidateCode():
             correo = session.get("recovery_correo")
             username = uss.usuario  
 
-          
+            session["code"]=code_entered
             email_service.SendUsernameReminder(email=correo,  uss=username)
-
+            registrarAuditoria(
+            identificacion_consultante=session.get("idusuario"),
+            tipo_actividad=9,  
+            descripcion=f"Recuperacion de Usuario",
+            codigo=session.get("code"),
+            datos_modificados = { "servicio": data.get("tiporegistro", 0),"hora": datetime.now()},
+            exito=True
+            )
             return jsonify({
                 'success': True,
                 'typw':"2",                
@@ -267,7 +277,14 @@ def UpdatePassword():
             usuario.intentos=0
 
         db.session.commit()
-
+        registrarAuditoria(
+            identificacion_consultante=usuario.idusuario,
+            tipo_actividad=10,  
+            descripcion=f"Cambio de contrasena",
+            codigo=session.get("code"),
+            datos_modificados = { "servicio": data.get("tiporegistro", 0),"hora": datetime.now()},
+            exito=True
+            )
         # Limpiar sesión temporal
         session.pop('code_verified', None)
 

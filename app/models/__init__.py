@@ -17,5 +17,6 @@ from .Emocion import Emociones
 from .ConductaAfrontamiento import ConductasAfrontamiento
 from .Diario import Diario
 from .Tarjetas import Tarjeta
+from .Auditoria import Auditoria
 
 

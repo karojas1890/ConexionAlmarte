@@ -4,7 +4,7 @@ from app.models.Disponibilidad import Disponibilidad
 from app.models.Servicio import servicios
 from sqlalchemy import text
 from app.Service import email_service
-
+from app.Service.auditoria import registrarAuditoria
    
 citas_bp = Blueprint("Citas", __name__,url_prefix='/citas')
 
@@ -62,7 +62,7 @@ def CrearCita():
         correo = session.get("correo_terapeuta")  
         paciente = session.get("nombre")  
         fecha = f"{disponibilidad.fecha} de {disponibilidad.horainicio} a {disponibilidad.horafin}"
-        print(paciente)
+        
         
         terapeuta = disponibilidad.terapeuta_rel
         if not terapeuta:
@@ -85,7 +85,13 @@ def CrearCita():
                 nombreServicio=nombreservicio,
                 nombreTerapeuta=terapeuta +" "+apellido
             )
-       
+        registrarAuditoria(
+            identificacion_consultante=data["usuario"],
+            tipo_actividad=2,  
+            descripcion=f"Cita reservada",
+            datos_modificados={"servicio": data["servicio"], "hora": fecha},
+            exito=True
+            )
         return jsonify({
             "message": "Cita creada exitosamente",
             "cita": {
@@ -99,7 +105,7 @@ def CrearCita():
 
     except Exception as e:
         db.session.rollback()
-        print(e)
+        
         return jsonify({"error": str(e)}), 500
     
     

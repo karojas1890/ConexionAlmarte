@@ -11,6 +11,7 @@
    <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
    <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionarPacientesStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auditLogs.css') }}">
    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
    
 </head>
@@ -95,12 +96,12 @@
                 <span class="nav-label">Pacientes</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="{{ url_for('routes.auditor') }}" class="nav-item">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                <span class="nav-label">Perfil</span>
+                <span class="nav-label">Auditoria</span>
             </a>
         </div>
     </div>

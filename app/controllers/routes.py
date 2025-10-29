@@ -96,8 +96,14 @@ def UseCard():
 def PatientActivity():
     return render_template("patient-activity.html")
 
-@routes_bp.route("/pme_add", endpoint="pme_add")
 
+@routes_bp.route("/auditor", endpoint="auditor")
+@rolRequired(2)
+@loginRequired
+def Auditoria():
+    return render_template("audit-log.html")
+
+@routes_bp.route("/pme_add", endpoint="pme_add")
 @rolRequired(3)
 @loginRequired 
 def AddPME():

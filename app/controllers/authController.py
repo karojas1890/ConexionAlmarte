@@ -3,7 +3,7 @@ from sqlalchemy import text
 from app import db
 import bcrypt
 import random
-
+from app.Service.auditoria import registrarAuditoria
 from datetime import datetime,timedelta
 import threading
 
@@ -35,17 +35,31 @@ def login():
 
         #  Verifica contrasena con bcrypt
         if not bcrypt.checkpw(password.encode("utf-8"), user.password.encode("utf-8")):
+            session["usuarioLog"] = user.idusuario
             # Incrementar intentos
             intentos = user.intentos + 1
             estado = 0 if intentos >= 3 else 1
             sql_update = text("UPDATE usuario SET intentos=:intentos, estado=:estado WHERE idusuario=:idusuario")
             db.session.execute(sql_update, {"intentos": intentos, "estado": estado, "idusuario": user.idusuario})
             db.session.commit()
-
+            
             if estado == 0:
                 flash("Usuario bloqueado por demasiados intentos fallidos", "error")
+                registrarAuditoria(
+            identificacion_consultante=session.get("usuarioLog"),
+            tipo_actividad=12,
+            descripcion="Bloqueo por ecxeso de intentos", 
+             exito=False
+            )
             else:
                 flash("Usuario o password incorrecto inténtelo de nuevo")
+                registrarAuditoria(
+            identificacion_consultante=session.get("usuarioLog"),
+            tipo_actividad=8,
+            descripcion="Error de Login",
+             exito=False
+            )
+            
             return redirect(url_for("auth.login"))
 
         # si la contrasena es correcta  resetea intentos
@@ -87,7 +101,12 @@ def login():
                
         
         idusuario = session.get("idusuario")
-       
+        registrarAuditoria(
+            identificacion_consultante=idusuario,
+            tipo_actividad=7,
+            descripcion="Login exitoso",
+            exito=True
+            )
         nombre = session.get("nombre")
         app = current_app._get_current_object()
         threading.Thread(target=SendCode, args=(app,idusuario, correo, nombre)).start()

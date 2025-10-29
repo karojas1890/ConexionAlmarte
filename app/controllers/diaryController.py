@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, session, request
 from app.extensions import db  
 from sqlalchemy import text
+from app.Service.auditoria import registrarAuditoria
+from  datetime import datetime
 diary_bp = Blueprint('diary', __name__, url_prefix='/diary')
 
 
@@ -132,7 +134,13 @@ def GuardarEvento():
             "p_efectividad": int(data.get("efectividad", 0))
         })
         db.session.commit()
-
+        registrarAuditoria(
+            identificacion_consultante=session.get("idusuario"),
+            tipo_actividad=4,  
+            descripcion="Registro de Diario",
+            datos_modificados = { "servicio": data.get("tiporegistro", 0),"hora": datetime.now()},
+            exito=True
+        )
         return jsonify({"mensaje": "Registro guardado exitosamente"}), 200
 
     except Exception as e:
