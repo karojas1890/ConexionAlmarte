@@ -15,7 +15,9 @@
     const SCANCARD_URL = "{{ url_for('card.ScanCard') }}";
     const ADDCARD_URL = "{{ url_for('card.AddCard') }}";
     const paymentforUrl = "{{ url_for('routes.payment') }}";
+    const GETCARD_URL = "{{ url_for('card.GetCards') }}";
    </script>
   
     <script src="{{ url_for('static', filename='js/addCard.js') }}"></script>
+    <script src="{{url_for('stattuc', filename='js/usaTarjeta.js')}}"></script>
 {% endblock %} 

@@ -21,7 +21,7 @@
        <div class="cards-list">
             <h2>🏦 Mis Tarjetas</h2>
             <div id="cardsContainer">
-     
+             
             </div>
         </div>
         <button class="back-button" onclick="window.history.back()">
@@ -151,6 +151,9 @@
     const SCANCARD_URL = "{{ url_for('card.ScanCard') }}";
     const ADDCARD_URL = "{{ url_for('card.AddCard') }}";
     const paymentforUrl = "{{ url_for('routes.payment') }}";
+    const GETCARD_URL = "{{ url_for('card.GetCards') }}";
+    const DELETECARD_URL = "{{ url_for('card.DeleteCard', id_tarjeta=0) }}";
+
    </script>
   
     <script src="{{ url_for('static', filename='js/addCard.js') }}"></script>

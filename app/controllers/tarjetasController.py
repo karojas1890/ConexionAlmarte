@@ -293,3 +293,22 @@ def GetCards():
     except Exception as e:
         print("Error obteniendo tarjetas:", e)
         return jsonify({"success": False, "message": str(e)}), 500
+@card_bp.route('/delete_card/<int:id_tarjeta>', methods=['DELETE'])
+def DeleteCard(id_tarjeta):
+    try:
+        id_usuario = session.get('idusuario')
+        if not id_usuario:
+            return jsonify({"success": False, "message": "Usuario no logueado"}), 401
+
+        tarjeta = Tarjeta.query.filter_by(id_tarjeta=id_tarjeta, id_usuario=id_usuario).first()
+        if not tarjeta:
+            return jsonify({"success": False, "message": "Tarjeta no encontrada"}), 404
+
+        db.session.delete(tarjeta)
+        db.session.commit()
+
+        return jsonify({"success": True, "message": "Tarjeta eliminada correctamente"})
+
+    except Exception as e:
+        print("Error eliminando tarjeta:", e)
+        return jsonify({"success": False, "message": str(e)}), 500

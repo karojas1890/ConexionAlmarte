@@ -95,7 +95,7 @@ async function captureCard() {
             }
         } catch {
           
-            showModal('Error procesando la imagen', 'Ingresa los datos manualmente. ');
+            showModal('Error procesando la imagen', 'Ingresa los datos manualmente.','error');
         } finally {
             loadingOverlay.classList.remove('active');
         }
@@ -135,7 +135,7 @@ async function handleSubmit(event) {
         cardHolder: document.getElementById('cardHolder').value,
         expiryDate: document.getElementById('expiryDate').value,
         cvv: document.getElementById('cvv').value,
-        setDefault: document.getElementById('setDefault').checked
+       
     };
 
     try {
@@ -154,6 +154,7 @@ async function handleSubmit(event) {
             showModal('Tarjeta agregada exitosamente', data.message,'success');
             document.getElementById('cardForm').reset();
             updatePreview();
+            loadUserCards(); 
         } else {
       
 
@@ -167,11 +168,7 @@ async function handleSubmit(event) {
 
 
 
-function deleteCard(cardId) {
-    
-         showModal('Tarjeta eliminada:', 'Esta tarjeta fue eliminada.','success');
-    
-}
+
 
 function formatExpiry(input) {
     // Limpia caracteres que no sean números o "/"
@@ -274,21 +271,35 @@ function renderCards(cards) {
 }
 
 
-function useCard(card) {
+async function deleteCard(id_tarjeta) {
+  
     try {
-        // Guarda la tarjeta seleccionada en localStorage
-        localStorage.setItem("selectedCard", JSON.stringify(card));
+        const response = await fetch(DELETECARD_URL.replace("0", id_tarjeta), {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
 
-        // Redirige a la vista del formulario de pago
-        window.location.href = paymentforUrl; 
+        const data = await response.json();
+
+        if (data.success) {
+           
+            showModal('Exito:', 'Tarjeta eliminada correctamente','success');
+            loadUserCards(); 
+        } else {
+            
+            showModal('Error eliminando tarjeta:', data.message,'error');
+        }
     } catch (error) {
-        console.error("Error seleccionando tarjeta:", error);
-        showModal('Error', 'No se pudo seleccionar la tarjeta.', 'error');
+        console.error("Error eliminando tarjeta:", error);
+        
+         showModal('Error eliminando tarjeta', 'Intenta nuevamente.','error');
     }
 }
 async function loadUserCards() {
     try {
-        const response = await fetch('/get_cards');
+        const response = await fetch(GETCARD_URL);
         if (!response.ok) throw new Error("Error al cargar tarjetas");
         
         const cards = await response.json();
