@@ -84,17 +84,7 @@
     
 
  
-    <script>
-    document.querySelector('form').addEventListener('submit', function(e){
-      const token = grecaptcha.getResponse();
-      if (!token || token.length === 0) {
-        e.preventDefault();
-        alert('Por favor completa el reCAPTCHA.');
-        return false;
-      }
-    });
-    </script>
-    <script src="https://www.google.com/recaptcha/api.js?hl=es" async defer></script>
+   
 
     <script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
