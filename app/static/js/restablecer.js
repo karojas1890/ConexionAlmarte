@@ -199,3 +199,19 @@ document.getElementById('resetForm').addEventListener('submit', function(e) {
         alert('Error al comunicar con el servidor. Intenta nuevamente.');
     });
 });
+function togglePasswordVisibility(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    icon.classList.toggle('fa-eye');
+    icon.classList.toggle('fa-eye-slash');
+}
+
+document.getElementById('toggleNewPassword').addEventListener('click', function() {
+    togglePasswordVisibility('newPassword', 'toggleNewPassword');
+});
+
+document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+    togglePasswordVisibility('confirmPassword', 'toggleConfirmPassword');
+});

@@ -16,9 +16,9 @@
             .then(data => {
                 console.log(data)
                 if (data.success) {
-                  
+                  if (data.type==="2"){
                     showModal('¡Usuario recuperado!', 'Revisa el correo electronico paraverificar los datos .', 'success');
-
+                    }
                 setTimeout(() => {
                    window.location.href= data.redirect_url
                 },4000)
@@ -54,3 +54,4 @@
                 console.error('Error:', error);
             });
         });
+        

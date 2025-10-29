@@ -87,7 +87,7 @@ def login():
                
         
         idusuario = session.get("idusuario")
-        print(idusuario)
+       
         nombre = session.get("nombre")
         app = current_app._get_current_object()
         threading.Thread(target=SendCode, args=(app,idusuario, correo, nombre)).start()
@@ -124,7 +124,7 @@ def ReenviarCodigo():
         })
         
     except Exception as e:
-        print(f"Error reenviando código: {e}")
+     
         return jsonify({
             'success': False, 
             'message': 'Error al reenviar el código'

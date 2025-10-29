@@ -175,7 +175,7 @@
         }
 
         /* Modal */
-        .modal {
+        .modal-uss {
             display: none;
             position: fixed;
             top: 0;
@@ -189,11 +189,11 @@
             padding: 1rem;
         }
 
-        .modal.active {
+        .modal-uss.active {
             display: flex;
         }
 
-        .modal-content {
+        .modal-content-uss {
             background: white;
             border-radius: 12px;
             width: 100%;

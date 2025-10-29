@@ -5,7 +5,7 @@ import random
 import string
 import bcrypt
 from app.Service import email_service 
-
+import re
 usuario_bp = Blueprint("Usuarios", __name__, url_prefix="/usuarios")
 
 def GenerarContrasena():
@@ -18,29 +18,33 @@ def GenerarContrasena():
     return ''.join(random.sample(contrasena, len(contrasena)))  # mezclar
 
 def GenerarAlias(nombre, apellido):
+    # Inicial del nombre + primer apellido
     inicial = nombre[0].lower()
-    apellido = apellido.split()[0].lower()
+    primer_apellido = apellido.split()[0].lower()  # si quieres el segundo apellido: apellido.split()[1] si existe
 
-    # Buscar el último usuario creado
-    sql = text("""
-        SELECT usuario FROM Usuario
-        ORDER BY idusuario DESC   
+    base_alias = f"{inicial}{primer_apellido}"
+
+    # Consultar el último usuario que comience con este patrón
+    sql = text(f"""
+       SELECT usuario FROM Usuario
+        ORDER BY idusuario DESC
         LIMIT 1
     """)
-    result = db.session.execute(sql).fetchone()
+    result = db.session.execute(sql, {"base": f"{base_alias}%" }).fetchone()
 
     if result:
         ultimo_usuario = result[0]
-        # Separar texto y número
-        texto = ''.join(filter(str.isalpha, ultimo_usuario))
-        numero = int(''.join(filter(str.isdigit, ultimo_usuario)))
-        nuevo_num = numero + 1
+        # Extraer solo el número del alias
+        match = re.search(r'(\d+)$', ultimo_usuario)
+        print(match)
+        if match:
+            numero = int(match.group(1)) + 1
+        else:
+            numero = 1000
     else:
-        # Primer usuario
-        texto = f"{inicial}{apellido}"
-        nuevo_num = 1000
+        numero = 1000
 
-    alias = f"{texto}{nuevo_num}"
+    alias = f"{base_alias}{numero}"
     return alias
 
 @usuario_bp.route("/crear", methods=["POST"])

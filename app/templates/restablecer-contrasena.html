@@ -40,15 +40,19 @@
     </div>
 </div>
 
-            <form asp-controller="Auth" asp-action="Restablecer" id="resetForm">
-                <div class="form-group">
+            <form id="resetForm">
+                <!-- Campo: Nueva contraseña -->
+                <div class="form-group" style="position: relative;">
                     <label class="form-label" for="newPassword">Nueva contraseña</label>
                     <input type="password"
-                           id="newPassword"
-                           name="newPassword"
-                           class="form-input"
-                           placeholder="Ingresa tu nueva contraseña"
-                           required>
+                        id="newPassword"
+                        name="newPassword"
+                        class="form-input"
+                        placeholder="Ingresa tu nueva contraseña"
+                        required>
+                    <i id="toggleNewPassword" class="fa-solid fa-eye"
+                    style="position: absolute; right: 10px; top: 68%; transform: translateY(-50%); cursor: pointer; color: #555;"></i>
+
                     <div class="password-strength" id="passwordStrength">
                         <div class="password-strength-bar" id="passwordStrengthBar"></div>
                     </div>
@@ -57,16 +61,21 @@
                     <div class="success-message" id="passwordSuccess"></div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="confirmPassword">Confirmar contraseña</label>
-                    <input type="password"
-                           id="confirmPassword"
-                           class="form-input"
-                           placeholder="Confirma tu nueva contraseña"
-                           required>
-                    <div class="error-message" id="confirmError"></div>
-                    <div class="success-message" id="confirmSuccess"></div>
-                </div>
+<!-- Campo: Confirmar contraseña -->
+           <div class="form-group" style="position: relative;">
+                <label class="form-label" for="confirmPassword">Confirmar contraseña</label>
+                <input type="password"
+                    id="confirmPassword"
+                    class="form-input"
+                    placeholder="Confirma tu nueva contraseña"
+                    required>
+                <i id="toggleConfirmPassword" class="fa-solid fa-eye"
+                style="position: absolute; right: 10px; top: 68%; transform: translateY(-50%); cursor: pointer; color: #555;"></i>
+
+                <div class="error-message" id="confirmError"></div>
+                <div class="success-message" id="confirmSuccess"></div>
+            </div>
+
 
                 <div class="requirements">
                     <div class="requirements-title">Requisitos de contraseña:</div>

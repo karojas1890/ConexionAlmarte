@@ -303,7 +303,7 @@ async function loadUserCards() {
         if (!response.ok) throw new Error("Error al cargar tarjetas");
         
         const cards = await response.json();
-        renderCards(cards);  // Llama a la función que te di antes
+        renderCards(cards);  
     } catch (error) {
         console.error("Error cargando tarjetas:", error);
         const container = document.getElementById("cardsContainer");

@@ -128,6 +128,7 @@ def ObtenerDisponibilidad():
         
         
         return jsonify({"error": str(e)}), 500
+    
 @citas_bp.route("/servicios", methods=['GET'])
 def Servicios():
     try:

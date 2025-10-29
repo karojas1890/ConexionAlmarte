@@ -442,15 +442,7 @@ class EmailService:
                                 </table>
                                 
                                
-                                <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 25px;">
-                                    <tr>
-                                        <td style="text-align: center;">
-                                            <a href="" style="display: inline-block; background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%); color: #ffffff; text-decoration: none; padding: 14px 40px; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 2px 4px rgba(91, 168, 160, 0.3);">
-                                                Iniciar Sesión
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
+            
                                 <!-- Botón de acción -->
                                 <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 25px;">
                                     <tr>

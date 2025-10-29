@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Pago - Almarte</title>
+    <title>Historial de Citas - Paciente</title>
     <style>
         * {
             margin: 0;
@@ -12,709 +12,823 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #7fb3d3 0%, #5f9ea0 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: #333;
+            padding: 2rem 1rem;
         }
 
         .container {
-            max-width: 400px;
+            max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
             background: white;
-            min-height: 100vh;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
         }
 
         .header {
-            background: white;
-            padding: 15px 20px;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo {
-            width: 30px;
-            height: 30px;
-            background: url('LOGO_URL_HERE') no-repeat center;
-            background-size: contain;
-        }
-
-        .app-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .app-subtitle {
-            font-size: 14px;
-            color: #5f9ea0;
-            margin: 0;
-        }
-
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .user-name {
-            font-size: 14px;
-            color: #5f9ea0;
-            font-weight: 500;
-        }
-
-        .progress-section {
-            background: #e8f4f8;
-            padding: 20px;
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            padding: 2rem;
+            color: white;
             text-align: center;
         }
 
-        .progress-title {
-            font-size: 16px;
-            color: #5f9ea0;
-            margin-bottom: 15px;
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
         }
 
-        .progress-steps {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .step {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .step.completed {
-            background: #5f9ea0;
-            color: white;
-        }
-
-        .step.active {
-            background: #5f9ea0;
-            color: white;
-        }
-
-        .step.inactive {
-            background: white;
-            color: #5f9ea0;
-            border: 2px solid #5f9ea0;
-        }
-
-        .step-arrow {
-            color: #5f9ea0;
-            font-size: 18px;
-        }
-
-        .main-content {
-            flex: 1;
-            background: linear-gradient(135deg, #7fb3d3 0%, #5f9ea0 100%);
-            padding: 30px 20px;
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
-            color: #333;
-            font-size: 16px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .section-title {
-            color: #333;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .summary-card {
-            background: white;
+        .patient-info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
             border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
         }
 
-        .summary-header {
-            font-size: 14px;
+        .patient-info strong {
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafa 0%, #e8f5f4 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #5BA8A0;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #5BA8A0;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .filters {
+            background: #f8fafa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
         }
 
-        .summary-row {
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #5BA8A0;
+        }
+
+        .appointments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .appointment-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .appointment-card:hover {
+            border-color: #5BA8A0;
+            box-shadow: 0 4px 12px rgba(91, 168, 160, 0.2);
+        }
+
+        .appointment-card.completed {
+            border-left: 4px solid #4caf50;
+        }
+
+        .appointment-card.upcoming {
+            border-left: 4px solid #2196f3;
+        }
+
+        .appointment-card.cancelled {
+            border-left: 4px solid #f44336;
+            opacity: 0.7;
+        }
+
+        .appointment-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 14px;
+            align-items: start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .summary-label {
-            color: #5f9ea0;
-        }
-
-        .summary-value {
-            color: #333;
-            font-weight: 500;
-        }
-
-        .form-section {
-            margin-bottom: 20px;
-        }
-
-        .form-title {
-            color: #333;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            color: #333;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            background: white;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #5f9ea0;
-        }
-
-        .form-row {
+        .appointment-date {
             display: flex;
-            gap: 10px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .token-section {
-            margin-bottom: 20px;
-        }
-
-        .token-title {
-            color: #333;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .continue-btn {
-            background: #5f9ea0;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-            transition: background 0.3s ease;
-        }
-
-        .continue-btn:hover {
-            background: #4a8a8d;
-        }
-
-        .bottom-nav {
-            background: white;
-            padding: 15px 0;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-around;
             align-items: center;
+            gap: 0.5rem;
         }
 
-        .nav-item {
+        .date-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
-            text-decoration: none;
-            color: #666;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .nav-item.active {
-            color: #5f9ea0;
-        }
-
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-            background: #666;
-            border-radius: 3px;
-        }
-
-        .nav-item.active .nav-icon {
-            background: #5f9ea0;
-        }
-
-        /* Added desktop responsive styles */
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 800px;
-                margin: 20px auto;
-                min-height: calc(100vh - 40px);
-                border-radius: 20px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            }
-
-            .header {
-                padding: 25px 40px;
-                border-radius: 20px 20px 0 0;
-            }
-
-            .logo {
-                width: 50px;
-                height: 50px;
-            }
-
-            .app-title {
-                font-size: 24px;
-            }
-
-            .app-subtitle {
-                font-size: 18px;
-            }
-
-            .user-name {
-                font-size: 18px;
-            }
-
-            .user-avatar {
-                width: 50px;
-                height: 50px;
-            }
-
-            .progress-section {
-                padding: 30px 40px;
-            }
-
-            .progress-title {
-                font-size: 24px;
-                margin-bottom: 25px;
-            }
-
-            .step {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-
-            .step-arrow {
-                font-size: 28px;
-            }
-
-            .main-content {
-                padding: 40px;
-            }
-
-            .section-title {
-                font-size: 28px;
-                margin-bottom: 30px;
-            }
-
-            .summary-card {
-                padding: 30px;
-                margin-bottom: 30px;
-                border-radius: 15px;
-            }
-
-            .summary-header {
-                font-size: 20px;
-                margin-bottom: 20px;
-            }
-
-            .summary-row {
-                font-size: 18px;
-                margin-bottom: 12px;
-            }
-
-            .form-title {
-                font-size: 22px;
-                margin-bottom: 20px;
-            }
-
-            .form-label {
-                font-size: 16px;
-                margin-bottom: 8px;
-            }
-
-            .form-input {
-                padding: 16px;
-                font-size: 16px;
-                border-radius: 12px;
-            }
-
-            .token-title {
-                font-size: 22px;
-                margin-bottom: 20px;
-            }
-
-            .continue-btn {
-                padding: 20px 40px;
-                font-size: 20px;
-                border-radius: 30px;
-                margin-top: 30px;
-            }
-
-            .bottom-nav {
-                padding: 20px 0;
-                border-radius: 0 0 20px 20px;
-            }
-
-            .nav-item {
-                font-size: 14px;
-                gap: 8px;
-            }
-
-            .nav-icon {
-                width: 32px;
-                height: 32px;
-            }
-        }
-
-        @media (min-width: 768px) and (max-width: 1023px) {
-            .container {
-                max-width: 600px;
-                margin: 15px auto;
-                border-radius: 15px;
-                box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            }
-
-            .header {
-                padding: 20px 30px;
-            }
-
-            .logo {
-                width: 40px;
-                height: 40px;
-            }
-
-            .app-title {
-                font-size: 20px;
-            }
-
-            .app-subtitle {
-                font-size: 16px;
-            }
-
-            .main-content {
-                padding: 35px 30px;
-            }
-
-            .section-title {
-                font-size: 24px;
-            }
-
-            .form-input {
-                padding: 14px;
-                font-size: 15px;
-            }
-
-            .continue-btn {
-                padding: 18px 35px;
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header {
-                padding: 12px 15px;
-            }
-
-            .logo {
-                width: 25px;
-                height: 25px;
-            }
-
-            .app-title {
-                font-size: 14px;
-            }
-
-            .app-subtitle {
-                font-size: 12px;
-            }
-
-            .user-name {
-                font-size: 12px;
-            }
-
-            .user-avatar {
-                width: 30px;
-                height: 30px;
-            }
-
-            .main-content {
-                padding: 20px 15px;
-            }
-
-            .section-title {
-                font-size: 16px;
-            }
-
-            .form-input {
-                padding: 10px;
-                font-size: 13px;
-            }
-
-            .continue-btn {
-                padding: 12px 25px;
-                font-size: 14px;
-            }
-        }
-
-        .manage-cards-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            justify-content: center;
             color: white;
+        }
+
+        .date-icon .day {
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .date-icon .month {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .appointment-info {
+            flex: 1;
+        }
+
+        .appointment-info h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .appointment-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .appointment-status {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-upcoming {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .status-cancelled {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .appointment-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
             border: none;
-            border-radius: 12px;
-            padding: 16px 20px;
-            font-size: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
+            transition: all 0.3s;
+            display: inline-flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(91, 168, 160, 0.3);
+            gap: 0.5rem;
         }
 
-        .manage-cards-btn:hover {
+        .btn-edit {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            color: white;
+        }
+
+        .btn-edit:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(91, 168, 160, 0.4);
         }
 
-        .manage-cards-btn:active {
-            transform: translateY(0);
+        .btn-delete {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
         }
 
-        .card-icon {
-            font-size: 20px;
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
         }
 
-        .arrow-icon {
-            font-size: 18px;
-            font-weight: bold;
+        .btn-back {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-back:hover {
+            background: #d0d0d0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #5BA8A0;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-cancel {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            background: #d0d0d0;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            color: white;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 168, 160, 0.4);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .back-button {
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .header {
+                padding: 1.5rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                padding: 1rem;
+            }
+
+            .filter-group {
+                min-width: 100%;
+            }
+
+            .appointment-header {
+                flex-direction: column;
+            }
+
+            .appointment-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo-section">
-                <div class="logo"></div>
-                <div>
-                    <div class="app-title">Conexión Almarte</div>
-                    <div class="app-subtitle">Agendar cita</div>
-                </div>
-            </div>
-            <div class="user-section">
-                <div class="user-name">María González</div>
-                <div class="user-avatar">👤</div>
-                <div style="color: #5f9ea0; font-size: 18px;">⋮</div>
+            <h1>Historial de Citas</h1>
+            <div class="patient-info">
+                <span>Paciente:</span>
+                <strong id="patientName">Juan Pérez Gómez</strong>
             </div>
         </div>
 
-        <div class="progress-section">
-            <div class="progress-title">Agendar cita</div>
-            <div class="progress-steps">
-                <div class="step completed">1</div>
-                <div class="step-arrow">→</div>
-                <div class="step completed">2</div>
-                <div class="step-arrow">→</div>
-                <div class="step active">3</div>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <button class="back-btn" onclick="goBack()">← volver</button>
-            <div class="section-title">Resumen de tu cita</div>
-
-            <div class="summary-card">
-                <div class="summary-header">Atención psicoterapéutica individual: Adultos</div>
-                <div class="summary-row">
-                    <span class="summary-label">Fecha</span>
-                    <span class="summary-value">Jueves 25 de septiembre</span>
-                </div>
-                <div class="summary-row">
-                    <span class="summary-label">Hora</span>
-                    <span class="summary-value">8am</span>
-                </div>
-                <div class="summary-row">
-                    <span class="summary-label">Total</span>
-                    <span class="summary-value">₡35000</span>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <div class="form-title">Ingrese la información para realizar el pago</div>
-                
-                <!-- Added button to manage saved cards -->
-                <button class="manage-cards-btn" onclick="goToManageCards()">
-                    <span class="card-icon">💳</span>
-                    <span>Usar tarjeta guardada</span>
-                    <span class="arrow-icon">→</span>
+        <div class="content">
+            <div class="back-button">
+                <button class="btn btn-back" onclick="window.history.back()">
+                    ← Volver
                 </button>
-                
-                <div class="form-group">
-                    <label class="form-label">Número de tarjeta</label>
-                    <input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19">
-                </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Fecha de expiración</label>
-                        <input type="text" class="form-input" placeholder="MM" maxlength="2">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" style="color: transparent;">.</label>
-                        <input type="text" class="form-input" placeholder="AA" maxlength="2">
-                    </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number" id="totalAppointments">12</div>
+                    <div class="label">Total de Citas</div>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">Código de seguridad</label>
-                    <input type="text" class="form-input" placeholder="123" maxlength="4">
+                <div class="stat-card">
+                    <div class="number" id="completedAppointments">8</div>
+                    <div class="label">Completadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="upcomingAppointments">3</div>
+                    <div class="label">Próximas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="cancelledAppointments">1</div>
+                    <div class="label">Canceladas</div>
                 </div>
             </div>
 
-            <div class="token-section">
-                <div class="token-title">Token de seguridad</div>
-                <div class="form-group">
-                    <label class="form-label">Token recibido por email</label>
-                    <input type="text" class="form-input" placeholder="Ingrese el token">
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Estado</label>
+                    <select id="filterStatus">
+                        <option value="all">Todas</option>
+                        <option value="upcoming">Próximas</option>
+                        <option value="completed">Completadas</option>
+                        <option value="cancelled">Canceladas</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Desde</label>
+                    <input type="date" id="filterDateFrom">
+                </div>
+                <div class="filter-group">
+                    <label>Hasta</label>
+                    <input type="date" id="filterDateTo">
                 </div>
             </div>
 
-            <button class="continue-btn" onclick="processPayment()">Confirmar y pagar</button>
+            <div class="appointments-list" id="appointmentsList">
+                <!-- Las citas se cargarán aquí dinámicamente -->
+            </div>
+
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <h3>No hay citas</h3>
+                <p>No se encontraron citas con los filtros seleccionados</p>
+            </div>
         </div>
+    </div>
 
-        <div class="bottom-nav">
-            <a href="dashboard.html" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Inicio</span>
-            </a>
-            <a href="#" class="nav-item active">
-                <div class="nav-icon"></div>
-                <span>Citas</span>
-            </a>
-            <a href="tools.html" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Herramientas</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Diario</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>PME</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"></div>
-                <span>Perfil</span>
-            </a>
+    <!-- Modal para editar cita -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Cita</h2>
+                <button class="close-modal" onclick="closeEditModal()">×</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editAppointmentId">
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <input type="date" id="editDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Hora</label>
+                    <input type="time" id="editTime" required>
+                </div>
+                <div class="form-group">
+                    <label>Servicio</label>
+                    <input type="text" id="editService" required>
+                </div>
+                <div class="form-group">
+                    <label>Notas (opcional)</label>
+                    <textarea id="editNotes" placeholder="Agregar notas sobre el cambio..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeEditModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-save">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para confirmar eliminación -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirmar Eliminación</h2>
+                <button class="close-modal" onclick="closeDeleteModal()">×</button>
+            </div>
+            <p style="margin-bottom: 1.5rem; color: #666;">¿Estás seguro de que deseas eliminar esta cita? Esta acción no se puede deshacer.</p>
+            <div class="form-group">
+                <label>Motivo de cancelación (opcional)</label>
+                <textarea id="deleteReason" placeholder="Indica el motivo de la cancelación..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-cancel" onclick="closeDeleteModal()">Cancelar</button>
+                <button type="button" class="btn btn-delete" onclick="confirmDelete()">Eliminar Cita</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function goBack() {
-            window.location.href = 'payment-summary.html';
-        }
-
-       
-
-        function processPayment() {
-            // Show confirmation modal
-            const modal = document.createElement('div');
-            modal.innerHTML = `
-                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-                    <div style="background: white; border-radius: 15px; padding: 30px; max-width: 300px; text-align: center; margin: 20px;">
-                        <div style="width: 60px; height: 60px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 30px;">✓</div>
-                        <h3 style="color: #333; margin-bottom: 15px; font-size: 18px;">¡Cita confirmada!</h3>
-                        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Tu cita ha sido agendada exitosamente. Te enviaremos los detalles por email.</p>
-                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left;">
-                            <h4 style="color: #333; font-size: 14px; margin-bottom: 10px;">Detalles de tu cita</h4>
-                            <p style="font-size: 12px; color: #666; margin-bottom: 5px;">Atención psicoterapéutica individual: Adultos</p>
-                            <p style="font-size: 12px; color: #666; margin-bottom: 5px;">Jueves 25 de septiembre, 8am</p>
-                            <p style="font-size: 12px; color: #666;">Total: ₡35000</p>
-                        </div>
-                        <button onclick="closeModal()" style="background: #5f9ea0; color: white; border: none; border-radius: 20px; padding: 12px 30px; font-size: 14px; cursor: pointer;">Entendido</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-
-        function closeModal() {
-            const modal = document.querySelector('[style*="position: fixed"]');
-            if (modal) {
-                modal.remove();
-                window.location.href = 'dashboard.html';
+        // Datos de ejemplo - Reemplazar con datos reales del backend
+        let appointments = [
+            {
+                id: 1,
+                date: '2025-02-15',
+                time: '10:00',
+                service: 'Terapia Individual',
+                status: 'upcoming',
+                notes: ''
+            },
+            {
+                id: 2,
+                date: '2025-02-08',
+                time: '14:30',
+                service: 'Terapia de Pareja',
+                status: 'upcoming',
+                notes: ''
+            },
+            {
+                id: 3,
+                date: '2025-01-25',
+                time: '11:00',
+                service: 'Terapia Individual',
+                status: 'completed',
+                notes: 'Sesión completada exitosamente'
+            },
+            {
+                id: 4,
+                date: '2025-01-18',
+                time: '15:00',
+                service: 'Terapia Familiar',
+                status: 'completed',
+                notes: ''
+            },
+            {
+                id: 5,
+                date: '2025-01-10',
+                time: '09:00',
+                service: 'Terapia Individual',
+                status: 'cancelled',
+                notes: 'Cancelada por el paciente'
             }
+        ];
+
+        let currentDeleteId = null;
+
+        function renderAppointments() {
+            const list = document.getElementById('appointmentsList');
+            const emptyState = document.getElementById('emptyState');
+            const filterStatus = document.getElementById('filterStatus').value;
+            const filterDateFrom = document.getElementById('filterDateFrom').value;
+            const filterDateTo = document.getElementById('filterDateTo').value;
+
+            let filtered = appointments.filter(apt => {
+                if (filterStatus !== 'all' && apt.status !== filterStatus) return false;
+                if (filterDateFrom && apt.date < filterDateFrom) return false;
+                if (filterDateTo && apt.date > filterDateTo) return false;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                list.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            list.style.display = 'flex';
+            emptyState.style.display = 'none';
+
+            list.innerHTML = filtered.map(apt => {
+                const date = new Date(apt.date + 'T00:00:00');
+                const day = date.getDate();
+                const month = date.toLocaleDateString('es', { month: 'short' });
+                
+                const statusClass = `status-${apt.status}`;
+                const statusText = {
+                    'upcoming': 'Próxima',
+                    'completed': 'Completada',
+                    'cancelled': 'Cancelada'
+                }[apt.status];
+
+                return `
+                    <div class="appointment-card ${apt.status}">
+                        <div class="appointment-header">
+                            <div class="appointment-date">
+                                <div class="date-icon">
+                                    <div class="day">${day}</div>
+                                    <div class="month">${month}</div>
+                                </div>
+                                <div class="appointment-info">
+                                    <h3>${apt.service}</h3>
+                                    <p><strong>Hora:</strong> ${apt.time}</p>
+                                    <p><strong>Fecha:</strong> ${new Date(apt.date + 'T00:00:00').toLocaleDateString('es', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                    ${apt.notes ? `<p><strong>Notas:</strong> ${apt.notes}</p>` : ''}
+                                </div>
+                            </div>
+                            <span class="appointment-status ${statusClass}">${statusText}</span>
+                        </div>
+                        ${apt.status !== 'cancelled' ? `
+                            <div class="appointment-actions">
+                                <button class="btn btn-edit" onclick="openEditModal(${apt.id})">
+                                    ✏️ Editar
+                                </button>
+                                <button class="btn btn-delete" onclick="openDeleteModal(${apt.id})">
+                                    🗑️ Eliminar
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            updateStats();
         }
 
-        // Format card number input
-        document.querySelector('input[placeholder="1234 5678 9012 3456"]').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
-            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-            e.target.value = formattedValue;
+        function updateStats() {
+            document.getElementById('totalAppointments').textContent = appointments.length;
+            document.getElementById('completedAppointments').textContent = appointments.filter(a => a.status === 'completed').length;
+            document.getElementById('upcomingAppointments').textContent = appointments.filter(a => a.status === 'upcoming').length;
+            document.getElementById('cancelledAppointments').textContent = appointments.filter(a => a.status === 'cancelled').length;
+        }
+
+        function openEditModal(id) {
+            const apt = appointments.find(a => a.id === id);
+            if (!apt) return;
+
+            document.getElementById('editAppointmentId').value = apt.id;
+            document.getElementById('editDate').value = apt.date;
+            document.getElementById('editTime').value = apt.time;
+            document.getElementById('editService').value = apt.service;
+            document.getElementById('editNotes').value = apt.notes || '';
+
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            document.getElementById('editForm').reset();
+        }
+
+        function openDeleteModal(id) {
+            currentDeleteId = id;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            currentDeleteId = null;
+            document.getElementById('deleteModal').classList.remove('active');
+            document.getElementById('deleteReason').value = '';
+        }
+
+        function confirmDelete() {
+            if (!currentDeleteId) return;
+
+            const reason = document.getElementById('deleteReason').value;
+
+            // Aquí enviarías la solicitud al backend
+            fetch(`/api/appointments/${currentDeleteId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ reason })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Actualizar localmente
+                    appointments = appointments.filter(a => a.id !== currentDeleteId);
+                    renderAppointments();
+                    closeDeleteModal();
+                    alert('Cita eliminada exitosamente. Se ha enviado un correo al paciente.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al eliminar la cita');
+            });
+        }
+
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const id = parseInt(document.getElementById('editAppointmentId').value);
+            const date = document.getElementById('editDate').value;
+            const time = document.getElementById('editTime').value;
+            const service = document.getElementById('editService').value;
+            const notes = document.getElementById('editNotes').value;
+
+            // Aquí enviarías la solicitud al backend
+            fetch(`/api/appointments/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ date, time, service, notes })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Actualizar localmente
+                    const apt = appointments.find(a => a.id === id);
+                    if (apt) {
+                        apt.date = date;
+                        apt.time = time;
+                        apt.service = service;
+                        apt.notes = notes;
+                    }
+                    renderAppointments();
+                    closeEditModal();
+                    alert('Cita actualizada exitosamente. Se ha enviado un correo al paciente.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al actualizar la cita');
+            });
         });
+
+        // Event listeners para filtros
+        document.getElementById('filterStatus').addEventListener('change', renderAppointments);
+        document.getElementById('filterDateFrom').addEventListener('change', renderAppointments);
+        document.getElementById('filterDateTo').addEventListener('change', renderAppointments);
+
+        // Cerrar modales al hacer clic fuera
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditModal();
+        });
+
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
+
+        // Renderizar al cargar
+        renderAppointments();
     </script>
 </body>
 </html>

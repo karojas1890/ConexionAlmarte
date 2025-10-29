@@ -36,3 +36,12 @@ function createInstallButton() {
        
     }
 }
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+    const isPassword = passwordInput.type === 'password';
+    passwordInput.type = isPassword ? 'text' : 'password';
+    
+   
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
+});

@@ -174,19 +174,19 @@ def ValidateCode():
     try:
         data = request.get_json()
         code_entered = data.get('code')
-        print(f"🔐 Validando código ingresado: {code_entered}")
+       
 
         idusuario = session.get('recovery_idusuario')
         tipo_recuperacion = session.get('recovery_tipo')
 
-        print(tipo_recuperacion)
+        
 
         # Buscar el usuario en la base de datos
         uss = Usuario.query.get(idusuario)
         if not uss:
             return jsonify({'success': False, 'message': 'Usuario no encontrado en el sistema.'})
 
-        print(f"🧩 Código esperado: {uss.codigo6digitos}")
+       
 
         # Validar código
         if str(uss.codigo6digitos) != str(code_entered):
@@ -201,6 +201,7 @@ def ValidateCode():
             session['code_verified'] = True 
             return jsonify({
                 'success': True,
+                'typw':"1", 
                 'redirect_url': url_for('routes.restablecer_contra')
             })
 
@@ -214,6 +215,7 @@ def ValidateCode():
 
             return jsonify({
                 'success': True,
+                'typw':"2",                
                 'redirect_url': url_for('auth.login'),
                 'message': f'Tu nombre de usuario fue enviado a tu correo {correo}.'
             })
@@ -262,6 +264,7 @@ def UpdatePassword():
         # Si el estado está en 0, actualizarlo a 1
         if usuario.estado == 0:
             usuario.estado = 1
+            usuario.intentos=0
 
         db.session.commit()
 
@@ -271,5 +274,5 @@ def UpdatePassword():
         return jsonify({'success': True, 'message': 'Contraseña actualizada correctamente.'})
 
     except Exception as e:
-        print(f"❌ Error actualizando contraseña: {e}")
+        
         return jsonify({'success': False, 'message': 'Error interno del servidor.'}), 500
