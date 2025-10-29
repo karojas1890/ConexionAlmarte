@@ -55,7 +55,7 @@ def login():
                 flash("Usuario o password incorrecto inténtelo de nuevo")
                 registrarAuditoria(
             identificacion_consultante=session.get("usuarioLog"),
-            tipo_actividad=8,
+            tipo_actividad=11,
             descripcion="Error de Login",
              exito=False
             )
