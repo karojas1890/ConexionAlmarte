@@ -1,5 +1,5 @@
 from app.extensions import db
-from sqlalchemy import Column, Integer, String, Float, DateTime,ForeignKey,TIMESTAMP
+from sqlalchemy import Column, Integer, Float, ForeignKey,TIMESTAMP
 from sqlalchemy.orm import relationship
 
 class PagosCita(db.Model):

@@ -5,10 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Contraseña - Almarte</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/preguntaSeguridad.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
     <div class="container">
+        <!-- Modal de confirmación -->
+        <div id="successModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-icon">✅</div>
+                <h2></h2>
+                <p></p>
+            </div>
+        </div>
         <div class="logo">AM</div>
         <h1>Restablecer Credenciales</h1>
         <p class="subtitle">Responde correctamente las siguientes preguntas de seguridad para continuar</p>
@@ -48,5 +58,6 @@
      const CODE_URL = "{{ url_for('routes.codigo_restablecer') }}";
    </script>
     <script src="{{ url_for('static', filename='js/preguntaSeguridad.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modal.js') }}" > </script>
 </body>
 </html>

@@ -7,7 +7,7 @@ from app.models import (
     Cita, MetodoPago, PagoCita, CategoriaRecomendacion,
     RecomendacionTerapeutica, RecomendacionPaciente,
     RegistroAplicacionRecomendacion, RecursoApoyo, Emocion,
-    ConductaAfrontamiento, Diario, Tarjeta,Auditoria
+    ConductaAfrontamiento, Diario, Tarjeta,Auditoria,RestriccionPassword
 )
 
 from app.Service import email_service  

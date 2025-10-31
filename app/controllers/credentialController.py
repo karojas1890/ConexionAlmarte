@@ -9,6 +9,7 @@ import random
 import bcrypt
 from app.Service.auditoria import registrarAuditoria
 from datetime import datetime
+from app.models.passRestriccion import RestriccionPassword
 
 credential_bp = Blueprint("crede", __name__)
 
@@ -50,11 +51,15 @@ def ValidarUsuarioRecovery():
             session['recovery_nombre'] = consultante.nombre
             session['recovery_estado'] = usuario.estado
             session['recovery_usuario'] = usuario.usuario
-
+            session['recovery_date']=consultante.fechanacimiento
+            session['recovery_canton']=consultante.canton
+            session['recovery_phone']=consultante.telefono
+            tipo=1
             print("✅ Usuario validado - Consultante")
             return jsonify({
                 'success': True,
-                'message': 'Usuario validado correctamente'
+                'message': 'Usuario validado correctamente',
+                'tipo':tipo
             })
 
         
@@ -85,11 +90,13 @@ def ValidarUsuarioRecovery():
             session['recovery_estado'] = usuario.estado
             session['recovery_usuario'] = usuario.usuario
             session['recovery_codigoprofesional'] = terapeuta.codigoprofesional  
-
-            print("✅ Usuario validado - Terapeuta")
+            session['recovery_apellido'] = terapeuta.apellido1
+            tipo=2
+         
             return jsonify({
                 'success': True,
-                'message': 'Usuario validado correctamente'
+                'message': 'Usuario validado correctamente',
+                'tipo':tipo
             })
 
         return jsonify({
@@ -98,7 +105,7 @@ def ValidarUsuarioRecovery():
         })
        
     except Exception as e:
-        print(f"Error validando usuario: {e}")
+       
         return jsonify({
             'success': False,
             'message': 'Error interno del servidor'
@@ -109,11 +116,13 @@ def ValidateSecurityQuestions():
     try:
         data = request.get_json()
         question1 = data.get('question1')
-        answer1 = data.get('answer1')
-        print(f"🔍 Validando pregunta: {question1}, respuesta: {answer1}")
+        answer1 = str(data.get('answer1')).strip()
+        tipo = str(data.get('tipouss')).strip()  # "1" = consultante, "2" = terapeuta
 
         identificacion = session.get('recovery_identificacion')
-        print(identificacion)
+
+        if not identificacion:
+            return jsonify({'success': False, 'message': 'Sesión no válida o expirada.'}), 401
 
         # Inicializar contador si no existe
         if 'failed_attempts' not in session:
@@ -121,20 +130,49 @@ def ValidateSecurityQuestions():
 
         is_valid = False
 
-        if question1 == "id_digits":
-            expectedAnswer = identificacion[-3:]
-            is_valid = answer1 == expectedAnswer
-            print(f"{answer1} compare {expectedAnswer}")
+        # --- 🔹 Consultante ---
+        if tipo == "1":
+            if question1 == "id_digits":
+                expected = identificacion[-3:]
+                is_valid = (answer1 == expected)
+            elif question1 == "birthdate":
+                expected = str(session.get('recovery_date'))
+                print(expected,"compare",answer1)
+                is_valid = (answer1 == expected)
+            elif question1 == "canton":
+                expected = str(session.get('recovery_canton')).lower()
+                is_valid = (answer1.lower() == expected)
+            elif question1 == "phone_digits":
+                phone = str(session.get('recovery_phone'))
+                expected = phone[-3:] if phone else ""
+                is_valid = (answer1 == expected)
 
+        # --- 🔹 Terapeuta ---
+        elif tipo == "2":
+            if question1 == "id_digits":
+                expected = identificacion[-3:]
+                is_valid = (answer1 == expected)
+            elif question1 == "last_name":
+                expected = str(session.get('recovery_apellido')).lower()
+                is_valid = (answer1.lower() == expected)
+            elif question1 == "code":
+                codigo_prof = str(session.get('recovery_codigoprofesional'))
+                expected = codigo_prof[-3:] if codigo_prof else ""
+                is_valid = (answer1 == expected)
+
+        # --- Ningún tipo válido ---
+        else:
+            return jsonify({'success': False, 'message': 'Tipo de usuario no válido.'}), 400
+
+        # --- ✅ Si la respuesta es correcta ---
         if is_valid:
             session['security_verified'] = True
-            session.pop('failed_attempts', None)  # reiniciar contador
+            session.pop('failed_attempts', None)
             idusuario = session.get("recovery_idusuario")
-
             correo = session.get('recovery_correo')
             nombre = session.get('recovery_nombre')
-            code = "{:06d}".format(random.randint(0, 999999))
 
+            code = "{:06d}".format(random.randint(0, 999999))
             usuario = Usuario.query.get(idusuario)
             if not usuario:
                 return jsonify({'success': False, 'message': 'Usuario no encontrado'})
@@ -142,35 +180,38 @@ def ValidateSecurityQuestions():
             usuario.codigo6digitos = code
             db.session.commit()
 
-            email_service.SendVerificationCodeCredentials(email=correo, username=nombre, code=code)
+            # Enviar correo
+            email_service.SendVerificationCodeCredentials(
+                email=correo,
+                username=nombre,
+                code=code
+            )
 
             return jsonify({
                 'success': True,
-                'message': 'Respuestas correctas. Se ha enviado un código de verificación a tu correo.'
+                'message': 'Respuesta correcta. Se ha enviado un código de verificación a tu correo.'
             })
 
-        else:
-            # Incrementar contador
-            session['failed_attempts'] += 1
-           
-
-            if session['failed_attempts'] >= 3:
-                return jsonify({
-                    'success': False,
-                    'blocked': True,
-                    'message': 'Has alcanzado el número máximo de intentos. Espera 24 horas para volver a intentarlo.'
-                })
-
+        
+        session['failed_attempts'] += 1
+        if session['failed_attempts'] >= 3:
             return jsonify({
                 'success': False,
-                'blocked': False,
-                'attempts': session['failed_attempts'],
-                'message': 'Las respuestas no son correctas. Intenta nuevamente.'
+                'blocked': True,
+                'message': 'Has alcanzado el número máximo de intentos. Espera 24 horas para volver a intentarlo.'
             })
 
+        return jsonify({
+            'success': False,
+            'blocked': False,
+            'attempts': session['failed_attempts'],
+            'message': 'La respuesta no es correcta. Intenta nuevamente.'
+        })
+
     except Exception as e:
-        print(f" Error validando preguntas: {e}")
+        print(f"Error validando preguntas: {e}")
         return jsonify({'success': False, 'message': 'Error interno del servidor'}), 500
+
     
 @credential_bp.route('/validate_code', methods=['POST'])
 def ValidateCode():
@@ -245,10 +286,12 @@ def ValidateCode():
         
         
         
+
+
 @credential_bp.route('/update_password', methods=['POST'])
 def UpdatePassword():
     try:
-        
+        # Validar sesión
         if not session.get('code_verified'):
             return jsonify({'success': False, 'message': 'No autorizado.'}), 403
 
@@ -258,7 +301,6 @@ def UpdatePassword():
         if not new_password or len(new_password) < 6:
             return jsonify({'success': False, 'message': 'La contraseña debe tener al menos 6 caracteres.'})
 
-       
         idusuario = session.get('recovery_idusuario')
         if not idusuario:
             return jsonify({'success': False, 'message': 'Sesión expirada. Inicia el proceso nuevamente.'})
@@ -267,16 +309,34 @@ def UpdatePassword():
         if not usuario:
             return jsonify({'success': False, 'message': 'Usuario no encontrado.'})
 
-        
-        usuario.password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        # Obtiene las ultimas 6 contraseñas del historial
+        historial = (
+            RestriccionPassword.query
+            .filter_by(idusuario=idusuario)
+            .order_by(RestriccionPassword.fecha_registro.desc())
+            .limit(6)
+            .all()
+            )
 
+        for registro in historial:
+           if bcrypt.checkpw(new_password.encode('utf-8'), registro.password_hash.encode('utf-8')):
+            return jsonify({
+            'success': False,
+            'message': 'La nueva contraseña no puede ser igual a las últimas 6 utilizadas.'
+        }), 400
 
-        # Si el estado está en 0, actualizarlo a 1
+        #  Si pasa la validacion actualiza la contraseña
+        hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        usuario.password = hashed_password
+
+        #  Actualiza estado si aplica
         if usuario.estado == 0:
             usuario.estado = 1
-            usuario.intentos=0
+            usuario.intentos = 0
 
         db.session.commit()
+
+        # Registra auditoría
         registrarAuditoria(
             identificacion_consultante=usuario.idusuario,
             tipo_actividad=10,  
@@ -291,5 +351,5 @@ def UpdatePassword():
         return jsonify({'success': True, 'message': 'Contraseña actualizada correctamente.'})
 
     except Exception as e:
-        
+        print("Error al actualizar contraseña:", str(e))
         return jsonify({'success': False, 'message': 'Error interno del servidor.'}), 500

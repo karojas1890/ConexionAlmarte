@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const procesarBtn = document.getElementById('procesarBtn');
     const usuarioInput = document.getElementById('usuario'); 
     const emailError = document.getElementById('emailError'); 
-
+    localStorage.removeItem('tipoUsuario');
     // Actualizar texto del boton segun seleccion
     tipoRecuperacion.addEventListener('change', function() {
         if (this.value === '1') {
@@ -59,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log(data.success, data.message)
             if (data.success) {
+                localStorage.setItem('tipoUsuario', data.tipo);
+                
                 window.location.href = PREGUNTAS_URL;
             } else {
                 // Mostrar error en el div en lugar de alert

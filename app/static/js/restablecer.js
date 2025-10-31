@@ -182,14 +182,14 @@ document.getElementById('resetForm').addEventListener('submit', function(e) {
              
             showModal('¡Contraseña actualizada!', 'Tu contraseña se cambió correctamente. Serás redirigido al login.', 'success', '/login');
 
-
+           
             
             setTimeout(() => {
                 window.location.href = REDIREC_UTL
             }, 3000);
            
         } else {
-            showModal('¡Algo salio mal!', data.message);
+            showModal('¡Algo salio mal!', data.message,'error');
 
             
         }
