@@ -31,7 +31,7 @@ def login():
             return redirect(url_for("auth.login"))
 
         if user.estado != 1:
-            flash("Usuario bloqueado", "error")
+            flash("Usuario bloqueado. Restablezca la contraseña.", "error")
             return redirect(url_for("auth.login"))
 
         #  Verifica contrasena con bcrypt
@@ -59,7 +59,7 @@ def login():
             db.session.commit()
             
             if estado == 0:
-                flash("Usuario bloqueado por demasiados intentos fallidos", "error")
+                flash("Usuario bloqueado por demasiados intentos fallidos. Restablezca la contraseña", "error")
                 registrarAuditoria(
             identificacion_consultante=session.get("usuarioLog"),
             tipo_actividad=12,

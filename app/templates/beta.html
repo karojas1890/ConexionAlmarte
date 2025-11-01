@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Versión Beta - Almarte</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .beta-modal {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 1000px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .beta-header {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .beta-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .beta-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .beta-header p {
+            font-size: 16px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .beta-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            padding: 50px 40px;
+        }
+
+        @media (max-width: 768px) {
+            .beta-header {
+                padding: 25px 16px;
+            }
+
+            .beta-header h1 {
+                font-size: 22px;
+                margin-bottom: 8px;
+            }
+
+            .beta-header p {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            .beta-badge {
+                padding: 6px 12px;
+                font-size: 12px;
+                margin-bottom: 12px;
+            }
+
+            .beta-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px 16px;
+            }
+
+            .beta-section {
+                margin-bottom: 20px;
+            }
+
+            .beta-section h3 {
+                font-size: 15px;
+                margin-bottom: 12px;
+            }
+
+            .whatsapp-method {
+                padding: 14px;
+                margin-bottom: 12px;
+                border-radius: 6px;
+            }
+
+            .whatsapp-method p {
+                font-size: 13px;
+                margin-bottom: 8px;
+            }
+
+            .whatsapp-info {
+                padding: 10px;
+                margin: 8px 0;
+                font-size: 13px;
+                border-radius: 6px;
+            }
+
+            .whatsapp-code {
+                padding: 6px 10px;
+                font-size: 12px;
+                border-radius: 4px;
+            }
+
+            .btn-open-whatsapp {
+                width: 100%;
+                padding: 14px 16px;
+                font-size: 15px;
+                gap: 8px;
+                margin-top: 12px;
+                border-radius: 6px;
+            }
+
+            .beta-footer {
+                flex-direction: column;
+                padding: 16px 12px;
+                gap: 10px;
+            }
+
+            .beta-footer .btn {
+                width: 100%;
+                padding: 14px 16px;
+                font-size: 14px;
+                border-radius: 6px;
+            }
+
+            .divider {
+                margin: 16px 0;
+                font-size: 13px;
+                gap: 12px;
+            }
+
+            .twilio-footer {
+                font-size: 11px;
+                margin-top: 12px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .beta-header {
+                padding: 40px 30px;
+            }
+
+            .beta-header h1 {
+                font-size: 32px;
+            }
+
+            .beta-header p {
+                font-size: 16px;
+            }
+
+            .beta-content {
+                gap: 40px;
+                padding: 50px 40px;
+            }
+
+            .beta-footer {
+                flex-direction: row;
+                padding: 30px 40px;
+                gap: 15px;
+                justify-content: center;
+            }
+
+            .beta-footer .btn {
+                padding: 14px 30px;
+                font-size: 16px;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                min-width: 150px;
+            }
+
+            .beta-footer .btn-accept {
+                background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+                color: white;
+            }
+
+            .beta-footer .btn-accept:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(91, 168, 160, 0.3);
+            }
+
+            .beta-footer .btn-accept:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+            .beta-footer .btn-decline {
+                background: #f5f5f5;
+                color: #333;
+                border: 1px solid #e0e0e0;
+            }
+
+            .beta-footer .btn-decline:hover {
+                background: #efefef;
+                transform: translateY(-2px);
+            }
+
+            .beta-footer .btn-decline:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+            .whatsapp-method {
+                padding: 20px;
+            }
+
+            .btn-open-whatsapp {
+                padding: 14px 30px;
+                width: auto;
+            }
+
+            .btn-open-whatsapp:hover {
+                background: #20ba5a;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            }
+        }
+
+        .beta-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .beta-section {
+            margin-bottom: 30px;
+        }
+
+        .beta-section h3 {
+            font-size: 18px;
+            color: #5BA8A0;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .whatsapp-method {
+            background: #f0fdf4;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .whatsapp-method p {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .whatsapp-info {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .whatsapp-info svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .whatsapp-code {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .btn-open-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn-open-whatsapp:hover {
+            background: #20ba5a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .beta-right {
+            display: none;
+        }
+
+        .qr-container {
+            display: none;
+        }
+
+        #qrcode {
+            display: none;
+        }
+
+        .qr-label {
+            display: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            color: #999;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .beta-footer {
+            padding: 30px 40px;
+            background: #f8fafa;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .confirmation-message {
+            display: none;
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .decline-message {
+            display: none;
+            background: #fff8e6;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #856404;
+            margin-bottom: 20px;
+        }
+
+        .decline-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        .twilio-footer {
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="beta-modal">
+        <!-- Header -->
+        <div class="beta-header">
+            <div class="beta-badge">🚀 VERSIÓN BETA</div>
+            <h1>Sé Parte de Almarte Beta</h1>
+            <p>Acceso anticipado a las nuevas características de Conexión Almarte</p>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="beta-content">
+            <!-- Lado Izquierdo: WhatsApp -->
+            <div class="beta-left">
+                <div class="confirmation-message" id="confirmationMessage">
+                    <h3>✓ Registro Confirmado</h3>
+                    <p>Gracias por ser parte de la beta. Te enviaremos un correo con el código de acceso.</p>
+                </div>
+
+                <div class="decline-message" id="declineMessage">
+                    <h3>No hay problema</h3>
+                    <p>Puedes unirte a la beta en cualquier momento. Te notificaremos cuando la versión completa esté disponible.</p>
+                </div>
+
+                <div class="beta-section">
+                    <h3>📱 Envía un Mensaje de WhatsApp</h3>
+                    <div class="whatsapp-method">
+                        <p>Usa WhatsApp y envía un mensaje desde tu dispositivo a:</p>
+                        <div class="whatsapp-info">
+                            <span>📞</span>
+                            <span><strong>+1 415 523 8886</strong></span>
+                            <button onclick="copyToClipboard('+1 415 523 8886')" style="background: none; border: none; cursor: pointer; color: #5BA8A0; font-weight: 600;">Copiar</button>
+                        </div>
+                        <p style="margin-top: 12px;">Con el código:</p>
+                        <div class="whatsapp-info" style="background: linear-gradient(135deg, #e8f5f4 0%, #f0fdf4 100%);">
+                            <span class="whatsapp-code">join enough-goose</span>
+                            <button onclick="copyToClipboard('join enough-goose')" style="background: none; border: none; cursor: pointer; color: #5BA8A0; font-weight: 600;">Copiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider">O</div>
+
+                <div class="beta-section">
+                    <h3>🔗 Abre WhatsApp Directamente</h3>
+                    <p style="font-size: 14px; color: #666; margin-bottom: 12px;">Haz clic en el botón para abrir WhatsApp automáticamente:</p>
+                    <a href="https://wa.me/14155238886?text=join%20enough-goose" class="btn-open-whatsapp" target="_blank">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004c-1.025 0-2.031.312-2.896.902-.822.555-1.534 1.33-2.008 2.267-.442.862-.68 1.81-.68 2.759 0 1.044.227 2.053.656 3.006l.105.22-.703 2.566 2.664-.699.216.11c.87.516 1.844.789 2.829.789h.003c1.025 0 2.031-.312 2.896-.902.822-.556 1.534-1.33 2.008-2.267.442-.862.68-1.81.68-2.759 0-1.044-.227-2.053-.656-3.006l-.105-.22.703-2.566-2.664.699-.216-.11c-.87-.516-1.844-.789-2.829-.789"/>
+                        </svg>
+                        Abrir WhatsApp
+                    </a>
+                </div>
+
+                <div class="twilio-footer">
+                    Entorno de pruebas de WhatsApp
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer de Decisión -->
+        <div class="beta-footer">
+            <button class="btn btn-decline" onclick="declineBeta()">
+                No, Gracias
+            </button>
+            <button class="btn btn-accept" onclick="acceptBeta()">
+                Sí, Quiero ser Beta Tester
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Generar QR
+        // Removido código de generación de QR
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copiado al portapapeles');
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+            });
+        }
+
+        function acceptBeta() {
+            const confirmMsg = document.getElementById('confirmationMessage');
+            confirmMsg.classList.add('show');
+            
+            // Simular envío de email
+            fetch('/api/beta-registration', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: 'accepted',
+                    action: 'Participará en la versión beta',
+                    timestamp: new Date()
+                })
+            }).catch(err => console.log('Confirmación enviada'));
+
+            // Desactivar botones
+            document.querySelector('.btn-accept').disabled = true;
+            document.querySelector('.btn-decline').disabled = true;
+        }
+
+        function declineBeta() {
+            const declineMsg = document.getElementById('declineMessage');
+            declineMsg.classList.add('show');
+            
+            // Enviar notificación al correo
+            fetch('/api/beta-registration', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: 'declined',
+                    action: 'Declinó participar en la versión beta',
+                    timestamp: new Date()
+                })
+            }).catch(err => console.log('Declinación registrada'));
+
+            // Desactivar botones
+            document.querySelector('.btn-accept').disabled = true;
+            document.querySelector('.btn-decline').disabled = true;
+        }
+    </script>
+</body>
+</html>
