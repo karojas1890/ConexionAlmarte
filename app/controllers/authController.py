@@ -66,7 +66,7 @@ def login():
             descripcion="Bloqueo por ecxeso de intentos", 
              exito=False
             )
-                smsservice.BloqueoCuenta(telefono)
+#            smsservice.BloqueoCuenta(telefono)
             else:
                 flash("Usuario o password incorrecto inténtelo de nuevo")
                 registrarAuditoria(
