@@ -39,8 +39,8 @@ const securityQuestionsTerapeuta = [
         pattern: '[0-9]{3}'
     },
     {
-        id: 'last_name',
-        label: 'Indique su primer Apellido',
+        id: 'M_last_name',
+        label: 'Indique su segundo Apellido',
         type: 'text',
         placeholder: ''
     },

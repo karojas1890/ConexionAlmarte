@@ -17,5 +17,6 @@ class Terapeuta(db.Model):
     apellido2 = Column(String)
     correo = Column(String, nullable=False)
     codigoprofesional = Column(String)
+    telefono=Column(String)
    
     usuario = relationship("Usuario", backref="terapeuta")

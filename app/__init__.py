@@ -10,7 +10,7 @@ from app.models import (
     ConductaAfrontamiento, Diario, Tarjeta,Auditoria,RestriccionPassword
 )
 
-from app.Service import email_service  
+from app.Service import email_service,smsservice  
 
 
 
@@ -44,6 +44,7 @@ def create_app():
     #  Configuración del servicio de correo
     
     email_service.init_app(app) 
+    smsservice.init_app(app) 
 
    
 

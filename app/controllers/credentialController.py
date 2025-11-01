@@ -90,7 +90,7 @@ def ValidarUsuarioRecovery():
             session['recovery_estado'] = usuario.estado
             session['recovery_usuario'] = usuario.usuario
             session['recovery_codigoprofesional'] = terapeuta.codigoprofesional  
-            session['recovery_apellido'] = terapeuta.apellido1
+            session['recovery_apellido'] = terapeuta.apellido2
             tipo=2
          
             return jsonify({
@@ -152,7 +152,7 @@ def ValidateSecurityQuestions():
             if question1 == "id_digits":
                 expected = identificacion[-3:]
                 is_valid = (answer1 == expected)
-            elif question1 == "last_name":
+            elif question1 == "M_last_name":
                 expected = str(session.get('recovery_apellido')).lower()
                 is_valid = (answer1.lower() == expected)
             elif question1 == "code":

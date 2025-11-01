@@ -3,6 +3,7 @@ from sqlalchemy import text
 from app import db
 import bcrypt
 import random
+from app.Service import smsservice
 from app.Service.auditoria import registrarAuditoria
 from datetime import datetime,timedelta
 import threading
@@ -36,6 +37,20 @@ def login():
         #  Verifica contrasena con bcrypt
         if not bcrypt.checkpw(password.encode("utf-8"), user.password.encode("utf-8")):
             session["usuarioLog"] = user.idusuario
+            # Obtener teléfono según tipo
+            if user.tipo in (1, 3, 4):  # Consultante
+               sql_tel = text("SELECT telefono FROM consultante WHERE idusuario = :idusuario")
+            elif user.tipo == 2:  # Terapeuta
+                sql_tel = text("SELECT telefono FROM terapeuta WHERE idusuario = :idusuario")
+            else:
+                sql_tel = None
+
+            telefono = None
+            if sql_tel is not None:
+               result_tel = db.session.execute(sql_tel, {"idusuario": user.idusuario})
+               telefono = result_tel.scalar()
+    
+            session["phoneLog"] = telefono
             # Incrementar intentos
             intentos = user.intentos + 1
             estado = 0 if intentos >= 3 else 1
@@ -51,6 +66,7 @@ def login():
             descripcion="Bloqueo por ecxeso de intentos", 
              exito=False
             )
+                smsservice.BloqueoCuenta(telefono)
             else:
                 flash("Usuario o password incorrecto inténtelo de nuevo")
                 registrarAuditoria(
