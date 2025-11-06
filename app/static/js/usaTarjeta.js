@@ -31,9 +31,7 @@ function renderCards(cards) {
             </div>
 
             <div class="card-actions">
-                <button class="btn-card-action" onclick='useCard(${JSON.stringify(card)})'>Usar esta tarjeta</button>
-
-             
+                <button class="btn-card-action" onclick='useCard(${JSON.stringify(card)})'>Usar esta tarjeta</button>             
             </div>
         `;
 

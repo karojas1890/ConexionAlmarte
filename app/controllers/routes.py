@@ -56,6 +56,12 @@ def verificar_Codigo():
 def Diary():
     return render_template("diary.html")
 
+@routes_bp.route("/audit_P", endpoint="audit_P")
+@rolRequired(1,3)
+@loginRequired 
+def Diary():
+    return render_template("patientLogs.html")
+
 @routes_bp.route("/sig_up", endpoint="sig_up")
 def SigUp():
     return render_template("sig-up.html")

@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block title %}Mi Actividad{% endblock %}
+
+{% block content %} 
+    <div class="almarte-activity-container">
+        <div class="almarte-activity-header">
+            <h1>📊 Mi Actividad</h1>
+            <p>Revisa el historial de acciones realizadas en tu cuenta</p>
+        </div>
+
+        <!-- Nueva sección de búsqueda con gradiente teal y estilo visual diferenciado -->
+        <div class="almarte-search-section">
+            <div class="almarte-search-title">
+                🔍 Filtrar por
+            </div>
+            <div class="almarte-search-grid">
+                <div class="almarte-search-group">
+                    <label class="almarte-search-label">Tipo de Actividad</label>
+                    <select class="almarte-search-select" id="activityType" onchange="filterActivities()">
+                        <option value="">Todas las actividades</option>
+                        <option value="1">Inicio de Sesión</option>
+                        <option value="2">Cierre de Sesión</option>
+                        <option value="3">Citas</option>
+                        <option value="4">Pagos</option>
+                        <option value="5">Perfil</option>
+                        <option value="6">Seguridad</option>
+                    </select>
+                </div>
+                <div class="almarte-search-group">
+                    <label class="almarte-search-label">Fecha Desde</label>
+                    <input type="date" class="almarte-search-input" id="dateFrom" onchange="filterActivities()">
+                </div>
+                <div class="almarte-search-group">
+                    <label class="almarte-search-label">Fecha Hasta</label>
+                    <input type="date" class="almarte-search-input" id="dateTo" onchange="filterActivities()">
+                </div>
+                <div class="almarte-search-group">
+                    <label class="almarte-search-label">Estado</label>
+                    <select class="almarte-search-select" id="statusFilter" onchange="filterActivities()">
+                        <option value="">Todos</option>
+                        <option value="true">Exitoso</option>
+                        <option value="false">Fallido</option>
+                    </select>
+                </div>
+            </div>
+            <div class="almarte-filters-actions">
+                <button class="almarte-btn-filter" onclick="filterActivities()">🔍 Buscar</button>
+                <button class="almarte-btn-reset" onclick="resetFilters()">↻ Limpiar</button>
+            </div>
+        </div>
+
+        <div class="almarte-stats-grid">
+            <div class="almarte-stat-card">
+                <div class="almarte-stat-icon success">✓</div>
+                <div class="almarte-stat-content">
+                    <h3>156</h3>
+                    <p>Acciones Exitosas</p>
+                </div>
+            </div>
+            <div class="almarte-stat-card">
+                <div class="almarte-stat-icon info">📅</div>
+                <div class="almarte-stat-content">
+                    <h3>12</h3>
+                    <p>Citas Agendadas</p>
+                </div>
+            </div>
+            <div class="almarte-stat-card">
+                <div class="almarte-stat-icon warning">⚠️</div>
+                <div class="almarte-stat-content">
+                    <h3>3</h3>
+                    <p>Intentos Fallidos</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="almarte-activity-list" style="overflow: auto;">
+            <h2>Historial de Actividades</h2>
+
+            <div id="activitiesContainer">
+                <!-- Actividad 1: Inicio de sesión exitoso -->
+                <div class="almarte-activity-item" onclick="toggleDetails(this)">
+                    <div class="almarte-activity-header-item">
+                       
+                    </div>
+                    <div class="almarte-activity-details">
+                       
+                    </div>
+                </div>
+
+                <!-- Actividad 2: Cita agendada -->
+                <div class="almarte-activity-item" onclick="toggleDetails(this)">
+                   
+                </div>
+
+            <div class="almarte-pagination">
+                <button onclick="previousPage()" id="prevBtn">← Anterior</button>
+                <span>Página <strong>1</strong> de <strong>5</strong></span>
+                <button onclick="nextPage()" id="nextBtn">Siguiente →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       const AUDITORIAP_URL="{{ url_for('auditoria.ObtenerAuditoriaUsuario') }}"
+    </script>
+    <script src="{{ url_for('static', filename='js/patientLogs.js') }}"></script>
+{% endblock %}

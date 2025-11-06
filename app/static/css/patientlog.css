@@ -1,0 +1,513 @@
+
+        .almarte-activity-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .almarte-activity-header {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .almarte-activity-header h1 {
+            color: #5BA8A0;
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .almarte-activity-header p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* Nueva sección de búsqueda mejorada con estilo visual diferente */
+        .almarte-search-section {
+            background: linear-gradient(135deg, #f7fafa 0%, #f3f7f7 100%);
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 6px rgba(91, 168, 160, 0.2);
+        }
+
+        .almarte-search-title {
+            color: rgb(249, 245, 245);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .almarte-search-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .almarte-search-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .almarte-search-label {
+            color: rgba(16, 16, 16, 0.95);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .almarte-search-input,
+        .almarte-search-select {
+            padding: 11px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(246, 245, 245, 0.95);
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .almarte-search-input:focus,
+        .almarte-search-select:focus {
+            outline: none;
+            border-color: rgb(11, 10, 10);
+            background: rgb(243, 242, 242);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .almarte-filters-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .almarte-btn-filter,
+        .almarte-btn-reset {
+            padding: 11px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .almarte-btn-filter {
+            background: rgb(236, 232, 232);
+            color: #041715;
+        }
+
+        .almarte-btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .almarte-btn-reset {
+            background: rgba(249, 251, 251, 0.2);
+            color: rgb(8, 7, 7);
+            border: 2px solid white;
+        }
+
+        .almarte-btn-reset:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .almarte-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .almarte-stat-card {
+            background: white;
+            padding: 14px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .almarte-stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .almarte-stat-icon.success {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        }
+
+        .almarte-stat-icon.info {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+        }
+
+        .almarte-stat-icon.warning {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        }
+
+        .almarte-stat-content h3 {
+            color: #333;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .almarte-stat-content p {
+            color: #666;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .almarte-activity-list {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .almarte-activity-list h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .almarte-activity-item {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .almarte-activity-item:hover {
+            border-color: #5BA8A0;
+            box-shadow: 0 4px 12px rgba(91, 168, 160, 0.15);
+        }
+
+        .almarte-activity-header-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .almarte-activity-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .almarte-activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .almarte-activity-icon.login {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+        }
+
+        .almarte-activity-icon.appointment {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+        }
+
+        .almarte-activity-icon.payment {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        }
+
+        .almarte-activity-icon.profile {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        }
+
+        .almarte-activity-icon.security {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        .almarte-activity-info h3 {
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .almarte-activity-info p {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .almarte-activity-time {
+            color: #999;
+            font-size: 12px;
+            align-self: flex-start;
+        }
+
+        .almarte-activity-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        .almarte-activity-status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .almarte-activity-status.failed {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .almarte-activity-details {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+            display: none;
+        }
+
+        .almarte-activity-item.expanded .almarte-activity-details {
+            display: block;
+        }
+
+        .almarte-detail-row {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 6px 0;
+            font-size: 13px;
+        }
+
+        .almarte-detail-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .almarte-detail-value {
+            color: #333;
+        }
+
+        .almarte-empty-state {
+            text-align: center;
+            padding: 40px 15px;
+            color: #999;
+        }
+
+        .almarte-empty-state-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .almarte-empty-state h3 {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .almarte-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .almarte-pagination button {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .almarte-pagination button:hover:not(:disabled) {
+            border-color: #5BA8A0;
+            color: #5BA8A0;
+        }
+
+        .almarte-pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .almarte-pagination span {
+            color: #666;
+            font-size: 13px;
+        }
+
+        @media (min-width: 640px) {
+            body {
+                padding: 16px;
+            }
+
+            .almarte-activity-header {
+                padding: 20px;
+                margin-bottom: 16px;
+            }
+
+            .almarte-activity-header h1 {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
+
+            .almarte-activity-header p {
+                font-size: 14px;
+            }
+
+            .almarte-search-section {
+                padding: 18px;
+                margin-bottom: 16px;
+            }
+
+            .almarte-search-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .almarte-filters-actions {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .almarte-stat-card {
+                padding: 16px;
+                gap: 14px;
+            }
+
+            .almarte-stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+
+            .almarte-stat-content h3 {
+                font-size: 22px;
+            }
+
+            .almarte-stat-content p {
+                font-size: 13px;
+            }
+
+            .almarte-activity-list {
+                padding: 20px;
+            }
+
+            .almarte-activity-list h2 {
+                font-size: 20px;
+                margin-bottom: 16px;
+            }
+
+            .almarte-activity-item {
+                padding: 16px;
+                margin-bottom: 14px;
+            }
+
+            .almarte-activity-header-item {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .almarte-activity-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .almarte-activity-info h3 {
+                font-size: 16px;
+            }
+
+            .almarte-activity-info p {
+                font-size: 13px;
+            }
+
+            .almarte-detail-row {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 8px 0;
+                font-size: 14px;
+            }
+
+            .almarte-pagination button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .almarte-search-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+            }
+
+            .almarte-filters-actions {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .almarte-stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .almarte-activity-header h1 {
+                font-size: 24px;
+            }
+
+            .almarte-search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .almarte-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .almarte-activity-header-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .almarte-activity-time {
+                align-self: flex-start;
+            }
+
+            .almarte-detail-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }

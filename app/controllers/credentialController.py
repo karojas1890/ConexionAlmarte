@@ -10,7 +10,7 @@ import bcrypt
 from app.Service.auditoria import registrarAuditoria
 from datetime import datetime
 from app.models.passRestriccion import RestriccionPassword
-
+import unicodedata
 credential_bp = Blueprint("crede", __name__)
 
 
@@ -55,7 +55,7 @@ def ValidarUsuarioRecovery():
             session['recovery_canton']=consultante.canton
             session['recovery_phone']=consultante.telefono
             tipo=1
-            print("✅ Usuario validado - Consultante")
+        
             return jsonify({
                 'success': True,
                 'message': 'Usuario validado correctamente',
@@ -110,7 +110,25 @@ def ValidarUsuarioRecovery():
             'success': False,
             'message': 'Error interno del servidor'
         }), 500
-      
+        
+def normalize_text(text):
+    if not text:
+        return ''
+    text = unicodedata.normalize('NFKD', text.strip().lower())
+    # Elimina acentos combinados
+    return ''.join(c for c in text if not unicodedata.combining(c))
+def normalize_date(date_str):
+    if not date_str:
+        return None
+    try:
+        # formato que viene del frontend
+        return datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S %Z").date()
+    except ValueError:
+        try:
+            # formato de la base de datos
+            return datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            return None     
 @credential_bp.route('/validate_questions', methods=['POST'])
 def ValidateSecurityQuestions():
     try:
@@ -135,17 +153,22 @@ def ValidateSecurityQuestions():
             if question1 == "id_digits":
                 expected = identificacion[-3:]
                 is_valid = (answer1 == expected)
+              
             elif question1 == "birthdate":
-                expected = str(session.get('recovery_date'))
-                print(expected,"compare",answer1)
-                is_valid = (answer1 == expected)
+                expected = normalize_date(str(session.get('recovery_date')))
+                answer = normalize_date(answer1)
+                is_valid = (answer == expected)
+                
             elif question1 == "canton":
-                expected = str(session.get('recovery_canton')).lower()
-                is_valid = (answer1.lower() == expected)
+                expected = normalize_text(session.get('recovery_canton'))
+                answer = normalize_text(answer1)
+                is_valid = (answer == expected)
+                
             elif question1 == "phone_digits":
                 phone = str(session.get('recovery_phone'))
                 expected = phone[-3:] if phone else ""
                 is_valid = (answer1 == expected)
+                
 
         # --- 🔹 Terapeuta ---
         elif tipo == "2":
@@ -209,7 +232,7 @@ def ValidateSecurityQuestions():
         })
 
     except Exception as e:
-        print(f"Error validando preguntas: {e}")
+     
         return jsonify({'success': False, 'message': 'Error interno del servidor'}), 500
 
     
@@ -278,7 +301,7 @@ def ValidateCode():
             })
 
     except Exception as e:
-        print(f"Error validando código: {e}")
+        
         return jsonify({
             'success': False,
             'message': 'Error interno del servidor.'
@@ -351,5 +374,5 @@ def UpdatePassword():
         return jsonify({'success': True, 'message': 'Contraseña actualizada correctamente.'})
 
     except Exception as e:
-        print("Error al actualizar contraseña:", str(e))
+       
         return jsonify({'success': False, 'message': 'Error interno del servidor.'}), 500
