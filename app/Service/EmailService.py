@@ -36,7 +36,7 @@ class EmailService:
             sg = SendGridAPIClient(self.api_key)
             response = sg.send(message)
             
-            print(f"✅ Email enviado a {to_email} - Status: {response.status_code}")
+           
             return True
             
         except Exception as e:

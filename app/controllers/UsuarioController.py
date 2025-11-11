@@ -36,7 +36,7 @@ def GenerarAlias(nombre, apellido):
         ultimo_usuario = result[0]
         # Extraer solo el número del alias
         match = re.search(r'(\d+)$', ultimo_usuario)
-        print(match)
+        
         if match:
             numero = int(match.group(1)) + 1
         else:

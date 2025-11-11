@@ -11,7 +11,7 @@ pacientes_bp = Blueprint('pacientes', __name__)
 @pacientes_bp.route('/api/pacientes', methods=['GET'])
 def VerPacientes():
     try:
-        id_terapeuta = session.get("idusuario")
+        
 
         pacientes = (
             db.session.query(

@@ -82,172 +82,121 @@ async function submitPatient() {
 }
 
 
-        
+   $(document).ready(function () {
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const provinceSelect = document.getElementById("provincia");
-  const cantonSelect = document.getElementById("canton");
-  const districtSelect = document.getElementById("distrito");
+  // 🔹 Cargar países al cargar la página
+  cargarPaises();
 
-  const provinciasURL = "/static/Data/geoBoundaries-CRI-ADM1_simplified.geojson";
-  const cantonesURL   = "/static/Data/geoBoundaries-CRI-ADM2_simplified.geojson";
-  const distritosURL  = "/static/Data/geoBoundaries-CRI-ADM3_simplified.geojson";
+  // 🔹 Cuando cambia el país → cargar provincias
+  $("#pais").on("change", function () {
+    const paisId = $(this).val();
+    $("#provincia").empty();
+    $("#canton").empty();
+    $("#distrito").empty();
 
-  // Cargar los 3 GeoJSON en paralelo
-  const [provinciasData, cantonesData, distritosData] = await Promise.all([
-    fetch(provinciasURL).then(r => r.json()),
-    fetch(cantonesURL).then(r => r.json()),
-    fetch(distritosURL).then(r => r.json())
-  ]);
-
-  
-  // Preparar arrays
-  const provinces = provinciasData.features;
-  const cantons = cantonesData.features;
-  const districts = distritosData.features;
-
-  // calcula centroid para cada canton y district solo una vez
-  cantons.forEach(f => {
-    // turf.centroid devuelve un Feature(Point)
-    try { f._centroid = turf.centroid(f); } catch(e){ f._centroid = null; }
-  });
-  districts.forEach(f => {
-    try { f._centroid = turf.centroid(f); } catch(e){ f._centroid = null; }
-  });
-
-  // Construir mapa: provinceISO -> { name, features, cantons: { cantonID: { ... , districts: [...] } } }
-  const hierarchy = {};
-
-  provinces.forEach(p => {
-    const code = p.properties.shapeName;
-    hierarchy[code] = {
-      name: (p.properties.shapeName || "").replace(/^Provincia\s+/i,""),
-      feature: p,
-      cantons: {}
-    };
-  });
-
-  // Asigna cada canton a una provincia comprobando si su centroid esta dentro de la provincia
-  cantons.forEach(c => {
-    if (!c._centroid) return;
-    let assigned = false;
-    for (const p of provinces) {
-      try {
-        if (turf.booleanPointInPolygon(c._centroid, p)) {
-          const pcode = p.properties.shapeName;
-          const cid = c.properties.shapeName;
-          hierarchy[pcode].cantons[cid] = {
-            name: c.properties.shapeName,
-            feature: c,
-            districts: {}
-          };
-          assigned = true;
-          break;
-        }
-      } catch(e){ /* ignore geometry errors */ }
-    }
-    // Si no se asigno, lo pone en un bucket sin-provincia 
-    if (!assigned) {
-      const pcode = "SIN_PROVINCIA";
-      if (!hierarchy[pcode]) hierarchy[pcode] = { name: "Sin provincia", cantons: {} };
-      const cid =c.properties.shapeName;
-      hierarchy[pcode].cantons[cid] = { name: c.properties.shapeName, feature: c, districts: {} };
+    if (paisId) {
+      cargarProvincias(paisId);
     }
   });
 
-  // Asignaa distritos a cantones de forma similar centroid dentro del canton
-  districts.forEach(d => {
-    if (!d._centroid) return;
-    let assigned = false;
-    // recorrer todas las provincias y cantones en hierarchy
-    for (const pkey of Object.keys(hierarchy)) {
-      const p = hierarchy[pkey];
-      for (const ckey of Object.keys(p.cantons)) {
-        const cantonFeature = p.cantons[ckey].feature;
-        try {
-          if (turf.booleanPointInPolygon(d._centroid, cantonFeature)) {
-            p.cantons[ckey].districts[ d.properties.shapeName] = {
-              name: d.properties.shapeName,
-              feature: d
-            };
-            assigned = true;
-            break;
-          }
-        } catch(e){ /* ignore geometry errors */ }
-      }
-      if (assigned) break;
-    }
-    if (!assigned) {
-      // si no se asigno lo dejama en un bucket es decir sin-canton
-      const pcode = "SIN_PROVINCIA";
-      if (!hierarchy[pcode]) hierarchy[pcode] = { name: "Sin provincia", cantons: {} };
-      const cid = "SIN_CANTON";
-      if (!hierarchy[pcode].cantons[cid]) hierarchy[pcode].cantons[cid] = { name: "Sin cantón", districts: {} };
-      hierarchy[pcode].cantons[cid].districts[d.properties.shapeName] = {
-        name: d.properties.shapeName,
-        feature: d
-      };
+  // 🔹 Cuando cambia la provincia → cargar ciudades
+  $("#provincia").on("change", function () {
+    const provinciaId = $(this).val();
+    $("#canton").empty();
+    $("#distrito").empty();
+
+    if (provinciaId) {
+      cargarCiudades(provinciaId);
     }
   });
 
-  // --- Poblar selects ---
-  // Provincias
-  provinceSelect.innerHTML = '<option value="">Seleccionar...</option>';
-  Object.keys(hierarchy).forEach(pcode => {
-    const p = hierarchy[pcode];
-    
-    if (pnameIsEmpty(p.name)) return;
-    const opt = document.createElement("option");
-    opt.value = pcode;
-    opt.textContent = p.name;
-    provinceSelect.appendChild(opt);
+  // 🔹 Cuando cambia la ciudad → cargar barrios
+  $("#canton").on("change", function () {
+    const ciudadId = $(this).val();
+    $("#distrito").empty();
+
+    if (ciudadId) {
+      cargarBarrios(ciudadId);
+    }
   });
-
-  // Cuando selecciona provincia llena cantones
-  provinceSelect.addEventListener("change", () => {
-    const selectedProvinceCode = provinceSelect.value;
-    cantonSelect.innerHTML = '<option value="">Seleccionar...</option>';
-    districtSelect.innerHTML = '<option value="">Seleccionar...</option>';
-    if (!selectedProvinceCode) return;
-    const p = hierarchy[selectedProvinceCode];
-    Object.keys(p.cantons).forEach(ckey => {
-      const c = p.cantons[ckey];
-      const opt = document.createElement("option");
-      opt.value = c.feature.properties.shapeName;
-      opt.textContent = c.name;
-      cantonSelect.appendChild(opt);
-    });
-  });
-
-  // Cuando selecciona canton llena distritos 
-  cantonSelect.addEventListener("change", () => {
-    const selectedProvinceCode = provinceSelect.value;
-    const selectedCantonName = cantonSelect.options[cantonSelect.selectedIndex]?.text || "";
-    districtSelect.innerHTML = '<option value="">Seleccionar...</option>';
-    if (!selectedProvinceCode || !selectedCantonName) return;
-    const p = hierarchy[selectedProvinceCode];
-    // aqui buscar el canton por nombre porque el value puede ser shapeID
-    const cantonEntry = Object.values(p.cantons).find(c => c.name === selectedCantonName);
-    if (!cantonEntry) return;
-    Object.keys(cantonEntry.districts).forEach(dkey => {
-      const d = cantonEntry.districts[dkey];
-      const opt = document.createElement("option");
-      opt.value = d.feature.properties.shapeName;
-      opt.textContent = d.name;
-      districtSelect.appendChild(opt);
-    });
-  });
-
-  // Helper: omitir nombres vacios/buckets tecnicos
-  function pnameIsEmpty(name) {
-    if (!name) return true;
-    const normalized = name.toString().trim().toLowerCase();
-    return normalized === "" || normalized === "sin provincia" || normalized === "undefined";
-  }
-
-  
-
 });
+
+
+//  Funciones AJAX
+
+
+function cargarPaises() {
+  $.ajax({
+    url: PAIS_URL,
+    method: "GET",
+    success: function (response) {
+      const select = $("#pais");
+      select.empty().append('<option value="">Seleccione un país</option>');
+      response.forEach(p => {
+        select.append(`<option value="${p.id}">${p.nombre}</option>`);
+      });
+    },
+    error: function (xhr) {
+      console.error("Error al cargar países:", xhr.responseText);
+    }
+  });
+}
+
+function cargarProvincias(paisId) {
+  $.ajax({
+    url: PROVINCIA_URL,
+    method: "GET",
+    data: { pais_id: paisId },
+    success: function (response) {
+      const select = $("#provincia");
+      select.empty().append('<option value="">Seleccione una provincia</option>');
+      response.forEach(p => {
+        select.append(`<option value="${p.id}">${p.nombre}</option>`);
+      });
+    },
+    error: function (xhr) {
+      console.error("Error al cargar provincias:", xhr.responseText);
+    }
+  });
+}
+
+function cargarCiudades(provinciaId) {
+  $.ajax({
+    url: CIUDAD_URL,
+    method: "GET",
+    data: { estado_id: provinciaId },
+    success: function (response) {
+      const select = $("#canton");
+      select.empty().append('<option value="">Seleccione una ciudad</option>');
+      response.forEach(c => {
+        select.append(`<option value="${c.id}">${c.nombre}</option>`);
+      });
+    },
+    error: function (xhr) {
+      console.error("Error al cargar ciudades:", xhr.responseText);
+    }
+  });
+}
+
+    
+function cargarBarrios(ciudadId) {
+  $.ajax({
+    url: BARRIO_URL,
+    method: "GET",
+    data: { ciudad_id: ciudadId },
+    success: function (response) {
+      const select = $("#distrito");
+      select.empty().append('<option value="">Seleccione un barrio</option>');
+      response.forEach(b => {
+        select.append(`<option value="${b.id}">${b.nombre}</option>`);
+      });
+    },
+    error: function (xhr) {
+      console.error("Error al cargar barrios:", xhr.responseText);
+    }
+  });
+}
+ 
 
 
   async function loadPacientes() {

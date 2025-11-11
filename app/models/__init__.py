@@ -19,5 +19,9 @@ from .Diario import Diario
 from .Tarjetas import Tarjeta
 from .Auditoria import Auditoria
 from .passRestriccion import RestriccionPassword
+from .pais import Pais
+from .Estado_Provincia import EstadoProvincia
+from .Localidad_Barrio import LocalidadBarrio
+from .Ciudad_Municipio import CiudadMunicipio
 
 
