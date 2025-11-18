@@ -90,6 +90,13 @@ def ManagementPME():
 def AddCard():
     return render_template("add-card.html")
 
+
+
+@routes_bp.route("/search_therapist", endpoint="search_therapist")
+def SearchTherapist():
+    return render_template("searchTherapist.html")
+
+
 @routes_bp.route("/use_card", endpoint="use_card")
 @rolRequired(1,3)
 @loginRequired 

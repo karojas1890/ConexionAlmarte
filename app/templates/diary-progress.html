@@ -127,7 +127,7 @@ form.addEventListener("submit", (e) => {
         tiporegistro: 1
     };
 
-    console.log("Datos a enviar:", data);
+    
 
     fetch("{{ url_for('diary.GuardarEvento') }}", {
         method: "POST",

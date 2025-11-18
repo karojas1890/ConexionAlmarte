@@ -1,0 +1,313 @@
+
+        .almarte-therapist-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .almarte-therapist-header {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .almarte-therapist-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .almarte-therapist-header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        /* Búsqueda */
+        .almarte-search-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .almarte-search-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .almarte-search-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .almarte-search-tab {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #999;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .almarte-search-tab.active {
+            color: #5BA8A0;
+            border-bottom-color: #5BA8A0;
+        }
+
+        .almarte-search-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .almarte-search-input:focus {
+            outline: none;
+            border-color: #5BA8A0;
+        }
+
+        .almarte-search-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .almarte-search-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .almarte-search-btn-primary {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            color: white;
+        }
+
+        .almarte-search-btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .almarte-search-btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .almarte-search-btn-secondary:active {
+            background: #e8e8e8;
+        }
+
+        /* Perfil del Profesional */
+        .almarte-profile-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .almarte-profile-card.active {
+            display: block;
+        }
+
+        .almarte-profile-header {
+            background: linear-gradient(135deg, #5BA8A0 0%, #4A9B94 100%);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .almarte-profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 auto 15px;
+            border: 4px solid white;
+            object-fit: cover;
+        }
+
+        .almarte-profile-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .almarte-profile-code {
+            font-size: 12px;
+            opacity: 0.9;
+            background: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        /* Contenido del Perfil */
+        .almarte-profile-content {
+            padding: 20px;
+        }
+
+        .almarte-profile-section {
+            margin-bottom: 20px;
+        }
+
+        .almarte-profile-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #5BA8A0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .almarte-profile-section-content {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+            padding: 12px;
+            background: #f8fafa;
+            border-radius: 8px;
+            border-left: 4px solid #5BA8A0;
+        }
+
+        .almarte-profile-status {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .almarte-status-badge {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .almarte-status-active {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #4caf50;
+        }
+
+        .almarte-status-economic {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 2px solid #2196f3;
+        }
+
+        /* Estados */
+        .almarte-state-1 {
+            color: #2e7d32;
+        }
+
+        .almarte-state-2 {
+            color: #f57c00;
+        }
+
+        .almarte-state-3 {
+            color: #c62828;
+        }
+
+        /* Error */
+        .almarte-error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f44336;
+            display: none;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .almarte-error-message.show {
+            display: block;
+        }
+
+        /* Loading */
+        .almarte-loading {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .almarte-loading.show {
+            display: block;
+        }
+
+        .almarte-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #5BA8A0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (min-width: 640px) {
+            body {
+                padding: 30px;
+            }
+
+            .almarte-therapist-header h1 {
+                font-size: 28px;
+            }
+
+            .almarte-search-section {
+                padding: 30px;
+            }
+
+            .almarte-profile-card {
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            }
+
+            .almarte-profile-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .almarte-profile-name {
+                font-size: 26px;
+            }
+        }

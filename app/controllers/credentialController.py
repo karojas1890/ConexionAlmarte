@@ -22,7 +22,7 @@ def ValidarUsuarioRecovery():
         tipo_recuperacion = data.get('tipo')
         session['recovery_tipo'] = tipo_recuperacion
         if not usuario_input:
-            return jsonify({'success': False, 'message': 'Correo requerido'})
+            return jsonify({'success': False, 'message': 'Usuario requerido'})
 
        
         consultante = Consultante.query\

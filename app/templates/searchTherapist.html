@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil del Profesional - Almarte</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/searchTherapist.css') }}">
+</head>
+<body>
+    <div class="almarte-therapist-container">
+        <!-- Header -->
+        <div class="almarte-therapist-header">
+            <h1>Conoce tu Psicólogo</h1>
+            <p>Busca información del profesional que te atiende</p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="almarte-error-message" id="almarte-error"></div>
+
+        <!-- Search Section -->
+        <div class="almarte-search-section">
+            <div class="almarte-search-title">🔍 Buscar Profesional</div>
+
+            <div class="almarte-search-tabs">
+                <button class="almarte-search-tab active" data-tab="code">Por Código</button>
+                <button class="almarte-search-tab" data-tab="name">Por Nombre</button>
+            </div>
+
+            <!-- Tab: Código -->
+            <div id="tab-code" class="almarte-search-tab-content active">
+                <input 
+                    type="text" 
+                    class="almarte-search-input" 
+                    id="almarte-code-input" 
+                    placeholder="Ingresa el código profesional"
+                >
+            </div>
+
+            <!-- Tab: Nombre -->
+            <div id="tab-name" class="almarte-search-tab-content" style="display: none;">
+                <input 
+                    type="text" 
+                    class="almarte-search-input" 
+                    id="almarte-name-input" 
+                    placeholder="Ingresa nombre o apellido"
+                >
+            </div>
+
+            <div class="almarte-search-buttons">
+                <button class="almarte-search-btn almarte-search-btn-primary" id="almarte-search-btn">
+                    Buscar
+                </button>
+                <button class="almarte-search-btn almarte-search-btn-secondary" id="almarte-clear-btn">
+                    Limpiar
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="almarte-loading" id="almarte-loading">
+            <div class="almarte-spinner"></div>
+            <p>Buscando profesional...</p>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="almarte-profile-card" id="almarte-profile-card">
+            <div class="almarte-profile-header">
+                <img src="{{ url_for('static', filename='images/Rojas.jpeg') }}" alt="Profesional" class="almarte-profile-image" id="almarte-profile-image">
+                <div class="almarte-profile-name" id="almarte-profile-name"></div>
+                <div class="almarte-profile-code" id="almarte-profile-code"></div>
+            </div>
+
+            <div class="almarte-profile-content">
+                <!-- Estados -->
+                <div class="almarte-profile-status">
+                    <div class="almarte-status-badge almarte-status-active" id="almarte-estado-badge">
+                        Estado: Activo
+                    </div>
+                    <div class="almarte-status-badge almarte-status-economic" id="almarte-economic-badge">
+                        Responsabilidad: -
+                    </div>
+                </div>
+
+                <!-- Área de Trabajo -->
+                <div class="almarte-profile-section">
+                    <div class="almarte-profile-section-title">📋 Área de Trabajo</div>
+                    <div class="almarte-profile-section-content" id="almarte-area-trabajo">
+                        No disponible
+                    </div>
+                </div>
+
+                <!-- Habilitaciones y Evaluaciones -->
+                <div class="almarte-profile-section">
+                    <div class="almarte-profile-section-title">🏆 Habilitaciones y Evaluaciones</div>
+                    <div class="almarte-profile-section-content" id="almarte-habilitaciones">
+                        No disponible
+                    </div>
+                </div>
+
+                <!-- Información de Contacto -->
+                <div class="almarte-profile-section">
+                    <div class="almarte-profile-section-title">📞 Información Adicional</div>
+                    <div class="almarte-profile-section-content" style="font-size: 14px;">
+                        Puedes contactar con este profesional a través de la plataforma Almarte para agendar tus citas y consultar disponibilidad.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const API_PSICOLOGOS = "{{ url_for('apiP.VerPsicologos') }}";
+        const IMAGE_URL="{{ url_for('static', filename='images/Rojas.jpeg') }}"
+    </script>
+     <script src="{{ url_for('static', filename='js/searchTherapist.js') }}"></script>
+</body>
+</html>
