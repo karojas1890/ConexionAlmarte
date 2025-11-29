@@ -1,20 +1,21 @@
 
 
         
-        .main-content {
-            flex: 1;
-            padding: 30px 20px;
-           
-        }
+     
 
         
 
         .main {
             flex: 1;
             background: linear-gradient(135deg, #7fb3d3 0%, #5f9ea0 100%);
-            padding: 30px 20px;
+            padding: 0;
         }
-
+        .main-content {
+            flex: 1;
+            padding: 0;
+            margin: 0;
+           
+        }
         .section-title {
            font-size: 28px;
             font-weight: 700;

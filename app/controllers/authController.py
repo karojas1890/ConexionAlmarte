@@ -101,11 +101,11 @@ def login():
         session["rol"] = user_data.tipo
         session["nombre"] = user_data.nombre
         session["apellido1"] = user_data.apellido1
-        session["correo"] = user_data.correo
-        session["idterapeuta"] = user_data.identificacion_terapeuta
+        session["correo"] = user_data.consultante_correo
+        session["idterapeuta"] = user_data.cedula_terapeuta
       
         if user_data.tipo in {1,3,4}:  # Consultante
-            session["correo_terapeuta"] = user_data.correo_terapeuta
+            session["correo_terapeuta"] = user_data.terapeuta_correo
             session["terapeuta_nombre"] = user_data.terapeuta_nombre
             session["terapeuta_apellido1"] = user_data.terapeuta_apellido1
             session["terapeuta_apellido2"] = user_data.terapeuta_apellido2
@@ -186,7 +186,7 @@ def SendCode(app,idusuario, correo, nombre):
        db.session.execute(sql_update, {"codigo": code, "exp": expiracion, "idusuario": idusuario})
        db.session.commit()
 
-       email_service.SendVerificationCode(email=correo, username=nombre, code=code)
+       #email_service.SendVerificationCode(email=correo, username=nombre, code=code)
 
 @auth_bp.route("/verificar_codigo", methods=["GET", "POST"])
 def VerificarCodigo():

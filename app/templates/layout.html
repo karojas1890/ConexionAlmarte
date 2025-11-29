@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/patientActivity.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/addCard.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/patientlog.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sinpe.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/encuesta.css') }}">
 </head>
 <body>
 
@@ -53,9 +55,11 @@
         </svg>
             </a>
         </div>
+        
     </div>
-
+     <a href="{{ url_for('routes.encuesta') }}" class="encuesta-btn" >Realizar encuesta</a>
        <main>
+        
           {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for category, message in messages %}

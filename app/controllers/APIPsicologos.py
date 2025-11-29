@@ -1,52 +1,68 @@
-import requests
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify, request
+from app.models import ProfesionalPsicologia
+
 
 apiPiscologos_bp = Blueprint("apiP", __name__)
-
 @apiPiscologos_bp.route("/apiP", methods=["POST"])
 def VerPsicologos():
     try:
+        datos = request.get_json()
 
-        data_request = request.get_json()
+        codigo = datos.get("code")
+        nombre = datos.get("name")
 
-        if not data_request:
-            return jsonify({"error": "Debe enviar un JSON con query y searchType"}), 400
+        print(f"Codigo {codigo}, nombre {nombre}")
 
-        query = data_request.get("query")
-        searchType = data_request.get("searchType")
-
-        if not query or not searchType:
-            return jsonify({"error": "Faltan parámetros: query y searchType"}), 400
-
-        # Detecta tipo de busqueda
-        if searchType == "code":
-            url_get = f"https://apipsicologos.onrender.com/api/Psicologos/{query}"
-        elif searchType == "name":
-            url_get = f"https://apipsicologos.onrender.com/api/Psicologos/nombre/{query}"
-        else:
-            return jsonify({"error": "searchType debe ser 'code' o 'name'"}), 400
-
-        # Petici0n a el API 
-        response = requests.get(url_get)
-
-        if response.status_code == 200:
-            data = response.json()
-
-         
-            if isinstance(data, list):
-                if len(data) == 0:
-                    return jsonify({"mensaje": "Sin resultados", "resultado": None}), 200
-                data = data[0]  # <- Tomamos solo el primer elemento del arreglo
-
+        # Validacion
+        if not codigo and not nombre:
             return jsonify({
-                "mensaje": "Datos recibidos correctamente",
-                "resultado": data
-            }), 200
+                "error": "Debe enviar 'code' o 'name' para realizar la búsqueda."
+            }), 400
 
-        return jsonify({
-            "error": "No se encontraron resultados",
-            "codigo_http": response.status_code
-        }), response.status_code
+       
+        if codigo:
+            psicologo = ProfesionalPsicologia.query.get(codigo)
+
+            if not psicologo:
+                return jsonify({"error": "Psicólogo no encontrado"}), 404
+
+            data = {
+                "codigoprofesional": psicologo.codigoprofesional,
+                "nombre": psicologo.nombre,
+                "apellido1": psicologo.apellido1,
+                "apellido2": psicologo.apellido2,
+                "estadoresponsabilidadeconomica": psicologo.estadoresponsabilidadeconomica,
+                "estado": psicologo.estado,
+                "habilitacionesevaluaciones": psicologo.habilitacionesevaluaciones,
+                "areatrabajo": psicologo.areatrabajo,
+                }
+
+            return jsonify({"resultado": data}), 200
+
+        
+        if nombre:
+            psicologos = ProfesionalPsicologia.query.filter_by(nombre=nombre).all()
+
+            if not psicologos:
+                  return jsonify({"error": "No se encontraron psicólogos con ese nombre"}), 404
+
+            lista = [
+            {
+                 "codigoprofesional": p.codigoprofesional,
+                "nombre": p.nombre,
+                "apellido1": p.apellido1,
+                "apellido2": p.apellido2,
+                "estadoresponsabilidadeconomica": p.estadoresponsabilidadeconomica,
+                "estado": p.estado,
+                "habilitacionesevaluaciones": p.habilitacionesevaluaciones,
+                "areatrabajo": p.areatrabajo,
+            }
+              for p in psicologos
+            ]
+
+            return jsonify({"resultado": lista}), 200
+
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print("Error:", str(e))
+        return jsonify({"error": "Error en el servidor"}), 500

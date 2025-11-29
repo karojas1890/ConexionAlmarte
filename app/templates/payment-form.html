@@ -87,13 +87,14 @@
        
 
 </main> 
-
+<script src="{{ url_for('static', filename='js/payment-form.js') }}"></script>
 <script>
     // URL del dashboard
 const dashboardUrl = "{{ url_for('routes.dashboard_Consultante') }}"
 const CITA_URL ="{{ url_for('Citas.CrearCita') }}"
 const usuario = "{{ session.get('idusuario') }}"
 const ADDCARD_URL="{{ url_for('routes.use_card') }}"
+const PAY_URL="{{ url_for('card.Pay')}}"
 </script>
-   <script src="{{ url_for('static', filename='js/payment-form.js') }}"></script>
+   
 {% endblock %}

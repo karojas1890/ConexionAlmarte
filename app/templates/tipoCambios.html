@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2c3e50">
+  <title>Tipo de Cambio BCCR (API Pública)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tipoCambioStyle.css') }}" >
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+<div class="background-overlay"></div>
+
+  <div class="contenedor">
+     <h2>💵 Tipo de Cambio BCCR</h2>
+     <button id="actualizar">Actualizar</button>
+     <p><strong>Compra USD:</strong> <span id="compra">--</span></p>
+     <p><strong>Venta USD:</strong> <span id="venta">--</span></p>
+
+     <hr>
+
+     <h2>🧮 Calculadora</h2>
+     <label>Monto en colones: </label><br>
+     <input type="number" id="colones" placeholder="₡"><br>
+     <button id="aUSD">Convertir a USD</button>
+     <br><br>
+     <label>Monto en dólares: </label><br>
+     <input type="number" id="dolares" placeholder="$"><br>
+     <button id="aCRC">Convertir a CRC</button>
+     <p><strong>Resultado:</strong> <span id="resultado">--</span></p>
+  </div>
+  <script>
+    const URL_TIPOCAMBIO ="{{ url_for('tpc.ConsultarTipoCambio') }}"
+  </script>
+  <script src="{{ url_for('static', filename='js/tipoCambio.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,789 @@
+{% extends "layout.html" %}
+
+{% block title %}Encuesta de Usabilidad{% endblock %}
+
+{% block content %}
+  <div class="container">
+        <div class="progress-section">
+            <div class="progress-title">Encuesta de Usabilidad</div>
+            <div class="progress-steps">
+                <div class="step completed" id="step-1">1</div>
+                <div class="step-arrow">→</div>
+                <div class="step" id="step-2">2</div>
+                <div class="step-arrow">→</div>
+                <div class="step" id="step-3">3</div>
+                <div class="step-arrow">→</div>
+                <div class="step" id="step-4">4</div>
+                <div class="step-arrow">→</div>
+                <div class="step" id="step-5">5</div>
+                <div class="step-arrow">→</div>
+                <div class="step" id="step-6">6</div>
+                <div class="step-arrow">→</div>
+                <div class="step" id="step-7">7</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <button class="back-btn" onclick="goBack()">← Volver</button>
+            <div class="section-title">Encuesta de Usabilidad</div>
+            
+            <!-- Sección de Introducción -->
+            <div class="survey-section active" id="section-intro">
+                <div class="survey-intro">
+                    <p><strong>Instrucciones para el usuario:</strong></p>
+                    <p>Queremos conocer tu opinión sobre la aplicación que acabas de usar. Por favor, lee cada afirmación y selecciona el número que mejor represente tu experiencia, donde:</p>
+                    <p><strong>1 = Totalmente en Desacuerdo</strong></p>
+                    <p><strong>2 = En Desacuerdo</strong></p>
+                    <p><strong>3 = Neutral</strong></p>
+                    <p><strong>4 = De acuerdo</strong></p>
+                    <p><strong>5 = Totalmente de Acuerdo</strong></p>
+                    <p style="margin-top: 20px; font-style: italic;">La encuesta está dividida en 6 secciones y tomará aproximadamente 5-10 minutos completarla.</p>
+                </div>
+                <div class="navigation-buttons">
+                    <button class="nav-btn next-btn" onclick="showSection(1)">Comenzar Encuesta</button>
+                </div>
+            </div>
+
+            <!-- Sección 1: Facilidad de Uso -->
+            <div class="survey-section" id="section-1">
+                <div class="survey-section-title">Sección 1: Facilidad de Uso</div>
+                <div class="section-progress">Preguntas 1-4 de 24</div>
+                
+                <div class="survey-question">
+                    <div class="question-text">1. La navegación dentro de la aplicación es clara y sencilla.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="1">
+                            <div class="rating-number">1</div>
+                            <div class="rating-label">Totalmente en Desacuerdo</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="2">
+                            <div class="rating-number">2</div>
+                            <div class="rating-label">En Desacuerdo</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="3">
+                            <div class="rating-number">3</div>
+                            <div class="rating-label">Neutral</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="4">
+                            <div class="rating-number">4</div>
+                            <div class="rating-label">De acuerdo</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q1" value="5">
+                            <div class="rating-number">5</div>
+                            <div class="rating-label">Totalmente de Acuerdo</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">2. Me resultó fácil encontrar las funciones que necesitaba (ej: gestionar citas, registrar avances).</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q2" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">3. Las instrucciones y los textos son fáciles de entender.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q3" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">4. Aprender a usar la aplicación me tomó poco tiempo.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q4" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn prev-btn" onclick="showSection('intro')">Anterior</button>
+                    <button class="nav-btn next-btn" onclick="showSection(2)">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Sección 2: Eficiencia -->
+            <div class="survey-section" id="section-2">
+                <div class="survey-section-title">Sección 2: Eficiencia</div>
+                <div class="section-progress">Preguntas 5-8 de 24</div>
+                
+                <div class="survey-question">
+                    <div class="question-text">5. Puedo completar mis tareas (como agendar una cita o registrar un avance) de manera rápida.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q5" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">6. La aplicación me permite lograr lo que necesito con pocos pasos.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q6" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">7. El proceso para programar o cancelar una cita es ágil y directo.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q7" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">8. El registro de mis disparadores y avances es un proceso eficiente.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q8" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn prev-btn" onclick="showSection(1)">Anterior</button>
+                    <button class="nav-btn next-btn" onclick="showSection(3)">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Sección 3: Atracción -->
+            <div class="survey-section" id="section-3">
+                <div class="survey-section-title">Sección 3: Atracción</div>
+                <div class="section-progress">Preguntas 9-12 de 24</div>
+                
+                <div class="survey-question">
+                    <div class="question-text">9. El diseño de la aplicación es visualmente atractivo.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q9" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q9" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q9" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q9" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q9" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">10. La combinación de colores es agradable y transmite calma.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q10" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q10" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q10" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q10" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q10" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">11. Los iconos y botones son modernos y de buen gusto.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q11" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q11" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q11" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q11" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q11" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">12. Me gusta cómo se ve la aplicación en general.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q12" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q12" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q12" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q12" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q12" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn prev-btn" onclick="showSection(2)">Anterior</button>
+                    <button class="nav-btn next-btn" onclick="showSection(4)">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Sección 4: Inclusivo -->
+            <div class="survey-section" id="section-4">
+                <div class="survey-section-title">Sección 4: Inclusivo</div>
+                <div class="section-progress">Preguntas 13-16 de 24</div>
+                
+                <div class="survey-question">
+                    <div class="question-text">13. El tamaño del texto es cómodo de leer para mí.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q13" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q13" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q13" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q13" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q13" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">14. Los colores y contrastes utilizados no dificultan la lectura.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q14" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q14" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q14" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q14" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q14" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">15. Considero que la aplicación está diseñada para personas con diferentes necesidades y backgrounds.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q15" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q15" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q15" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q15" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q15" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">16. El lenguaje utilizado es respetuoso y no hace suposiciones sobre el usuario.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q16" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q16" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q16" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q16" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q16" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn prev-btn" onclick="showSection(3)">Anterior</button>
+                    <button class="nav-btn next-btn" onclick="showSection(5)">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Sección 5: Evitar Frustración -->
+            <div class="survey-section" id="section-5">
+                <div class="survey-section-title">Sección 5: Evitar Frustración</div>
+                <div class="section-progress">Preguntas 17-20 de 24</div>
+                
+                <div class="survey-question">
+                    <div class="question-text">17. La aplicación me protege de cometer errores (ej: me confirma antes de cancelar una cita).</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q17" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q17" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q17" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q17" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q17" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">18. Si cometo un error, la aplicación me da un mensaje claro de cómo solucionarlo.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q18" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q18" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q18" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q18" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q18" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">19. La aplicación responde de forma consistente y predecible, no hace cosas inesperadas.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q19" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q19" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q19" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q19" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q19" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">20. Me sentí tranquilo/a y en control mientras usaba la aplicación.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q20" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q20" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q20" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q20" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q20" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn prev-btn" onclick="showSection(4)">Anterior</button>
+                    <button class="nav-btn next-btn" onclick="showSection(6)">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Sección 6: Satisfacción General -->
+            <div class="survey-section" id="section-6">
+                <div class="survey-section-title">Sección 6: Satisfacción General</div>
+                <div class="section-progress">Preguntas 21-24 de 24</div>
+                
+                <div class="survey-question">
+                    <div class="question-text">21. Estoy satisfecho/a con la experiencia general que tuve usando esta aplicación.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q21" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q21" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q21" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q21" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q21" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">22. La aplicación me parece una herramienta útil para gestionar mi bienestar mental.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q22" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q22" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q22" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q22" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q22" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">23. Recomendaría esta aplicación a otras personas en tratamiento psicológico.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q23" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q23" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q23" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q23" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q23" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <div class="question-text">24. Usar esta aplicación me hizo sentir más apoyado/a y organizado/a en mi proceso.</div>
+                    <div class="rating-scale">
+                        <label class="rating-option">
+                            <input type="radio" name="q24" value="1">
+                            <div class="rating-number">1</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q24" value="2">
+                            <div class="rating-number">2</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q24" value="3">
+                            <div class="rating-number">3</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q24" value="4">
+                            <div class="rating-number">4</div>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="q24" value="5">
+                            <div class="rating-number">5</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn prev-btn" onclick="showSection(5)">Anterior</button>
+                    <button class="nav-btn next-btn" onclick="showSection('open')">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Sección Preguntas Abiertas -->
+            <div class="survey-section" id="section-open">
+                <div class="survey-section-title">Preguntas Abiertas</div>
+                <div class="section-progress">Última sección</div>
+                
+                <div class="open-question">
+                    <div class="open-question-text">1. ¿Qué fue lo que más te gustó de la aplicación?</div>
+                    <textarea class="open-question-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+                </div>
+                
+                <div class="open-question">
+                    <div class="open-question-text">2. ¿Qué aspecto de la aplicación crees que se podría mejorar? ¿Tienes alguna sugerencia concreta?</div>
+                    <textarea class="open-question-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+                </div>
+                
+                <div class="open-question">
+                    <div class="open-question-text">3. ¿Hubo algo que te resultó confuso, frustrante o que no funcionó como esperabas?</div>
+                    <textarea class="open-question-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn prev-btn" onclick="showSection(6)">Anterior</button>
+                    <button class="nav-btn submit-btn" onclick="showConfirmationModal()">Enviar Encuesta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div class="modal" id="confirmationModal">
+        <div class="modal-content">
+            <h2>Confirmar Envío</h2>
+            <p>¿Estás seguro de que deseas enviar la encuesta? Una vez enviada, no podrás modificar tus respuestas.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-confirm" onclick="submitSurvey()">Sí, Enviar</button>
+                <button class="modal-btn modal-cancel" onclick="hideConfirmationModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        const Rol = "{{ session.get('rol', 'Rol') }}";
+        const DashBoard_URL = "{{ url_for('routes.dashboard_Consultante') }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/encuesta.js') }}"></script>
+{% endblock %}

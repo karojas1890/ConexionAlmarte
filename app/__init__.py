@@ -7,7 +7,9 @@ from app.models import (
     Cita, MetodoPago, PagoCita, CategoriaRecomendacion,
     RecomendacionTerapeutica, RecomendacionPaciente,
     RegistroAplicacionRecomendacion, RecursoApoyo, Emocion,
-    ConductaAfrontamiento, Diario, Tarjeta,Auditoria,RestriccionPassword,Pais,CiudadMunicipio,LocalidadBarrio,EstadoProvincia
+    ConductaAfrontamiento, Diario, Tarjeta,Auditoria,RestriccionPassword,Pais,
+    CiudadMunicipio,LocalidadBarrio,EstadoProvincia,Sinpe,ProfesionalPsicologia,
+    Tarjetas
 )
 
 from app.Service import email_service,smsservice  
@@ -62,8 +64,8 @@ def create_app():
     from .controllers.pacientesController import pacientes_bp 
     from .controllers.auditoriaController import auditoria_bp
     from .controllers.GetGeolocalizacion import geolocalizacion_bp
+    from .controllers.tipoCambioController import tipoCambio_bp
     from .controllers.APIPsicologos import apiPiscologos_bp
-    
     app.register_blueprint(routes_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(citas_bp)
@@ -77,5 +79,6 @@ def create_app():
     app.register_blueprint(pacientes_bp)
     app.register_blueprint(auditoria_bp)
     app.register_blueprint(geolocalizacion_bp)
+    app.register_blueprint(tipoCambio_bp)
     app.register_blueprint(apiPiscologos_bp)
     return app

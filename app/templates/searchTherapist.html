@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil del Profesional - Almarte</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/searchTherapist.css') }}">
-</head>
+
+
+
+{% extends "layout.html" %}
+
+{% block title %}Mi Teraputa{% endblock %}
+
+{% block content %}
+
 <body>
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/searchTherapist.css') }}">
     <div class="almarte-therapist-container">
         <!-- Header -->
         <div class="almarte-therapist-header">
@@ -112,5 +114,5 @@
         const IMAGE_URL="{{ url_for('static', filename='images/Rojas.jpeg') }}"
     </script>
      <script src="{{ url_for('static', filename='js/searchTherapist.js') }}"></script>
-</body>
-</html>
+{% endblock %}
+

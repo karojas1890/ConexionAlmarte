@@ -1,0 +1,176 @@
+    /* Added SINPE modal styles */
+        .almarte-sinpe-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .almarte-sinpe-modal.active {
+            display: flex;
+        }
+
+        .almarte-sinpe-modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 350px;
+            width: 90%;
+            margin: 20px;
+        }
+
+        .almarte-sinpe-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .almarte-sinpe-icon {
+            width: 40px;
+            height: 40px;
+            background: #5f9ea0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .almarte-sinpe-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .almarte-sinpe-form-group {
+            margin-bottom: 15px;
+        }
+
+        .almarte-sinpe-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #5f9ea0;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .almarte-sinpe-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .almarte-sinpe-input:focus {
+            outline: none;
+            border-color: #5f9ea0;
+            box-shadow: 0 0 0 2px rgba(95, 158, 160, 0.1);
+        }
+
+        .almarte-sinpe-input.error {
+            border-color: #f44336;
+            background: #ffebee;
+        }
+
+        .almarte-sinpe-error-msg {
+            color: #f44336;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .almarte-sinpe-error-msg.show {
+            display: block;
+        }
+
+        .almarte-sinpe-info {
+            background: #e8f4f8;
+            border-left: 4px solid #5f9ea0;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #5f9ea0;
+        }
+
+        .almarte-sinpe-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .almarte-sinpe-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .almarte-sinpe-btn-cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .almarte-sinpe-btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .almarte-sinpe-btn-submit {
+            background: #5f9ea0;
+            color: white;
+        }
+
+        .almarte-sinpe-btn-submit:hover {
+            background: #4a8a8d;
+        }
+
+        .almarte-sinpe-btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .almarte-sinpe-success {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .almarte-sinpe-success-icon {
+            width: 60px;
+            height: 60px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            margin: 0 auto 15px;
+        }
+
+        .almarte-sinpe-success-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .almarte-sinpe-success-subtext {
+            font-size: 13px;
+            color: #666;
+        }

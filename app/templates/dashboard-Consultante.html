@@ -129,7 +129,7 @@ function mostrarCita(cita) {
         </div>
         
         <div class="appointment-status ${cita.estado === 0 ? 'status-pending' : (cita.estado === 1 ? 'status-completed' : 'status-other')}">
-           ${cita.estado === 0 ? 'Pendiente' : (cita.estado === 1 ? 'Finalizada' : 'Otro')}
+           ${cita.estado === 1 ? 'Pendiente' : (cita.estado === 0 ? 'Finalizada' : 'Otro')}
         </div>
     `;
 

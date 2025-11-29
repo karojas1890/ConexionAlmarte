@@ -4,8 +4,6 @@
 
 {% block content %}
     <main class="main-content">  
-    
-
         <div class="progress-section">
             <div class="progress-title">Agendar cita</div>
             <div class="progress-steps">
@@ -40,6 +38,10 @@
                     <span class="summary-label">Total</span>
                     <span class="summary-value" id="summary-price">₡0</span>
                 </div>
+                <div class="summary-row" id="usd-equivalent" style="display: none;">
+                    <span class="summary-label">Equivalente USD</span>
+                    <span class="summary-value" id="summary-usd">$0.00</span>
+                </div>
             </div>
 
             <div class="payment-section">
@@ -55,9 +57,24 @@
                     <div class="payment-text">Transferencia bancaria</div>
                 </div>
 
-                <div class="payment-option" onclick="selectPayment(this)">
+                <div class="payment-option" id="almarte-sinpe-option" onclick="selectPaymentAndOpenSINPE(this)">
                     <div class="payment-icon">📱</div>
                     <div class="payment-text">SINPE móvil</div>
+                </div>
+
+                <!-- Seccion de PayPal -->
+                <div class="almarte-paypal-section">
+                    <div class="almarte-paypal-title">Pagar con PayPal</div>
+                    
+                    <div class="almarte-paypal-button-container">
+                        <div id="almarte-paypal-button-container"></div>
+                    </div>
+
+                    <div class="almarte-paypal-info">
+                        <div class="almarte-paypal-info-title"></div>
+                        <p class="almarte-paypal-info-text"></p>
+                        <p class="almarte-paypal-info-text" id="paypal-exchange-rate"></p>
+                    </div>
                 </div>
 
                 <div class="payment-option" onclick="selectPayment(this)">
@@ -66,23 +83,97 @@
                 </div>
             </div>
 
-        
-             <button class="continue-btn" 
+            <button class="continue-btn" 
                 data-url="{{ url_for('routes.payment') }}" 
                 onclick="continueToPaymentForm(this)">
                  Continuar
             </button>
         </div>
+        <!--Modal de sinpe Movil-->
+         <div class="almarte-sinpe-modal" id="almarte-sinpe-modal">
+            <div class="almarte-sinpe-modal-content">
+                <div class="almarte-sinpe-header">
+                    <div class="almarte-sinpe-icon">📱</div>
+                    <div class="almarte-sinpe-title">Validar SINPE</div>
+                </div>
 
+                <div class="almarte-sinpe-info">
+                    Ingresa los datos del SINPE que realizaste para validar el pago
+                </div>
+
+                <form id="almarte-sinpe-form" onsubmit="almarte_validateSINPE(event)">
+                    <div class="almarte-sinpe-form-group">
+                        <label class="almarte-sinpe-label" for="almarte-sinpe-reference">Número de Referencia</label>
+                        <input 
+                            type="text" 
+                            id="almarte-sinpe-reference" 
+                            class="almarte-sinpe-input" 
+                            placeholder="Ej: 123456789"
+                            maxlength="20"
+                            required
+                        >
+                        <div class="almarte-sinpe-error-msg" id="almarte-sinpe-reference-error"></div>
+                    </div>
+
+                    <div class="almarte-sinpe-form-group">
+                        <label class="almarte-sinpe-label" for="almarte-sinpe-phone">Número de Teléfono</label>
+                        <input 
+                            type="tel" 
+                            id="almarte-sinpe-phone" 
+                            class="almarte-sinpe-input" 
+                            placeholder="Ej: 87654321"
+                            maxlength="15"
+                            required
+                        >
+                        <div class="almarte-sinpe-error-msg" id="almarte-sinpe-phone-error"></div>
+                    </div>
+
+                    <div class="almarte-sinpe-form-group">
+                        <label class="almarte-sinpe-label" for="almarte-sinpe-amount">Monto (₡)</label>
+                        <input 
+                            type="number" 
+                            id="almarte-sinpe-amount" 
+                            class="almarte-sinpe-input" 
+                            placeholder="Ej: 35000"
+                            min="0"
+                            required
+                        >
+                        <div class="almarte-sinpe-error-msg" id="almarte-sinpe-amount-error"></div>
+                    </div>
+
+                    <div class="almarte-sinpe-buttons">
+                        <button 
+                            type="button" 
+                            class="almarte-sinpe-btn almarte-sinpe-btn-cancel"
+                            onclick="almarte_closeSINPEModal()"
+                        >
+                            Cancelar
+                        </button>
+                        <button 
+                            type="submit" 
+                            class="almarte-sinpe-btn almarte-sinpe-btn-submit"
+                            id="almarte-sinpe-submit-btn"
+                        >
+                            Validar SINPE
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
-
-    <script src="{{ url_for('static', filename='js/payment-summary.js') }}"></script>
-<script>
-  // URL del dashboard
-const dashboardUrl = "{{ url_for('routes.dashboard_Consultante') }}";
-const paymentforUrl = "{{ url_for('routes.payment') }}";
-const CITA_URL ="{{ url_for('Citas.CrearCita') }}"
-const usuario = "{{ session.get('idusuario') }}";
+   <script>
+    const dashboardUrl = "{{ url_for('routes.dashboard_Consultante') }}";
+    const paymentforUrl = "{{ url_for('routes.payment') }}";
+    const CITA_URL ="{{ url_for('Citas.CrearCita') }}";
+    const usuario = "{{ session.get('idusuario') }}";
+    const TC_URL="{{ url_for('tpc.ConsultarTipoCambio') }}";
+    const SINPE_URL="{{ url_for('card.VerificarSinpe') }}";
 </script>
-
+   </script>
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AZfjbKTM0Mrs69k-q1LtCyqsd36OFn8temhI756Rw5tW6QecVtrGHN5NBABwIGyvrQyu-wiYyoQiG2M3&currency=USD"></script>
+    
+    <script src="{{ url_for('static', filename='js/payment-summary.js') }}"></script>
+    
+ 
 {% endblock %}

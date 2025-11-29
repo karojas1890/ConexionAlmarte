@@ -56,20 +56,20 @@
     profileCard.classList.remove('active');
 
     try {
-        const searchType = isCode ? 'code' : 'name';
-        const response = await fetch(API_PSICOLOGOS, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                query: query,
-                searchType: searchType
-            })
-        });
+    const bodyData = isCode 
+        ? { code: query }   
+        : { name: query };  
 
-        const data = await response.json();
-        console.log(data);
+    const response = await fetch(API_PSICOLOGOS, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bodyData)
+    });
+
+   const data = await response.json();
+         
 
         if (!response.ok || !data.resultado) {
             showError('No pudimos encontrar al profesional. Intenta de nuevo.');
@@ -78,9 +78,10 @@
 
         displayTherapist(data.resultado);
 
-    } catch (error) {
-        showError('Ocurrió un error, intenta nuevamente.');
-        console.error('Error:', error);
+} catch (error) {
+    showError('Ocurrió un error, intenta nuevamente.');
+    console.error('Error:', error);
+
     } finally {
         loading.classList.remove('show');
     }

@@ -1,6 +1,6 @@
       .main-contentTools {
             flex: 1;
-            padding: 30px 20px;
+            padding: 0;
             max-height: 1000px;
         }
 
@@ -8,7 +8,7 @@
         .main {
             flex: 1;
             background: linear-gradient(135deg, #7fb3d3 0%, #5f9ea0 100%);
-            padding: 30px 20px;
+            padding: 0;
         }
 
         .section-titleTools {

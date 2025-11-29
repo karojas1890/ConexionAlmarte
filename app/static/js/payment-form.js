@@ -17,15 +17,14 @@ document.querySelector('input[placeholder="1234 5678 9012 3456"]').addEventListe
 });
 
 // Función principal al confirmar pago
-function continueToPaymentForm() {
-    // Datos de la cita desde localStorage
-    
+async function continueToPaymentForm() {
+    // Datos de la cita desde localStorage  cardHolderName
     const servicio = parseInt(localStorage.getItem("selectedServiceId"));
     const iddisponibilidad = parseInt(localStorage.getItem("idDisponibilidadSeleccionada"));
     const selectedDate = localStorage.getItem("selectedDate");
     const selectedTime = localStorage.getItem("selectedTime");
     const selectedPrice = parseFloat(localStorage.getItem("selectedPrice")) || 0;
-
+    const nombre = localStorage.getItem("cardHolderName");
     // Datos de la tarjeta
     const cardNumber = document.querySelector('input[placeholder="1234 5678 9012 3456"]').value.trim();
     const cardMonth = document.querySelector('input[placeholder="MM"]').value.trim();
@@ -33,52 +32,71 @@ function continueToPaymentForm() {
     const cardCVV = document.querySelector('input[placeholder="123"]').value.trim();
     const token = document.querySelector('input[placeholder="Ingrese el token"]').value.trim();
 
-    // Validaciones simples
-    // if (!cardNumber || !cardMonth || !cardYear || !cardCVV || !token) {
-    //     alert("Por favor completa todos los campos del formulario de pago.");
-    //     return;
-    // }
-
-    // Preparar objeto de cita
-    const citaData = {
-        usuario,
-        servicio,
-        iddisponibilidad,
-        estado: 1,  // 1 = confirmado
-        pago: 1,    // 1 = pago con tarjeta
-        fecha: selectedDate,
-        hora: selectedTime,
-        precio: selectedPrice,
-        tarjeta: {
-            numero: cardNumber,
-            mes: cardMonth,
-            año: cardYear,
-            cvv: cardCVV,
-            token
-        }
+    // Preparar objeto de pago
+    const tarjetaData = {
+        cardNumber,
+        cardHolder: nombre, 
+        cvv: cardCVV,
+        monto: selectedPrice
     };
 
-    // Simulación de POST al backend para crear la cita
-    fetch(CITA_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(citaData)
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.error) {
-            alert("Error al procesar la cita: " + data.error);
+    try {
+        // 1️Validar tarjeta con endpoint Flask /pay
+        const payRes = await fetch(PAY_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(tarjetaData)
+        });
+
+        const payData = await payRes.json();
+
+        if (!payData.success) {
+            alert("Pago fallido: " + payData.message);
+            return; // detener proceso si el pago falla
+        }
+
+        //Preparar objeto de cita
+        const citaData = {
+            usuario,
+            servicio,
+            iddisponibilidad,
+            estado: 1,  // confirmado
+            pago: 1,    // pago con tarjeta
+            fecha: selectedDate,
+            hora: selectedTime,
+            precio: selectedPrice,
+            tarjeta: {
+                numero: cardNumber,
+                mes: cardMonth,
+                año: cardYear,
+                cvv: cardCVV,
+                token
+            }
+        };
+
+        //Crear la cita solo si el pago fue exitoso
+        const citaRes = await fetch(CITA_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(citaData)
+        });
+
+        const citaDataRes = await citaRes.json();
+
+        if (citaDataRes.error) {
+            alert("Error al procesar la cita: " + citaDataRes.error);
         } else {
-            // Guardar fecha/hora en localStorage para calendario
             localStorage.setItem("fechaCalendario", selectedDate);
             localStorage.setItem("horaInicioCalendario", selectedTime);
-            localStorage.setItem("horaFinCalendario", selectedTime); // si tu backend da hora fin, reemplaza aquí
+            localStorage.setItem("horaFinCalendario", selectedTime);
 
-            // Mostrar modal de confirmación
             showConfirmationModal(selectedDate, selectedTime, selectedPrice);
         }
-    })
-    .catch(err => console.error("Error al crear la cita:", err));
+
+    } catch (err) {
+        console.error("Error en pago o cita:", err);
+        alert("Ocurrió un error, intenta nuevamente.");
+    }
 }
 
 // Modal de confirmación

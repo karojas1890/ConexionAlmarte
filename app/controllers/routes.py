@@ -90,6 +90,17 @@ def ManagementPME():
 def AddCard():
     return render_template("add-card.html")
 
+@routes_bp.route("/realizar_encuesta", endpoint="encuesta")
+@rolRequired(1,3)
+@loginRequired 
+def RealizarEcnuesta():
+    return render_template("encuesta.html")
+
+
+
+@routes_bp.route("/Tipo_Cambios", endpoint="Tipo_Cambios")
+def TipoCambio():
+    return render_template("tipoCambios.html")
 
 
 @routes_bp.route("/search_therapist", endpoint="search_therapist")
