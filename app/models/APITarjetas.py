@@ -4,8 +4,8 @@ from sqlalchemy.orm import validates
 from datetime import datetime
 
 
-class Tarjeta(db.Model):
-    __tablename__ = "tarjeta"
+class Tarjetas(db.Model):
+    __tablename__ = "apitarjetas"
 
     numerotarjeta = Column(BigInteger, primary_key=True, nullable=False)
     nombretarjetahabiente = Column(String(150), nullable=False)

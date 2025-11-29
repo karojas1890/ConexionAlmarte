@@ -3,7 +3,21 @@
 {% block title %}Encuesta de Usabilidad{% endblock %}
 
 {% block content %}
+
+
   <div class="container">
+
+    
+
+        <!-- Modal de confirmación -->
+        <div id="successModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-icon">✅</div>
+                <h2></h2>
+                <p></p>
+            </div>
+        </div>
         <div class="progress-section">
             <div class="progress-title">Encuesta de Usabilidad</div>
             <div class="progress-steps">
@@ -782,8 +796,10 @@
     
 
     <script>
-        const Rol = "{{ session.get('rol', 'Rol') }}";
+        const userId = "{{ session.get('idusuario', 'ID') }}";
+        const userRole = "{{ session.get('rol', 'Rol') }}";
         const DashBoard_URL = "{{ url_for('routes.dashboard_Consultante') }}";
+        const URL_ENCUESTA="{{ url_for('encuesta.GuardarEncuesta') }}"
     </script>
     <script src="{{ url_for('static', filename='js/encuesta.js') }}"></script>
 {% endblock %}

@@ -11,29 +11,54 @@ def GuardarEncuesta():
 
         usuario_id = datos.get("usuario_id")
         rol_usuario = datos.get("rol_usuario")
-
+   
         if not usuario_id or not rol_usuario:
             return jsonify({"error": "usuario_id y rol_usuario son obligatorios"}), 400
-
+        
         encuesta = EncuestaUsabilidad(
             usuario_id=usuario_id,
             rol_usuario=rol_usuario,
+    
+           # Sección 1: Facilidad de Uso
             navegacion_clara=datos.get("navegacion_clara"),
             facil_encontrar_funciones=datos.get("facil_encontrar_funciones"),
             instrucciones_claras=datos.get("instrucciones_claras"),
             aprendizaje_rapido=datos.get("aprendizaje_rapido"),
+    
+           # Sección 2: Eficiencia
             tareas_rapidas=datos.get("tareas_rapidas"),
             pocos_pasos=datos.get("pocos_pasos"),
             proceso_citas_agil=datos.get("proceso_citas_agil"),
             registro_eficiente=datos.get("registro_eficiente"),
-            diseño_atractivo=datos.get("diseño_atractivo"),
-            interfaz_amigable=datos.get("interfaz_amigable"),
+    
+           # Sección 3: Atracción
+            diseno_atractivo=datos.get("diseno_atractivo"),
             colores_agradables=datos.get("colores_agradables"),
-            interfaz_moderna=datos.get("interfaz_moderna"),
-            funciones_utiles=datos.get("funciones_utiles"),
-            cumple_objetivo=datos.get("cumple_objetivo"),
-            satisface_necesidades=datos.get("satisface_necesidades"),
-            recomendaria_uso=datos.get("recomendaria_uso"),
+            iconos_modernos=datos.get("iconos_modernos"),  
+            aspecto_general=datos.get("aspecto_general"), 
+    
+          # Sección 4: Inclusivo
+            texto_comodo=datos.get("texto_comodo"), 
+            contrastes_adecuados=datos.get("contrastes_adecuados"),  
+            diseno_inclusivo=datos.get("diseno_inclusivo"),  
+            lenguaje_respetuoso=datos.get("lenguaje_respetuoso"), 
+    
+          # Sección 5: Evitar Frustración
+            proteccion_errores=datos.get("proteccion_errores"),  
+            mensajes_error_claros=datos.get("mensajes_error_claros"),  
+            respuesta_consistente=datos.get("respuesta_consistente"),  
+            control_tranquilidad=datos.get("control_tranquilidad"),  
+    
+        # Sección 6: Satisfacción General
+            satisfaccion_general=datos.get("satisfaccion_general"),  
+            herramienta_util=datos.get("herramienta_util"),  
+            recomendaria_aplicacion=datos.get("recomendaria_aplicacion"), 
+            sentir_apoyado=datos.get("sentir_apoyado"),  
+    
+        # Preguntas Abiertas
+            que_mas_gusto=datos.get("que_mas_gusto"),
+            que_mejorar=datos.get("que_mejorar"),
+            que_confuso_frustrante=datos.get("que_confuso_frustrante")
         )
 
         db.session.add(encuesta)
@@ -44,6 +69,8 @@ def GuardarEncuesta():
     except Exception as e:
         print("ERROR GuardarEncuesta:", e)
         return jsonify({"error": "Error al guardar la encuesta"}), 500
+    
+    
 @encuesta_bp.route("/encuesta", methods=["GET"])
 def VerEncuesta():
     try:

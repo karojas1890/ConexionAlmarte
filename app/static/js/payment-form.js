@@ -50,8 +50,9 @@ async function continueToPaymentForm() {
 
         const payData = await payRes.json();
 
-        if (!payData.success) {
-            alert("Pago fallido: " + payData.message);
+        if (!payData.valido) {
+            
+            showModal('Pago fallido', payData.mensaje,'error');
             return; // detener proceso si el pago falla
         }
 
@@ -84,7 +85,8 @@ async function continueToPaymentForm() {
         const citaDataRes = await citaRes.json();
 
         if (citaDataRes.error) {
-            alert("Error al procesar la cita: " + citaDataRes.error);
+            showModal('Error al procesar la cita', citaDataRes.error,'error');
+           
         } else {
             localStorage.setItem("fechaCalendario", selectedDate);
             localStorage.setItem("horaInicioCalendario", selectedTime);
@@ -95,7 +97,8 @@ async function continueToPaymentForm() {
 
     } catch (err) {
         console.error("Error en pago o cita:", err);
-        alert("Ocurrió un error, intenta nuevamente.");
+        
+        showModal('Error', 'Ocurrió un error, intenta nuevamente.','error');
     }
 }
 

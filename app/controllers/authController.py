@@ -103,7 +103,7 @@ def login():
         session["apellido1"] = user_data.apellido1
         session["correo"] = user_data.consultante_correo
         session["idterapeuta"] = user_data.cedula_terapeuta
-      
+        session["cedula_paciente"]=user_data.cedula_consultante
         if user_data.tipo in {1,3,4}:  # Consultante
             session["correo_terapeuta"] = user_data.terapeuta_correo
             session["terapeuta_nombre"] = user_data.terapeuta_nombre

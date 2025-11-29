@@ -66,6 +66,7 @@ def create_app():
     from .controllers.GetGeolocalizacion import geolocalizacion_bp
     from .controllers.tipoCambioController import tipoCambio_bp
     from .controllers.APIPsicologos import apiPiscologos_bp
+    from .controllers.encuestaController import encuesta_bp
     app.register_blueprint(routes_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(citas_bp)
@@ -81,4 +82,5 @@ def create_app():
     app.register_blueprint(geolocalizacion_bp)
     app.register_blueprint(tipoCambio_bp)
     app.register_blueprint(apiPiscologos_bp)
+    app.register_blueprint(encuesta_bp)
     return app

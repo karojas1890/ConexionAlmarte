@@ -120,33 +120,7 @@
         </div>
     </div>
 
-    <div class="scanner-modal" id="scannerModal">
-        <div class="scanner-container">
-            <div class="scanner-header">
-                <h3>📷 Escanear Tarjeta</h3>
-                <button class="btn-close-scanner" onclick="closeScanner()">✕</button>
-            </div>
-
-            <div class="camera-view">
-                <video id="cameraVideo" autoplay playsinline></video>
-                <div class="camera-overlay"></div>
-                <div class="camera-instructions">
-                    Coloca tu tarjeta dentro del marco
-                </div>
-                <div class="loading-overlay" id="loadingOverlay">
-                    <div class="spinner"></div>
-                    <p style="color: #5BA8A0; font-weight: 600;">Procesando imagen...</p>
-                </div>
-            </div>
-
-            <canvas id="captureCanvas" class="canvas-hidden"></canvas>
-
-            <div class="scanner-actions">
-                <button class="btn-scanner btn-cancel" onclick="closeScanner()">Cancelar</button>
-                <button class="btn-scanner btn-capture" onclick="captureCard()">Capturar</button>
-            </div>
-        </div>
-    </div>
+    
 
      <script>
     const SCANCARD_URL = "{{ url_for('card.ScanCard') }}";

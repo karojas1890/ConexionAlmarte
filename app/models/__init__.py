@@ -23,7 +23,7 @@ from .pais import Pais
 from .Estado_Provincia import EstadoProvincia
 from .Localidad_Barrio import LocalidadBarrio
 from .Ciudad_Municipio import CiudadMunicipio
-from .APITarjetas import Tarjeta
+from .APITarjetas import Tarjetas
 from .Sinpe import Sinpe
 from .Psicologos import ProfesionalPsicologia
 

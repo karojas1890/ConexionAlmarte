@@ -3,7 +3,7 @@ from app.extensions import db
 from app.models.Tarjetas import Tarjeta
 import os
 from cryptography.fernet import Fernet
-from app.models.APITarjetas import Tarjeta
+from app.models.APITarjetas import Tarjetas
 from app.models.Sinpe import Sinpe
 import re
 from datetime import datetime
@@ -33,12 +33,14 @@ def AddCard():
         if not data:
             return jsonify({"success": False, "message": "No se recibieron datos"}), 400
 
-        fechaExpiracion = data.get('expiryDate')
+        idusuario = session.get('idusuario')
+        if not idusuario:
+            return jsonify({"success": False, "message": "Usuario no logueado"}), 401
+
         numeroTarjeta = data.get('cardNumber')
         ultimos4 = numeroTarjeta[-4:]
-        idusuario = session.get('idusuario')
+        fechaExpiracion = data.get('expiryDate')
 
-        print(idusuario)
         numeroCifrado = f.encrypt(numeroTarjeta.encode()).decode('utf-8')
         fechaCifrada = f.encrypt(fechaExpiracion.encode()).decode('utf-8')
 
@@ -59,7 +61,7 @@ def AddCard():
     except Exception as e:
         print("Error agregando tarjeta:", e)
         return jsonify({"success": False, "message": str(e)}), 500
-    
+
 
 @card_bp.route('/get_cards', methods=['GET'])
 def GetCards():
@@ -95,6 +97,8 @@ def GetCards():
     except Exception as e:
         print("Error obteniendo tarjetas:", e)
         return jsonify({"success": False, "message": str(e)}), 500
+    
+    
 @card_bp.route('/delete_card/<int:id_tarjeta>', methods=['DELETE'])
 def DeleteCard(id_tarjeta):
     try:
@@ -128,12 +132,12 @@ def Pay():
     try:
         datos = request.get_json()
 
-        numerotarjeta = datos.get("numerotarjeta")
-        nombretarjetahabiente = datos.get("nombretarjetahabiente")
-        identificacion = datos.get("identificaciontarjetahabiente")
-        codigoseguridad = datos.get("codigoseguridad")
+        numerotarjeta = datos.get("cardNumber")
+        nombretarjetahabiente = datos.get("cardHolder")
+        identificacion =session.get("cedula_paciente")
+        codigoseguridad = datos.get("cvv")
         monto = datos.get("monto")
-
+        print(numerotarjeta,nombretarjetahabiente,identificacion,codigoseguridad,monto)
         # ---------- Validaciones iniciales ----------
         if not numerotarjeta or not codigoseguridad:
             return jsonify({"valido": False, "mensaje": "Número de tarjeta y código de seguridad son obligatorios."}),400
@@ -150,10 +154,9 @@ def Pay():
         # ---------- Obtener últimos 4 dígitos ----------
         numero_ingresado = str(numerotarjeta).replace(" ", "").replace("-", "")
         ultimos_cuatro_ingresados = numero_ingresado[-4:]
-        print("Buscando tarjeta con últimos 4 dígitos:", ultimos_cuatro_ingresados)
-
+        
         # ---------- Buscar todas las tarjetas (igual que findAll + find en JS) ----------
-        tarjetas = Tarjeta.query.all()
+        tarjetas = Tarjetas.query.all()
 
         tarjeta_encontrada = None
         for t in tarjetas:
