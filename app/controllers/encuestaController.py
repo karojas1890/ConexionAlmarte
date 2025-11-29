@@ -11,7 +11,7 @@ def GuardarEncuesta():
 
         usuario_id = datos.get("usuario_id")
         rol_usuario = datos.get("rol_usuario")
-   
+      
         if not usuario_id or not rol_usuario:
             return jsonify({"error": "usuario_id y rol_usuario son obligatorios"}), 400
         
@@ -60,11 +60,11 @@ def GuardarEncuesta():
             que_mejorar=datos.get("que_mejorar"),
             que_confuso_frustrante=datos.get("que_confuso_frustrante")
         )
-
+        print(encuesta)
         db.session.add(encuesta)
         db.session.commit()
 
-        return jsonify({"mensaje": "Encuesta guardada exitosamente"}), 201
+        return jsonify({"valido":True,"mensaje": "Encuesta guardada exitosamente"}), 201
 
     except Exception as e:
         print("ERROR GuardarEncuesta:", e)

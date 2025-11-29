@@ -1,14 +1,15 @@
-{% extends "layout.html" %}
-
-{% block title %}Encuesta de Usabilidad{% endblock %}
-
-{% block content %}
-
-
-  <div class="container">
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/encuesta.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
     
-
+    <title>Document</title>
+</head>
+<body>
+         <div class="container">
         <!-- Modal de confirmación -->
         <div id="successModal" class="modal">
             <div class="modal-content">
@@ -793,7 +794,7 @@
         </div>
     </div>
 
-    
+    <script src="{{ url_for('static', filename='js/modal.js') }}" > </script>
 
     <script>
         const userId = "{{ session.get('idusuario', 'ID') }}";
@@ -802,4 +803,5 @@
         const URL_ENCUESTA="{{ url_for('encuesta.GuardarEncuesta') }}"
     </script>
     <script src="{{ url_for('static', filename='js/encuesta.js') }}"></script>
-{% endblock %}
+</body>
+</html>

@@ -1,4 +1,3 @@
-
 // Objeto para almacenar todas las respuestas
 const respuestasEncuesta = {
     // Preguntas de escala 1-5
@@ -146,16 +145,6 @@ function validarEncuestaCompleta() {
         }
     }
     
-    // Verificar preguntas abiertas (opcional, dependiendo de si son obligatorias)
-    if (!respuestasEncuesta.open1.trim()) {
-        preguntasFaltantes.push('¿Qué fue lo que más te gustó?');
-    }
-    if (!respuestasEncuesta.open2.trim()) {
-        preguntasFaltantes.push('¿Qué aspecto se podría mejorar?');
-    }
-    if (!respuestasEncuesta.open3.trim()) {
-        preguntasFaltantes.push('¿Hubo algo confuso o frustrante?');
-    }
     
     if (preguntasFaltantes.length > 0) {
         const primeraPregunta = preguntasFaltantes[0];
@@ -197,28 +186,24 @@ function hideConfirmationModal() {
 // Función para enviar encuesta al backend
 async function submitSurvey() {
     try {
-       
+        // Cerrar el modal de confirmación inmediatamente
+        hideConfirmationModal();
         
-        // Preparar datos para enviar
-        const dataEncuesta = {
-            rol: userRole,
-            respuestas: respuestasEncuesta,
-            timestamp: new Date().toISOString()
-        };
+        // Mostrar loading
+        showLoadingIndicator();
+        
+        const datosBackend = MapeoDatos(respuestasEncuesta);
+        console.log('Enviando datos:', datosBackend);
         
         // Enviar al backend
-        const resultado = await enviarEncuesta(dataEncuesta);
+        const resultado = await enviarEncuesta(datosBackend);
         
-        if (resultado) {
-            hideConfirmationModal();
-             
-            window.location.href = DashBoard_URL;
-        }
+        // El éxito se maneja dentro de enviarEncuesta
         
     } catch (error) {
         console.error('Error al enviar encuesta:', error);
-      showModal('¡Error!', 'Error al enviar la encuesta. Por favor, intenta nuevamente..', 'error');
-                     
+        hideLoadingIndicator();
+        showModal('¡Error!', 'Error al enviar la encuesta. Por favor, intenta nuevamente.', 'error');
     }
 }
 
@@ -271,11 +256,8 @@ function MapeoDatos(respuestasJS) {
 }
 
 // Función para enviar datos al backend
-async function enviarEncuesta(dataEncuesta) {
+async function enviarEncuesta(datosBackend) {
     try {
-
-       const datosBackend = MapeoDatos(dataEncuesta);
-
         const response = await fetch(URL_ENCUESTA, {
             method: "POST",
             headers: {
@@ -285,25 +267,76 @@ async function enviarEncuesta(dataEncuesta) {
         });
 
         const data = await response.json();
+        console.log('Respuesta del backend:', data);
 
-        if (!response.ok) {
-             showModal('¡Error!', 'No se pudo enviar la encuesta: ' + (data.error || 'Error desconocido'), 'error');
-       
-           
+        // Verificar data.valido
+        if (data.valido) {
+            showModal('¡Encuesta Registrada!', 'Gracias por completar la encuesta! Tus comentarios son muy valiosos para nosotros.', 'success');
+            
+            // Redirigir después de 2 segundos
+            setTimeout(() => {
+                window.location.href = DashBoard_URL;
+            }, 2000);
+            
+            return data;
+        } else {
+            showModal('¡Error!', 'No se pudo enviar la encuesta: ' + (data.error || data.mensaje || 'Error desconocido'), 'error');
             return null;
         }
 
-        showModal('¡Encuesta Registrada!', 'Gracias por completar la encuesta! Tus comentarios son muy valioso para nosotros.', 'success');
-       
-        return data;
-
     } catch (error) {
-         showModal('¡Error!', 'Error inesperado.', 'error');
-       
-        alert("Error de conexión. .");
+        console.error("Error de conexión:", error);
+        showModal('¡Error!', 'Error de conexión. Por favor, verifica tu internet e intenta nuevamente.', 'error');
         return null;
     }
 }
+
+// Función para mostrar loading
+function showLoadingIndicator() {
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'loading-indicator';
+    loadingDiv.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        color: white;
+        font-size: 18px;
+    `;
+    loadingDiv.innerHTML = `
+        <div style="text-align: center;">
+            <div style="border: 4px solid #f3f3f3; border-top: 4px solid #5f9ea0; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
+            <p>Enviando encuesta...</p>
+        </div>
+    `;
+    
+    // Agregar estilo de animación
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(loadingDiv);
+}
+
+function hideLoadingIndicator() {
+    const loading = document.getElementById('loading-indicator');
+    if (loading) {
+        loading.remove();
+    }
+}
+
+
 
 // Inicializar event listeners cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
@@ -331,27 +364,5 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inicializar progreso
     updateProgress('intro');
-    
-    
 });
 
-// Cerrar modal si se hace clic fuera de él
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('confirmationModal');
-    if (event.target === modal) {
-        hideConfirmationModal();
-    }
-});
-
-// Prevenir que el usuario cierre la encuesta sin guardar (opcional)
-window.addEventListener('beforeunload', function(e) {
-    const tieneRespuestas = Object.values(respuestasEncuesta).some(val => 
-        val !== null && val !== '' && val !== undefined
-    );
-    
-    if (tieneRespuestas) {
-        e.preventDefault();
-        e.returnValue = 'Tienes respuestas sin enviar. ¿Estás seguro de que quieres salir?';
-        return 'Tienes respuestas sin enviar. ¿Estás seguro de que quieres salir?';
-    }
-});

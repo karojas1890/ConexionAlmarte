@@ -1,410 +1,607 @@
-  
-    :root {
-            --primary-color: #5f9ea0;
-            --secondary-color: #7fb3d3;
-            --text-color: #333;
-            --light-bg: #f8f9fa;
-            --white: #ffffff;
-            --border-color: #e0e0e0;
-        }
-        
-  .progress-section {
-            background: #e8f4f8;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .progress-title {
-            font-size: 16px;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        .progress-steps {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .step {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        .step.completed {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .step.active {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .step.inactive {
-            background: white;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-        
-        .step-arrow {
-            color: var(--primary-color);
-            font-size: 18px;
-        }
-        
-        .main-content {
-            flex: 1;
-            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
-            padding: 30px 20px;
-        }
-        
-        .back-btn {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            font-size: 16px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        
-        .back-btn:hover {
-            background: rgba(255,255,255,0.3);
-        }
-        
-        .section-title {
-            color: var(--text-color);
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .survey-intro {
-            background: var(--white);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: var(--text-color);
-            line-height: 1.5;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .survey-section {
-            background: var(--white);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        .survey-section-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .survey-question {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed var(--border-color);
-        }
-        
-        .survey-question:last-child {
-            border-bottom: none;
-        }
-        
-        .question-text {
-            font-size: 15px;
-            color: var(--text-color);
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-        
-        .rating-scale {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        
-        .rating-option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            flex: 1;
-            min-width: 60px;
-        }
-        .survey-section {
-            display: none;
-        }
-        
-        .survey-section.active {
-            display: block;
-        }
-        
-        .section-progress {
-            color: #5f9ea0;
-            font-size: 14px;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-        
-      
-        
-        .prev-btn {
-            background: #f8f9fa;
-            color: #5f9ea0;
-            border: 2px solid #5f9ea0;
-        }
-        
-        .prev-btn:hover {
-            background: #5f9ea0;
-            color: white;
-        }
-        
-        .next-btn, .submit-btn {
-            background: linear-gradient(135deg, #5f9ea0 0%, #7fb3d3 100%);
-            color: white;
-        }
-        
-        .next-btn:hover, .submit-btn:hover {
-            background: linear-gradient(135deg, #4a8a8d 0%, #6a9bc0 100%);
-            transform: translateY(-2px);
-        }
-        
-        .step.completed {
-            background: #5f9ea0;
-            color: white;
-        }
-        
-        .step.active {
-            background: #5f9ea0;
-            color: white;
-            border: 2px solid #5f9ea0;
-        }
-        
-        .step {
-            background: white;
-            color: #5f9ea0;
-            border: 2px solid #5f9ea0;
-        }
-        .rating-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--border-color);
-            margin-bottom: 5px;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.2s ease;
-            background: var(--white);
-        }
-        
-        .rating-option input {
-            display: none;
-        }
-        
-        .rating-option input:checked + .rating-number {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-            transform: scale(1.1);
-        }
-        
-        .rating-label {
-            font-size: 11px;
-            text-align: center;
-            color: #666;
-            line-height: 1.2;
-        }
-        
-        .open-question {
-            margin-bottom: 25px;
-        }
-        
-        .open-question-text {
-            font-size: 15px;
-            color: var(--text-color);
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-        
-        .open-question-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            resize: vertical;
-            min-height: 100px;
-            font-family: inherit;
-            font-size: 14px;
-            transition: border 0.3s;
-        }
-        
-        .open-question-input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        
-        .submit-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-            transition: background 0.3s ease;
-            box-shadow: 0 4px 10px rgba(95, 158, 160, 0.3);
-        }
-        
-        .submit-btn:hover {
-            background: #4a8a8d;
-            transform: translateY(-2px);
-        }
-        
-      
-        
-        .therapist-only {
-            display: none;
-        }
-        
-        .patient-only {
-            display: none;
-        }
-        
-        /* Responsive para PC */
-        @media (min-width: 768px) {
-            .container {
-                max-width: 900px;
-                margin: 20px auto;
-                min-height: calc(100vh - 40px);
-                border-radius: 10px;
-                overflow: hidden;
-            }
-            
-            .header {
-                padding: 20px 30px;
-            }
-            
-            .main-content {
-                padding: 40px 30px;
-            }
-            
-            .survey-intro, .survey-section {
-                padding: 25px;
-            }
-            
-            .rating-scale {
-                justify-content: space-around;
-            }
-            
-            .rating-option {
-                flex: 0 0 auto;
-            }
-            
-            .rating-number {
-                width: 45px;
-                height: 45px;
-                font-size: 16px;
-            }
-            
-            .rating-label {
-                font-size: 12px;
-            }
-            
-            .question-text {
-                font-size: 16px;
-            }
-        }
-        
-        /* Estilos para el modal de confirmación */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .modal h2 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        .modal p {
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        
-        .modal-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .modal-confirm {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .modal-cancel {
-            background: #f0f0f0;
-            color: #333;
-        }
-        
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
+:root {
+    --primary-color: #5f9ea0;
+    --secondary-color: #7fb3d3;
+    --text-color: #333;
+    --light-bg: #f8f9fa;
+    --white: #ffffff;
+    --border-color: #e0e0e0;
+}
+
+/* Container principal mejorado para móviles */
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    background: var(--white);
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* Previene el desplazamiento horizontal */
+}
+
+/* Header responsive */
+.header {
+    background: var(--white);
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0; /* Permite que se ajuste */
+}
+
+.logo {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.app-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-subtitle {
+    font-size: 12px;
+    color: var(--primary-color);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.user-name {
+    font-size: 12px;
+    color: var(--primary-color);
+    font-weight: 500;
+    display: none; /* Ocultar en móviles para ahorrar espacio */
+}
+
+/* Progress section mejorada para móviles */
+.progress-section {
+    background: #e8f4f8;
+    padding: 15px 10px;
+    text-align: center;
+}
+
+.progress-title {
+    font-size: 14px;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* Reducir gap en móviles */
+    flex-wrap: wrap;
+    max-width: 100%;
+    overflow-x: auto; /* Permitir scroll si es necesario */
+    padding: 0 5px;
+}
+
+.step {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    flex-shrink: 0; /* Evitar que se reduzcan */
+}
+
+.step.completed {
+    background: var(--primary-color);
+    color: white;
+}
+
+.step.active {
+    background: var(--primary-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+}
+
+.step.inactive {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.step-arrow {
+    color: var(--primary-color);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* Main content mejorado */
+.main-content {
+    flex: 1;
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    padding: 20px 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.back-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.section-title {
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* Survey intro responsive */
+.survey-intro {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    color: var(--text-color);
+    line-height: 1.4;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.survey-intro p {
+    margin-bottom: 10px;
+}
+
+.survey-intro strong {
+    color: var(--primary-color);
+}
+
+/* Survey sections responsive */
+.survey-section {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.survey-section.active {
+    display: block;
+}
+
+.survey-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+    line-height: 1.3;
+}
+
+.section-progress {
+    color: var(--primary-color);
+    font-size: 12px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* Survey questions responsive */
+.survey-question {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.survey-question:last-child {
+    border-bottom: none;
+}
+
+.question-text {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+/* Rating scale completamente responsive */
+.rating-scale {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    gap: 4px;
+    flex-wrap: nowrap;
+    overflow-x: auto; /* Permitir scroll horizontal si es necesario */
+    padding: 5px 0;
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+}
+
+.rating-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    flex: 1;
+    min-width: 50px; /* Reducir mínimo */
+    max-width: 70px; /* Limitar máximo */
+}
+
+.rating-number {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--border-color);
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    background: var(--white);
+    flex-shrink: 0;
+}
+
+.rating-option input {
+    display: none;
+}
+
+.rating-option input:checked + .rating-number {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.rating-label {
+    font-size: 10px;
+    text-align: center;
+    color: #666;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+/* Open questions responsive */
+.open-question {
+    margin-bottom: 20px;
+}
+
+.open-question-text {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.open-question-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    font-size: 13px;
+    transition: border 0.3s;
+    box-sizing: border-box;
+}
+
+.open-question-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* Navigation buttons responsive */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+}
+
+.prev-btn {
+    background: #f8f9fa;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.prev-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.next-btn, .submit-btn {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border: none;
+}
+
+.next-btn:hover, .submit-btn:hover {
+    background: linear-gradient(135deg, #4a8a8d 0%, #6a9bc0 100%);
+    transform: translateY(-1px);
+}
+
+/* Submit button específico */
+.submit-btn {
+    width: 100%;
+    margin-top: 15px;
+    box-shadow: 0 3px 8px rgba(95, 158, 160, 0.3);
+}
+
+/* Modal responsive */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.modal h2 {
+    color: var(--primary-color);
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.modal p {
+    margin-bottom: 15px;
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.modal-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 14px;
+    flex: 1;
+    min-width: 100px;
+}
+
+.modal-confirm {
+    background: var(--primary-color);
+    color: white;
+}
+
+.modal-cancel {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.modal-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+/* Mejoras específicas para pantallas muy pequeñas */
+@media (max-width: 360px) {
+    .header {
+        padding: 10px 12px;
+    }
+    
+    .progress-steps {
+        gap: 6px;
+    }
+    
+    .step {
+        width: 26px;
+        height: 26px;
+        font-size: 11px;
+    }
+    
+    .step-arrow {
+        font-size: 12px;
+    }
+    
+    .main-content {
+        padding: 15px 12px;
+    }
+    
+    .rating-option {
+        min-width: 45px;
+    }
+    
+    .rating-number {
+        width: 32px;
+        height: 32px;
+        font-size: 11px;
+    }
+    
+    .rating-label {
+        font-size: 9px;
+    }
+    
+    .nav-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+        min-width: 110px;
+    }
+}
+
+/* Para tablets pequeñas */
+@media (min-width: 481px) and (max-width: 767px) {
+    .user-name {
+        display: block; /* Mostrar nombre en tablets */
+        font-size: 13px;
+    }
+    
+    .rating-scale {
+        gap: 8px;
+    }
+    
+    .rating-option {
+        min-width: 55px;
+    }
+}
+
+/* Para PC - mantener tus estilos existentes */
+@media (min-width: 768px) {
+    .container {
+        max-width: 900px;
+        margin: 20px auto;
+        min-height: calc(100vh - 40px);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .header {
+        padding: 20px 30px;
+    }
+    
+    .main-content {
+        padding: 40px 30px;
+    }
+    
+    .survey-intro, .survey-section {
+        padding: 25px;
+    }
+    
+    .rating-scale {
+        justify-content: space-around;
+        gap: 10px;
+    }
+    
+    .rating-option {
+        flex: 0 0 auto;
+        min-width: 60px;
+    }
+    
+    .rating-number {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+    
+    .rating-label {
+        font-size: 12px;
+    }
+    
+    .question-text {
+        font-size: 16px;
+    }
+    
+    .user-name {
+        display: block;
+        font-size: 14px;
+    }
+}
+
+/* Prevenir zoom en inputs en iOS */
+@media screen and (max-width: 768px) {
+    input, select, textarea {
+        font-size: 16px; /* Prevenir zoom en iOS */
+    }
+}
+
+/* Mejorar scroll en móviles */
+@media (max-width: 767px) {
+    html {
+        -webkit-text-size-adjust: 100%; 
+    }
+    
+    body {
+        -webkit-overflow-scrolling: touch; 
+    }
+}
