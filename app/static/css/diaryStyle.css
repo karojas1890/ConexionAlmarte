@@ -82,22 +82,16 @@
         }
 
         .add-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 12px;
-            background: #5b8a9d;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-bottom: 16px;
-        }
-
+    display: inline-flex;       
+    align-items: center;
+    gap: 6px;                   
+    padding: 8px 12px;
+    max-width: 100%;           
+    box-sizing: border-box;
+    white-space: nowrap;        
+    overflow: hidden;           
+    text-overflow: ellipsis;    
+}
         .entry-card {
             background: #f9fafb;
             border-radius: 8px;
@@ -182,18 +176,18 @@
                 font-size: 14px;
             }
 
-            .container {
+            /*.container {
                 padding: 32px 24px;
-            }
+            }*/
 
             .tab {
                 padding: 16px;
                 font-size: 16px;
             }
 
-            .content-card {
+            /*.content-card {
                 padding: 28px;
-            }
+            }*/
 
             .section-title {
                 font-size: 20px;

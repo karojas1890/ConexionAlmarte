@@ -112,7 +112,7 @@ def login():
             session["terapeuta_codigoProfesional"] = user_data.terapeuta_codigoprofesional
             correo = session.get("correo") 
         elif user_data.tipo==2:
-            session["correo_terapeuta"] = user_data.correo_terapeuta
+            session["correo_terapeuta"] = user_data.terapeuta_correo
             correo = session.get("correo_terapeuta") 
                
         

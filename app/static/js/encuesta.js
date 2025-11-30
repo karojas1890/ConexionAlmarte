@@ -271,6 +271,7 @@ async function enviarEncuesta(datosBackend) {
 
         // Verificar data.valido
         if (data.valido) {
+            hideLoadingIndicator();
             showModal('¡Encuesta Registrada!', 'Gracias por completar la encuesta! Tus comentarios son muy valiosos para nosotros.', 'success');
             
             // Redirigir después de 2 segundos
@@ -280,6 +281,7 @@ async function enviarEncuesta(datosBackend) {
             
             return data;
         } else {
+            hideLoadingIndicator();
             showModal('¡Error!', 'No se pudo enviar la encuesta: ' + (data.error || data.mensaje || 'Error desconocido'), 'error');
             return null;
         }
