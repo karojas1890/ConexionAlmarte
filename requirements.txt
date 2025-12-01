@@ -8,3 +8,4 @@ bcrypt
 sendgrid
 requests
 twilio
+pandas

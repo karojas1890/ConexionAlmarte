@@ -240,6 +240,11 @@ def QuienEres():
 def GestionarPacientes():
     return render_template("gestionarPacientes.html")
 
+@routes_bp.route("/gestion_encuesta", endpoint="gestion_encuesta")
+@rolRequired(2)
+@loginRequired
+def GestionEncuesta():
+     return render_template("gestionarEncuesta.html")
     
     
 @routes_bp.route("/provincia", endpoint="provincia")

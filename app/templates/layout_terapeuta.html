@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Terapeuta - Almarte</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/dasboard-TerapeutaStyle.css') }}">
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-TerapeutaStyle.css') }}">
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/miAgendaStyle.css') }}">
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/availabilityStyle.css') }}">
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionarPacientesStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dasboard-TerapeutaStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-TerapeutaStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/miAgendaStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/availabilityStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/popupStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionarPacientesStyle.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/auditLogs.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionEncuesta.css') }}">
    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
    
 </head>
@@ -68,14 +69,14 @@
                 <span class="nav-label">Inicio</span>
             </a>
 
-            <a href="{{ url_for('routes.mi_agenda') }}" class="nav-item">
+            <a href="{{ url_for('routes.gestion_encuesta') }}" class="nav-item">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                     <line x1="16" y1="2" x2="16" y2="6"></line>
                     <line x1="8" y1="2" x2="8" y2="6"></line>
                     <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
-                <span class="nav-label">Agenda</span>
+                <span class="nav-label">Gestionar Encuesta</span>
             </a>
 
             <a href="{{ url_for('routes.availability') }}" class="nav-item">

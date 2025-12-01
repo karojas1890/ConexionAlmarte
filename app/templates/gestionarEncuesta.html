@@ -1,0 +1,140 @@
+{% extends "layout_terapeuta.html" %}
+
+{% block title %}Gestión de Encuesta{% endblock %}
+
+{% block content %}  
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="dashboard-header">
+        <h1>📊 Dashboard de Encuestas</h1>
+        <p>Gestión y análisis de encuestas de usabilidad</p>
+    </div>
+
+    <!-- Estadísticas Rápidas -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <div class="stat-info">
+                <h3 id="total-encuestas">0</h3>
+                <p>Total Encuestas</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-info">
+                <h3 id="promedio-general">0.0</h3>
+                <p>Puntuación Promedio</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-info">
+                <h3 id="total-pacientes">0</h3>
+                <p>Pacientes</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">👨‍⚕️</div>
+            <div class="stat-info">
+                <h3 id="total-terapeutas">0</h3>
+                <p>Terapeutas</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters-section">
+        <div class="filter-group">
+            <label for="filtro-rol">Filtrar por Rol:</label>
+            <select id="filtro-rol">
+                <option value="todos">Todos los roles</option>
+                <option value="paciente">Pacientes</option>
+                <option value="terapeuta">Terapeutas</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="filtro-fecha">Filtrar por Fecha:</label>
+            <select id="filtro-fecha">
+                <option value="todos">Todas las fechas</option>
+                <option value="7">Últimos 7 días</option>
+                <option value="30">Últimos 30 días</option>
+                <option value="90">Últimos 3 meses</option>
+            </select>
+        </div>
+        <button class="btn-primary" onclick="aplicarFiltros()">Aplicar Filtros</button>
+        <button class="btn-secondary" onclick="exportarDatos()">📥 Exportar Datos</button>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="charts-grid">
+        <!-- Gráfico de Puntuación por Sección -->
+        <div class="chart-card">
+            <h3>Puntuación Promedio por Sección</h3>
+            <canvas id="chart-secciones"></canvas>
+        </div>
+
+        <!-- Gráfico de Distribución de Roles -->
+        <div class="chart-card">
+            <h3>Distribución por Rol</h3>
+            <canvas id="chart-roles"></canvas>
+        </div>
+
+        <!-- Gráfico de Evolución Temporal -->
+        <div class="chart-card full-width">
+            <h3>Evolución de Puntuaciones</h3>
+            <canvas id="chart-evolucion"></canvas>
+        </div>
+
+        <!-- Gráfico de Preguntas Mejor/Peor Valoradas -->
+        <div class="chart-card full-width">
+            <h3>Preguntas Mejor y Peor Valoradas</h3>
+            <canvas id="chart-preguntas"></canvas>
+        </div>
+    </div>
+
+    <!-- Tabla de Encuestas -->
+    <div class="table-section">
+        <h3>Detalle de Encuestas</h3>
+        <div class="table-container">
+            <table id="tabla-encuestas">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Rol</th>
+                        <th>Fecha</th>
+                        <th>Puntuación</th>
+                        <th>Promedio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-encuestas">
+                    <!-- Los datos se cargan con JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para Detalles -->
+    <div id="modal-detalles" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Detalles de Encuesta</h2>
+                <span class="close" onclick="cerrarModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modal-detalles-body">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const VERENCUESTA_URL="{{ url_for('encuesta.VerEncuesta') }}"
+    const VERENCUESTAID_URL="{{ url_for('encuesta.ObtenerEncuestaDetalle', encuesta_id=1)}}"
+    const EXPORTARENCUESTA_URL="{{ url_for('encuesta.ExportarEncuesta') }}"
+</script>
+<!-- Incluir Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/gestionEncuesta.js') }}"></script>
+
+{% endblock %}
