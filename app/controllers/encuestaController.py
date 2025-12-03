@@ -99,7 +99,7 @@ def VerEncuesta():
                 'P8': encuesta.registro_eficiente,
                 'P9': encuesta.diseno_atractivo,
                 'P10': encuesta.colores_agradables,
-                '11': encuesta.iconos_modernos,
+                'P11': encuesta.iconos_modernos,
                 'P12': encuesta.aspecto_general,
                 'P13': encuesta.texto_comodo,
                 'P14': encuesta.contrastes_adecuados,
@@ -125,7 +125,7 @@ def VerEncuesta():
                 'promedio_seccion': float(encuesta.promedio_seccion) if encuesta.promedio_seccion else 0,
                 'completada': encuesta.completada
             })
-        
+       
         return jsonify({'success': True, 'encuestas': encuestas_data})
         
     except Exception as e:

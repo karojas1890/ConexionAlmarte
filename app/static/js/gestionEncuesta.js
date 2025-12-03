@@ -83,7 +83,7 @@ function crearGraficoSecciones() {
     const promedios = secciones.map((_, index) => {
         const startIdx = index * 4 + 1;
         const preguntas = encuestasData.flatMap(encuesta => 
-            [1,2,3,4].map(i => encuesta[`q${startIdx + i - 1}`]).filter(v => v)
+            [1,2,3,4].map(i => encuesta[`P${startIdx + i - 1}`]).filter(v => v)
         );
         return preguntas.length ? preguntas.reduce((a, b) => a + b) / preguntas.length : 0;
     });
@@ -112,12 +112,11 @@ function crearGraficoSecciones() {
     });
 }
 
-// Gráfico de distribución por roles
 function crearGraficoRoles() {
     const ctx = document.getElementById('chart-roles').getContext('2d');
     
-    const pacientes = encuestasData.filter(e => e.rol_usuario === 'paciente').length;
-    const terapeutas = encuestasData.filter(e => e.rol_usuario === 'terapeuta').length;
+    const pacientes = encuestasData.filter(e => Number(e.rol_usuario) === 1).length;
+    const terapeutas = encuestasData.filter(e => Number(e.rol_usuario) === 2).length;
 
     charts.roles = new Chart(ctx, {
         type: 'doughnut',
@@ -135,7 +134,7 @@ function crearGraficoRoles() {
     });
 }
 
-// Gráfico de evolución temporal
+// Grafico de evolucion temporal
 function crearGraficoEvolucion() {
     const ctx = document.getElementById('chart-evolucion').getContext('2d');
     
@@ -181,13 +180,13 @@ function crearGraficoEvolucion() {
     });
 }
 
-// Gráfico de preguntas mejor/peor valoradas
+// Grafico de preguntas mejor o peor valoradas
 function crearGraficoPreguntas() {
     const ctx = document.getElementById('chart-preguntas').getContext('2d');
     
     const promediosPreguntas = [];
     for (let i = 1; i <= 24; i++) {
-        const valores = encuestasData.map(e => e[`q${i}`]).filter(v => v !== undefined && v !== null);
+        const valores = encuestasData.map(e => e[`P${i}`]).filter(v => v !== undefined && v !== null);
         const promedio = valores.length ? valores.reduce((a, b) => a + b) / valores.length : 0;
         promediosPreguntas.push({
             pregunta: i,
@@ -232,12 +231,12 @@ function crearGraficoPreguntas() {
     });
 }
 
-// Ver detalles de encuesta
+// Ver detalles de la encuesta
 async function verDetalles(encuestaId) {
     try {
         const response = await fetch(VERENCUESTAID_URL.replace("1", encuestaId));
         const data = await response.json();
-        
+        console.log("DATA:", data);
         if (data.success) {
             mostrarModalDetalles(data.encuesta);
         }
@@ -248,37 +247,37 @@ async function verDetalles(encuestaId) {
 }
 // Mapeo de nombres de columnas a textos de preguntas
     const mapeoPreguntas = {
-        // Sección 1: Facilidad de Uso
+        // Seccion 1 Facilidad de Uso
         "P1": "La navegación dentro de la aplicación es clara y sencilla.",
         "P2": "Me resultó fácil encontrar las funciones que necesitaba.",
         "P3": "Las instrucciones y los textos son fáciles de entender.",
         "P4": "Aprender a usar la aplicación me tomó poco tiempo.",
         
-        // Sección 2: Eficiencia
+        // Seccion 2 Eficiencia
         "P5": "Puedo completar mis tareas de manera rápida",
         "P6": "La aplicación me permite lograr lo que necesito con pocos pasos.",
         "P7": "El proceso para programar o cancelar una cita es ágil y directo.",
         "P8": "El registro de mis disparadores y avances es un proceso eficiente.",
         
-        // Sección 3: Atracción
+        // Seccion 3 Atracción
         "P9": "El diseño de la aplicación es visualmente atractivo.",
         "P10": "La combinación de colores es agradable y transmite calma.",
         "P11": "Los iconos y botones son modernos y de buen gusto.",
         "P12": "Me gusta cómo se ve la aplicación en general.",
         
-        // Sección 4: Inclusivo
+        // Seccion 4 Inclusivo
         "P13": "El tamaño del texto es cómodo para leer.",
         "P14": "Los colores y contrastes utilizados no dificultan la lectura.",
         "P15": "El diseño considera diferentes necesidades de usuarios",
         "P16": "El lenguaje utilizado es respetuoso y no hace suposiciones sobre el usuario.",
         
-        // Sección 5: Evitar Frustración
+        // Seccion 5 Evitar Frustracion
         "P17": "La aplicación me protege de cometer errores",
         "P18": "Si cometo un error, la aplicación me da un mensaje claro de cómo solucionarlo.",
         "P19": "La aplicación responde de forma consistente y predecible.",
         "P20": "Me sentí tranquilo/a y en control mientras usaba la aplicación.",
         
-        // Sección 6: Satisfacción General
+        // Seccion 6 Satisfaccion General
         "P21": "Estoy satisfecho/a con la experiencia general que tuve usando esta aplicación.",
         "P22": "La aplicación me parece una herramienta útil para gestionar mi bienestar mental.",
         "P23": "Recomendaría esta aplicación a otros colegas",
@@ -290,45 +289,28 @@ async function verDetalles(encuestaId) {
     };
 function mostrarModalDetalles(encuesta) {
     const modalBody = document.getElementById('modal-detalles-body');
-    
-    
 
     let html = `
         <div class="detalles-encuesta">
             <div class="detalle-header">
                 <h3>Encuesta #${encuesta.id}</h3>
-                <p><strong>Usuario:</strong> ${encuesta.usuario_id} | <strong>Rol:</strong> ${encuesta.rol_usuario} | <strong>Fecha:</strong> ${new Date(encuesta.fecha_encuesta).toLocaleDateString()}</p>
+                <p>
+                    <strong>Usuario:</strong> ${encuesta.usuario_id} |
+                    <strong>Rol:</strong> ${encuesta.rol_usuario} |
+                    <strong>Fecha:</strong> ${new Date(encuesta.fecha_encuesta).toLocaleDateString()}
+                </p>
             </div>
-            
+
             <div class="secciones-grid">
     `;
 
-    // Definir secciones con sus campos correspondientes
     const secciones = [
-        {
-            titulo: 'Facilidad de Uso',
-            campos: ['P1', 'P2', 'P3', 'P4']
-        },
-        {
-            titulo: 'Eficiencia',
-            campos: ['P5', 'P6', 'P7', 'P8']
-        },
-        {
-            titulo: 'Atracción',
-            campos: ['P9', 'P10', 'P11', 'P12']
-        },
-        {
-            titulo: 'Inclusivo',
-            campos: ['P13', 'P14', 'P15', 'P16']
-        },
-        {
-            titulo: 'Evitar Frustración',
-            campos: ['P17', 'P18', 'P19', 'P20']
-        },
-        {
-            titulo: 'Satisfacción General',
-            campos: ['P21', 'P22', 'P23', 'P24']
-        }
+        { titulo: 'Facilidad de Uso', campos: ['P1', 'P2', 'P3', 'P4'] },
+        { titulo: 'Eficiencia', campos: ['P5', 'P6', 'P7', 'P8'] },
+        { titulo: 'Atracción', campos: ['P9', 'P10', 'P11', 'P12'] },
+        { titulo: 'Inclusivo', campos: ['P13', 'P14', 'P15', 'P16'] },
+        { titulo: 'Evitar Frustración', campos: ['P17', 'P18', 'P19', 'P20'] },
+        { titulo: 'Satisfacción General', campos: ['P21', 'P22', 'P23', 'P24'] }
     ];
 
     secciones.forEach(seccion => {
@@ -337,16 +319,15 @@ function mostrarModalDetalles(encuesta) {
                 <h4>${seccion.titulo}</h4>
                 <div class="preguntas-list">
         `;
-        
+
         seccion.campos.forEach((campo, index) => {
             const valor = encuesta[campo];
             const textoPregunta = mapeoPreguntas[campo];
-            
+
             html += `
                 <div class="pregunta-item">
                     <div class="pregunta-text">
-                        <span class="pregunta-numero">${index + 1}.</span>
-                        ${textoPregunta}
+                        <span class="pregunta-numero">${index + 1}.</span> ${textoPregunta}
                     </div>
                     <div class="pregunta-respuesta">
                         <span class="pregunta-valor ${getClaseValor(valor)}">
@@ -357,68 +338,71 @@ function mostrarModalDetalles(encuesta) {
                 </div>
             `;
         });
-        
+
         html += `
                 </div>
             </div>
         `;
     });
-    
-    // Agregar preguntas abiertas si existen
-    if (encuesta.open1 || encuesta.open3 || encuesta.open3) {
+    console.log(encuesta.open1,encuesta.open2,encuesta.open3)
+    if (
+    (encuesta.que_mas_gusto && encuesta.que_mas_gusto.trim() !== "") ||
+    (encuesta.que_mejorar && encuesta.que_mejorar.trim() !== "") ||
+    (encuesta.que_confuso_frustrante && encuesta.que_confuso_frustrante.trim() !== "")
+) {
+    html += `
+        <div class="seccion-abiertas">
+            <h4>Comentarios Adicionales</h4>
+    `;
+
+    if (encuesta.que_mas_gusto) {
         html += `
-            <div class="seccion-abiertas">
-                <h4>Comentarios Adicionales</h4>
+            <div class="comentario-item">
+                <h5>¿Qué fue lo que más le gustó de la aplicación?</h5>
+                <p class="comentario-texto">${encuesta.que_mas_gusto}</p>
+            </div>
         `;
-        
-        if (encuesta.que_mas_gusto) {
-            html += `
-                <div class="comentario-item">
-                    <h5>¿Qué fue lo que más le gustó de la aplicación?</h5>
-                    <p class="comentario-texto">${encuesta.open1}</p>
-                </div>
-            `;
-        }
-        
-        if (encuesta.que_mejorar) {
-            html += `
-                <div class="comentario-item">
-                    <h5>¿Qué aspectos cree que podrían mejorar?</h5>
-                    <p class="comentario-texto">${encuesta.open2}</p>
-                </div>
-            `;
-        }
-        
-        if (encuesta.que_confuso_frustrante) {
-            html += `
-                <div class="comentario-item">
-                    <h5>¿Qué le resultó confuso o frustrante?</h5>
-                    <p class="comentario-texto">${encuesta.open3}</p>
-                </div>
-            `;
-        }
-        
-        html += `</div>`;
     }
-    
+
+    if (encuesta.que_mejorar) {
+        html += `
+            <div class="comentario-item">
+                <h5>¿Qué aspectos cree que podrían mejorar?</h5>
+                <p class="comentario-texto">${encuesta.que_mejorar}</p>
+            </div>
+        `;
+    }
+
+    if (encuesta.que_confuso_frustrante) {
+        html += `
+            <div class="comentario-item">
+                <h5>¿Qué le resultó confuso o frustrante?</h5>
+                <p class="comentario-texto">${encuesta.que_confuso_frustrante}</p>
+            </div>
+        `;
+    }
+
+    html += `</div>`;
+}
+
     // Resumen final
     html += `
-            <div class="resumen-final">
-                <div class="resumen-item">
-                    <strong>Puntuación Total:</strong> ${encuesta.puntuacion_total || calcularTotal(encuesta)}
-                </div>
-                <div class="resumen-item">
-                    <strong>Promedio General:</strong> ${encuesta.promedio_seccion || calcularPromedio(encuesta)}
-                </div>
+        <div class="resumen-final">
+            <div class="resumen-item">
+                <strong>Puntuación Total:</strong> ${encuesta.puntuacion_total || calcularTotal(encuesta)}
+            </div>
+            <div class="resumen-item">
+                <strong>Promedio General:</strong> ${encuesta.promedio_seccion || calcularPromedio(encuesta)}
             </div>
         </div>
+    </div>
     `;
-    
+
     modalBody.innerHTML = html;
     document.getElementById('modal-detalles').style.display = 'block';
 }
 
-// Función auxiliar para determinar clase CSS según valor
+// Funcion auxiliar para determinar clase CSS segun el valor
 function getClaseValor(valor) {
     if (valor === null || valor === undefined) return 'no-respondida';
     if (valor >= 4) return 'alta';
