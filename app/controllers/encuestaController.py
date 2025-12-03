@@ -63,7 +63,7 @@ def GuardarEncuesta():
             que_mejorar=datos.get("que_mejorar"),
             que_confuso_frustrante=datos.get("que_confuso_frustrante")
         )
-        print(encuesta)
+        
         db.session.add(encuesta)
         db.session.commit()
 
@@ -89,35 +89,36 @@ def VerEncuesta():
                 'fecha_encuesta': encuesta.fecha_encuesta.isoformat() if encuesta.fecha_encuesta else None,
                 
                 # Mapeo para las preguntas q1-q24 que usa el frontend
-                'q1': encuesta.navegacion_clara,
-                'q2': encuesta.facil_encontrar_funciones,
-                'q3': encuesta.instrucciones_claras,
-                'q4': encuesta.aprendizaje_rapido,
-                'q5': encuesta.tareas_rapidas,
-                'q6': encuesta.pocos_pasos,
-                'q7': encuesta.proceso_citas_agil,
-                'q8': encuesta.registro_eficiente,
-                'q9': encuesta.diseno_atractivo,
-                'q10': encuesta.colores_agradables,
-                'q11': encuesta.iconos_modernos,
-                'q12': encuesta.aspecto_general,
-                'q13': encuesta.texto_comodo,
-                'q14': encuesta.contrastes_adecuados,
-                'q15': encuesta.diseno_inclusivo,
-                'q16': encuesta.lenguaje_respetuoso,
-                'q17': encuesta.proteccion_errores,
-                'q18': encuesta.mensajes_error_claros,
-                'q19': encuesta.respuesta_consistente,
-                'q20': encuesta.control_tranquilidad,
-                'q21': encuesta.satisfaccion_general,
-                'q22': encuesta.herramienta_util,
-                'q23': encuesta.sentir_apoyado,
-                'q24': encuesta.recomendaria_aplicacion,
+                'P1': encuesta.navegacion_clara,
+                'P2': encuesta.facil_encontrar_funciones,
+                'P3': encuesta.instrucciones_claras,
+                'P4': encuesta.aprendizaje_rapido,
+                'P5': encuesta.tareas_rapidas,
+                'P6': encuesta.pocos_pasos,
+                'P7': encuesta.proceso_citas_agil,
+                'P8': encuesta.registro_eficiente,
+                'P9': encuesta.diseno_atractivo,
+                'P10': encuesta.colores_agradables,
+                '11': encuesta.iconos_modernos,
+                'P12': encuesta.aspecto_general,
+                'P13': encuesta.texto_comodo,
+                'P14': encuesta.contrastes_adecuados,
+                'P15': encuesta.diseno_inclusivo,
+                'P16': encuesta.lenguaje_respetuoso,
+                'P17': encuesta.proteccion_errores,
+                'P18': encuesta.mensajes_error_claros,
+                'P19': encuesta.respuesta_consistente,
+                'P20': encuesta.control_tranquilidad,
+                'P21': encuesta.satisfaccion_general,
+                'P22': encuesta.herramienta_util,
+                'P23': encuesta.sentir_apoyado,
+                'P24': encuesta.recomendaria_aplicacion,
                 
                 # Preguntas abiertas
                 'open1': encuesta.que_mas_gusto or '',
                 'open2': encuesta.que_mejorar or '',
                 'open3': encuesta.que_confuso_frustrante or '',
+               
                 
                 # Métricas
                 'puntuacion_total': encuesta.puntuacion_total,

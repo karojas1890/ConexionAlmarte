@@ -246,29 +246,89 @@ async function verDetalles(encuestaId) {
         alert('Error al cargar los detalles de la encuesta');
     }
 }
+// Mapeo de nombres de columnas a textos de preguntas
+    const mapeoPreguntas = {
+        // Sección 1: Facilidad de Uso
+        "P1": "La navegación dentro de la aplicación es clara y sencilla.",
+        "P2": "Me resultó fácil encontrar las funciones que necesitaba.",
+        "P3": "Las instrucciones y los textos son fáciles de entender.",
+        "P4": "Aprender a usar la aplicación me tomó poco tiempo.",
+        
+        // Sección 2: Eficiencia
+        "P5": "Puedo completar mis tareas de manera rápida",
+        "P6": "La aplicación me permite lograr lo que necesito con pocos pasos.",
+        "P7": "El proceso para programar o cancelar una cita es ágil y directo.",
+        "P8": "El registro de mis disparadores y avances es un proceso eficiente.",
+        
+        // Sección 3: Atracción
+        "P9": "El diseño de la aplicación es visualmente atractivo.",
+        "P10": "La combinación de colores es agradable y transmite calma.",
+        "P11": "Los iconos y botones son modernos y de buen gusto.",
+        "P12": "Me gusta cómo se ve la aplicación en general.",
+        
+        // Sección 4: Inclusivo
+        "P13": "El tamaño del texto es cómodo para leer.",
+        "P14": "Los colores y contrastes utilizados no dificultan la lectura.",
+        "P15": "El diseño considera diferentes necesidades de usuarios",
+        "P16": "El lenguaje utilizado es respetuoso y no hace suposiciones sobre el usuario.",
+        
+        // Sección 5: Evitar Frustración
+        "P17": "La aplicación me protege de cometer errores",
+        "P18": "Si cometo un error, la aplicación me da un mensaje claro de cómo solucionarlo.",
+        "P19": "La aplicación responde de forma consistente y predecible.",
+        "P20": "Me sentí tranquilo/a y en control mientras usaba la aplicación.",
+        
+        // Sección 6: Satisfacción General
+        "P21": "Estoy satisfecho/a con la experiencia general que tuve usando esta aplicación.",
+        "P22": "La aplicación me parece una herramienta útil para gestionar mi bienestar mental.",
+        "P23": "Recomendaría esta aplicación a otros colegas",
+        "P24": "Me hace sentir apoyado en mis tareas diarias",
 
-// Mostrar modal con detalles
+         "open1":"¿Qué fue lo que más te gustó de la aplicación?",
+         "open2":"¿Qué aspecto de la aplicación crees que se podría mejorar?",
+         "open3":"¿Hubo algo que te resultó confuso, frustrante o que no funcionó como esperabas?"
+    };
 function mostrarModalDetalles(encuesta) {
     const modalBody = document.getElementById('modal-detalles-body');
     
+    
+
     let html = `
         <div class="detalles-encuesta">
             <div class="detalle-header">
                 <h3>Encuesta #${encuesta.id}</h3>
-                <p><strong>Usuario:</strong> ${encuesta.usuario_id} | <strong>Rol:</strong> ${encuesta.rol_usuario} | <strong>Fecha:</strong> ${new Date(encuesta.fecha_encuesta).toLocaleString()}</p>
+                <p><strong>Usuario:</strong> ${encuesta.usuario_id} | <strong>Rol:</strong> ${encuesta.rol_usuario} | <strong>Fecha:</strong> ${new Date(encuesta.fecha_encuesta).toLocaleDateString()}</p>
             </div>
             
             <div class="secciones-grid">
     `;
 
-    // Secciones de la encuesta
+    // Definir secciones con sus campos correspondientes
     const secciones = [
-        { titulo: 'Facilidad de Uso', preguntas: [1,2,3,4] },
-        { titulo: 'Eficiencia', preguntas: [5,6,7,8] },
-        { titulo: 'Atracción', preguntas: [9,10,11,12] },
-        { titulo: 'Inclusivo', preguntas: [13,14,15,16] },
-        { titulo: 'Evitar Frustración', preguntas: [17,18,19,20] },
-        { titulo: 'Satisfacción General', preguntas: [21,22,23,24] }
+        {
+            titulo: 'Facilidad de Uso',
+            campos: ['P1', 'P2', 'P3', 'P4']
+        },
+        {
+            titulo: 'Eficiencia',
+            campos: ['P5', 'P6', 'P7', 'P8']
+        },
+        {
+            titulo: 'Atracción',
+            campos: ['P9', 'P10', 'P11', 'P12']
+        },
+        {
+            titulo: 'Inclusivo',
+            campos: ['P13', 'P14', 'P15', 'P16']
+        },
+        {
+            titulo: 'Evitar Frustración',
+            campos: ['P17', 'P18', 'P19', 'P20']
+        },
+        {
+            titulo: 'Satisfacción General',
+            campos: ['P21', 'P22', 'P23', 'P24']
+        }
     ];
 
     secciones.forEach(seccion => {
@@ -278,14 +338,22 @@ function mostrarModalDetalles(encuesta) {
                 <div class="preguntas-list">
         `;
         
-        seccion.preguntas.forEach(pregunta => {
-            const valor = encuesta[`P${pregunta}`];
+        seccion.campos.forEach((campo, index) => {
+            const valor = encuesta[campo];
+            const textoPregunta = mapeoPreguntas[campo];
+            
             html += `
                 <div class="pregunta-item">
-                    <span class="pregunta-text">P${pregunta}:</span>
-                    <span class="pregunta-valor ${valor >= 4 ? 'alta' : valor <= 2 ? 'baja' : 'media'}">
-                        ${valor || 'No respondida'}
-                    </span>
+                    <div class="pregunta-text">
+                        <span class="pregunta-numero">${index + 1}.</span>
+                        ${textoPregunta}
+                    </div>
+                    <div class="pregunta-respuesta">
+                        <span class="pregunta-valor ${getClaseValor(valor)}">
+                            ${valor !== null && valor !== undefined ? valor : 'No respondida'}
+                        </span>
+                        ${valor !== null && valor !== undefined ? '<span class="escala">/5</span>' : ''}
+                    </div>
                 </div>
             `;
         });
@@ -295,20 +363,19 @@ function mostrarModalDetalles(encuesta) {
             </div>
         `;
     });
-
-    // Preguntas abiertas
-    if (encuesta.que_mas_gusto || encuesta.que_mejorar || encuesta.que_confuso_frustrante) {
+    
+    // Agregar preguntas abiertas si existen
+    if (encuesta.open1 || encuesta.open3 || encuesta.open3) {
         html += `
-            <div class="seccion-detalle full-width">
-                <h4>Comentarios Abiertos</h4>
-                <div class="comentarios-list">
+            <div class="seccion-abiertas">
+                <h4>Comentarios Adicionales</h4>
         `;
         
         if (encuesta.que_mas_gusto) {
             html += `
                 <div class="comentario-item">
-                    <strong>¿Qué fue lo que más te gustó?</strong>
-                    <p>${encuesta.que_mas_gusto}</p>
+                    <h5>¿Qué fue lo que más le gustó de la aplicación?</h5>
+                    <p class="comentario-texto">${encuesta.open1}</p>
                 </div>
             `;
         }
@@ -316,8 +383,8 @@ function mostrarModalDetalles(encuesta) {
         if (encuesta.que_mejorar) {
             html += `
                 <div class="comentario-item">
-                    <strong>¿Qué aspecto se podría mejorar?</strong>
-                    <p>${encuesta.que_mejorar}</p>
+                    <h5>¿Qué aspectos cree que podrían mejorar?</h5>
+                    <p class="comentario-texto">${encuesta.open2}</p>
                 </div>
             `;
         }
@@ -325,25 +392,68 @@ function mostrarModalDetalles(encuesta) {
         if (encuesta.que_confuso_frustrante) {
             html += `
                 <div class="comentario-item">
-                    <strong>¿Hubo algo confuso o frustrante?</strong>
-                    <p>${encuesta.que_confuso_frustrante}</p>
+                    <h5>¿Qué le resultó confuso o frustrante?</h5>
+                    <p class="comentario-texto">${encuesta.open3}</p>
                 </div>
             `;
         }
         
-        html += `
-                </div>
-            </div>
-        `;
+        html += `</div>`;
     }
-
+    
+    // Resumen final
     html += `
+            <div class="resumen-final">
+                <div class="resumen-item">
+                    <strong>Puntuación Total:</strong> ${encuesta.puntuacion_total || calcularTotal(encuesta)}
+                </div>
+                <div class="resumen-item">
+                    <strong>Promedio General:</strong> ${encuesta.promedio_seccion || calcularPromedio(encuesta)}
+                </div>
             </div>
         </div>
     `;
-
+    
     modalBody.innerHTML = html;
     document.getElementById('modal-detalles').style.display = 'block';
+}
+
+// Función auxiliar para determinar clase CSS según valor
+function getClaseValor(valor) {
+    if (valor === null || valor === undefined) return 'no-respondida';
+    if (valor >= 4) return 'alta';
+    if (valor <= 2) return 'baja';
+    return 'media';
+}
+
+// Función para calcular total si no viene del backend
+function calcularTotal(encuesta) {
+    let total = 0;
+    const campos = Object.keys(mapeoPreguntas);
+    
+    campos.forEach(campo => {
+        if (encuesta[campo] !== null && encuesta[campo] !== undefined) {
+            total += parseInt(encuesta[campo]) || 0;
+        }
+    });
+    
+    return total;
+}
+
+// Función para calcular promedio si no viene del backend
+function calcularPromedio(encuesta) {
+    let total = 0;
+    let contador = 0;
+    const campos = Object.keys(mapeoPreguntas);
+    
+    campos.forEach(campo => {
+        if (encuesta[campo] !== null && encuesta[campo] !== undefined) {
+            total += parseInt(encuesta[campo]) || 0;
+            contador++;
+        }
+    });
+    
+    return contador > 0 ? (total / contador).toFixed(2) : '0.00';
 }
 
 // Exportar datos
@@ -369,27 +479,168 @@ async function exportarDatos() {
 
      
 
-// Exportar encuesta individual
-async function exportarEncuesta(encuestaId) {
+
+async function exportarEncuesta(encuesta) {
     try {
-        const response = await fetch(`/api/encuestas/${encuestaId}/export`);
-        const blob = await response.blob();
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
         
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `encuesta_${encuestaId}_${new Date().toISOString().split('T')[0]}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
+        // Configuración inicial
+        const pageWidth = doc.internal.pageSize.width;
+        const margin = 20;
+        let yPos = 20;
+        
+        // Título
+        doc.setFontSize(18);
+        doc.setFont("helvetica", "bold");
+        doc.text("Detalle de Encuesta", pageWidth / 2, yPos, { align: "center" });
+        yPos += 15;
+        
+        // Información básica
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "normal");
+        doc.text(`ID: ${encuesta.usuario_id}`, margin, yPos);
+        doc.text(`Usuario: ${encuesta.usuario_id}`, pageWidth / 2, yPos);
+        yPos += 7;
+        
+        doc.text(`Rol: ${encuesta.rol_usuario}`, margin, yPos);
+        doc.text(`Fecha: ${new Date(encuesta.fecha_encuesta).toLocaleDateString()}`, pageWidth / 2, yPos);
+        yPos += 15;
+        
+        // Separador
+        doc.setDrawColor(200, 200, 200);
+        doc.line(margin, yPos, pageWidth - margin, yPos);
+        yPos += 10;
+        
+        // Preguntas por secciones
+        const secciones = [
+            { titulo: 'Facilidad de Uso', preguntas: ['P1', 'P2', 'P3', 'P4'] },
+            { titulo: 'Eficiencia', preguntas: ['P5', 'P6', 'P7', 'P8'] },
+            { titulo: 'Atracción', preguntas: ['P9', 'P10', 'P11', 'P12'] },
+            { titulo: 'Inclusivo', preguntas: ['P13', 'P14', 'P15', 'P16'] },
+            { titulo: 'Evitar Frustración', preguntas: ['P17', 'P18', 'P19', 'P20'] },
+            { titulo: 'Satisfacción General', preguntas: ['P21', 'P22', 'P23', 'P24'] }
+        ];
+        
+        
+        
+        secciones.forEach(seccion => {
+            // Verificar si se ocupa nueva pagina
+            if (yPos > 250) {
+                doc.addPage();
+                yPos = 20;
+            }
+            
+            // Título de seccion
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text(seccion.titulo, margin, yPos);
+            yPos += 10;
+            
+            // Preguntas
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            
+            seccion.preguntas.forEach((pregunta, index) => {
+                const textoPregunta = mapeoPreguntas[pregunta];
+                const respuesta = encuesta[pregunta];
+                
+                // Dividir texto largo
+                const lines = doc.splitTextToSize(`${index + 1}. ${textoPregunta}`, pageWidth - 60);
+                
+                // Verificar espacio
+                if (yPos + (lines.length * 5) + 10 > 280) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.text(lines, margin + 5, yPos);
+                yPos += lines.length * 5;
+                
+                // Respuesta
+                doc.setFont("helvetica", "bold");
+                doc.text(`Respuesta: ${respuesta || 'No respondida'} / 5`, margin + 10, yPos);
+                yPos += 7;
+                doc.setFont("helvetica", "normal");
+                
+                yPos += 3;  
+            });
+            
+            yPos += 5;  
+        });
+        
+        // Preguntas abiertas
+        if (encuesta.open1 || encuesta.open2 || encuesta.open3) {
+            if (yPos > 200) {
+                doc.addPage();
+                yPos = 20;
+            }
+            
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text("Comentarios Adicionales", margin, yPos);
+            yPos += 10;
+            
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            
+            if (encuesta.open1) {
+                const lines = doc.splitTextToSize(`• ${encuesta.open1}`, pageWidth - 40);
+                doc.text(lines, margin, yPos);
+                yPos += lines.length * 5 + 5;
+            }
+            
+            if (encuesta.open2) {
+                const lines = doc.splitTextToSize(`• ${encuesta.open2}`, pageWidth - 40);
+                doc.text(lines, margin, yPos);
+                yPos += lines.length * 5 + 5;
+            }
+            
+            if (encuesta.open3) {
+                const lines = doc.splitTextToSize(`• ${encuesta.open3}`, pageWidth - 40);
+                doc.text(lines, margin, yPos);
+                yPos += lines.length * 5 + 5;
+            }
+        }
+        
+       
+        if (yPos > 250) {
+            doc.addPage();
+            yPos = 20;
+        }
+        
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("Resumen", margin, yPos);
+        yPos += 10;
+        
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "normal");
+        doc.text(`Puntuación Total: ${encuesta.puntuacion_total || calcularTotal(encuesta)}`, margin, yPos);
+        yPos += 7;
+        doc.text(`Promedio General: ${encuesta.promedio || calcularPromedio(encuesta)}`, margin, yPos);
+        
+         
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.text(
+                `Página ${i} de ${totalPages} • Generado el ${new Date().toLocaleDateString()}`,
+                pageWidth / 2,
+                290,
+                { align: "center" }
+            );
+        }
+        
+       
+        doc.save(`encuesta_${encuesta.id}_${new Date().toISOString().split('T')[0]}.pdf`);
         
     } catch (error) {
-        console.error('Error al exportar encuesta:', error);
-        alert('Error al exportar la encuesta');
+        console.error('Error al generar PDF:', error);
+        alert('Error al generar el PDF');
     }
 }
-
 // Filtros
 function inicializarFiltros() {
     document.getElementById('filtro-rol').addEventListener('change', aplicarFiltros);
