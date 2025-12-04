@@ -62,13 +62,55 @@
                     Iniciar sesión <span class="arrow">↪</span>
                 </button>
 
-                <a href="#" class="create-account-btn" style="text-decoration: none;">
-                    Crear cuenta <span class="plus-icon">👤+</span>
-                </a>
+                 <!-- boton biometrico 
+                <button type="button" class="biometric-btn" onclick="openBiometricModal()">
+                    <span class="fingerprint-icon">👆</span>
+                    Iniciar sesión con huella
+                </button>-->
             </form>
         </div>
     </main>
+<div id="net-status" 
+     style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #c0392b;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        display: none;
+        font-weight: bold;
+        z-index: 99999;
+    ">
+    Sin conexión
+</div> 
+<!-- Added biometric authentication modal 
+    <div class="biometric-modal" id="biometricModal">
+        <div class="biometric-modal-content">
+            <div class="biometric-logo">📱</div>
+            <h2 class="biometric-title">Almarte</h2>
+            <p class="biometric-subtitle">Ingresá a tu cuenta de Almarte</p>
+            <p class="biometric-subtitle">Usá tus biométricos para iniciar sesión en Almarte.</p>
+            
+            <div id="biometricContent">
+                <p class="biometric-instruction">Toca el sensor de huellas dactilares</p>
+                <div class="fingerprint-animation">👆</div>
+            </div>
 
+            <div id="biometricLoading" style="display: none;">
+                <div class="biometric-loading"></div>
+                <p class="biometric-instruction">Verificando...</p>
+            </div>
+
+            <div class="biometric-error" id="biometricError"></div>
+
+            <button type="button" class="biometric-cancel-btn" onclick="closeBiometricModal()">
+                Cancelar
+            </button>
+        </div>
+    </div>-->
     <footer class="footer">
         <a href="{{ url_for('routes.acerca_de') }}" class="footer-item">
             <div class="footer-icon">AM</div><span>Más sobre AlmarteCR</span>
@@ -84,7 +126,7 @@
     
 
  
-   
+   <script src="{{ url_for('static', filename='js/Fueralinea.js') }}"></script>
 
     <script src="{{ url_for('static', filename='js/PopUp.js') }}"></script>
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>

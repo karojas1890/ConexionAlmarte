@@ -45,3 +45,60 @@ document.getElementById('togglePassword').addEventListener('click', function() {
     this.classList.toggle('fa-eye');
     this.classList.toggle('fa-eye-slash');
 });
+
+        function openBiometricModal() {
+            document.getElementById('biometricModal').classList.add('active');
+            simulateBiometricAuth();
+        }
+
+        function closeBiometricModal() {
+            document.getElementById('biometricModal').classList.remove('active');
+            document.getElementById('biometricError').classList.remove('show');
+            document.getElementById('biometricContent').style.display = 'block';
+            document.getElementById('biometricLoading').style.display = 'none';
+        }
+
+     async function simulateBiometricAuth() {
+    document.getElementById('biometricContent').style.display = 'none';
+    document.getElementById('biometricLoading').style.display = 'block';
+    document.getElementById('biometricError').classList.remove('show');
+
+    try {
+        // 1. Obtener el challenge del backend (obligatorio)
+        const publicKey = await fetch('/webauthn/login-challenge').then(r => r.json());
+
+        // 2. Solicitar autenticación biométrica al dispositivo
+        const assertion = await navigator.credentials.get({
+            publicKey: publicKey
+        });
+
+        // 3. Enviar la respuesta al backend para verificar
+        const response = await fetch('/webauthn/login-verify', {
+            method: 'POST',
+            body: JSON.stringify(assertion),
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const result = await response.json();
+
+        // 4. Resultado final de autenticación
+        if (result.success) {
+            window.location.href = '/dashboard';
+        } else {
+            showBiometricError("No se pudo autenticar con huella.");
+        }
+
+    } catch (err) {
+        console.error(err);
+        showBiometricError("Error: el dispositivo no pudo autenticar por biométricos.");
+    }
+}
+
+function showBiometricError(msg) {
+    document.getElementById('biometricLoading').style.display = 'none';
+    document.getElementById('biometricContent').style.display = 'block';
+
+    const errorDiv = document.getElementById('biometricError');
+    errorDiv.textContent = msg;
+    errorDiv.classList.add('show');
+}
