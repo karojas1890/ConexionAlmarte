@@ -1,54 +1,72 @@
-const CACHE_NAME = "flask-pwa-v12";//se actualiza la version
+const CACHE_NAME = "flask-pwa-v15"; 
 const urlsToCache = [
-  "/",                              // Pagina principal
-  "/static/css/loginStyle.css",        // CSS         
-  "/static/images/fondo.png",    // Imagen principal
-  "/static/images/logo.png"         // Logo
+  "/",
+  "/static/css/loginStyle.css",
+  "/static/images/fondo.png",
+  "/static/images/logo.png"
 ];
 
-// Instalación del service worker y cache inicial
+// Instalar SW
 self.addEventListener("install", (event) => {
   console.log("[ServiceWorker] Install");
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log("[ServiceWorker] Caching files");
-        return cache.addAll(urlsToCache);
-      })
-  );
-  self.skipWaiting(); // Activa inmediatamente
-});
 
-// Activación del service worker y limpieza de caches antiguas
-self.addEventListener("activate", (event) => {
-  console.log("[ServiceWorker] Activate");
   event.waitUntil(
-    caches.keys().then((keys) => {
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log("[ServiceWorker] Caching safe files…");
+
       return Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
+        urlsToCache.map((url) =>
+          fetch(url)
+            .then((response) => {
+              if (!response.ok) {
+                console.warn("❌ No se pudo cachear:", url);
+                return null;
+              }
+              return cache.put(url, response.clone());
+            })
+            .catch(() => console.warn("❌ Error cacheando:", url))
+        )
       );
     })
   );
-  self.clients.claim(); // Toma control de los clientes inmediatamente
+
+  self.skipWaiting();
 });
 
-// Interceptar requests y servir desde cache si está disponible
+// Activar SW
+self.addEventListener("activate", (event) => {
+  console.log("[ServiceWorker] Activate");
+
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      )
+    )
+  );
+
+  self.clients.claim();
+});
+
+//  Interceptar fetch
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          return response; // Devuelve cache
-        }
-        // Si no está en cache, hace fetch normal
-        return fetch(event.request).catch(() => {
-          // Opcional: respuesta fallback si no hay internet
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached; // devolver cache
+
+      return fetch(event.request)
+        .then((response) => response) // fetch normal
+        .catch(() => {
+          // fallback seguro
           if (event.request.destination === "document") {
             return caches.match("/");
           }
+
+          // *** SIEMPRE devolver una Response válida ***
+          return new Response("", { status: 200 });
         });
-      })
+    })
   );
 });

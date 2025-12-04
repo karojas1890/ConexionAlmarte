@@ -1,8 +1,11 @@
 {
+  "id": "/",
   "name": "Conexion",
   "short_name": "Conexion",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#2c3e50",
   "icons": [
